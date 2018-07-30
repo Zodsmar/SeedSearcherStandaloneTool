@@ -72,8 +72,6 @@ public class GUI {
 	private static JTextField widthSearch;
 	private static JTextField heightSearch;
 	private static JTextField maxSeeds;
-	
-
 
 	
 	private static int searchQuadrantWidth = 2048;
@@ -176,11 +174,11 @@ public class GUI {
 		 
 		if(paused) {
 			timer.stop();
-			//timeAtPause = System.currentTimeMillis();
+			timeAtPause = System.currentTimeMillis();
 		} else {
 			timer.start();
 			
-			//startTime = elapsedTime+timeAtPause-System.currentTimeMillis();
+			//startTime = timeAtPause;
 		}
 		btnPause.setText(text);
 		updateDisplay();
