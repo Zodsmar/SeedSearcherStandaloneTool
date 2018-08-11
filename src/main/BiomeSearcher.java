@@ -279,6 +279,8 @@ public class BiomeSearcher implements Runnable {
 		if (biomes.length == 0) {
 			Util.console("Creating Biomes from list");
 			biomes = GUI.manageCheckedCheckboxes();
+			
+			
 		}
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
@@ -343,7 +345,7 @@ public class BiomeSearcher implements Runnable {
 				acceptedWorldsCount + ": " + acceptedWorld.getWorldSeed().getLong() + " (rejected "
 						+ rejectedWorldsCount + ")");
 	}
-
+	
 	/**
 	 * Searches for matching worlds, and prints the seed of each matching world
 	 * to the given output stream.
