@@ -201,7 +201,6 @@ public class BiomeSearcher implements Runnable {
 		long spawnChunksCenterY = getSpawnChunksCenterCoordinate(spawnY);
 		return CoordinatesInWorld.from(spawnChunksCenterX, spawnChunksCenterY);
 	}
-
 	/**
 	 * Determines the coordinates for the center of the search area.
 	 *
@@ -354,7 +353,7 @@ public class BiomeSearcher implements Runnable {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	static int totalRejectedSeedCount = 0;
+	public static int totalRejectedSeedCount = 0;
 	void search()
 			throws InterruptedException,
 			IOException,
@@ -366,10 +365,11 @@ public class BiomeSearcher implements Runnable {
 		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
 			if (GUI.paused == false) {
 				World world;
+				
 				try {
-
+					
 					world = createWorld();
-
+					
 				} catch (@SuppressWarnings("unused") MinecraftInterfaceException e) {
 					// TODO log
 					rejectedWorldsCount++;

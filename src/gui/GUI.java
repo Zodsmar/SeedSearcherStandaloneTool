@@ -151,6 +151,7 @@ public class GUI {
 		t.start();
 		timer.restart();
 		btnStart.setText("Stop");
+		BiomeSearcher.totalRejectedSeedCount = 0;
 
 	}
 
@@ -200,6 +201,7 @@ public class GUI {
 		startTime = System.currentTimeMillis();
 		seedCount.setText("Rejected Seed Count: 0");
 		totalSeedCount.setText("Total Rejected Seed Count: 0");
+		BiomeSearcher.totalRejectedSeedCount = 0;
 
 		updateDisplay();
 	}
