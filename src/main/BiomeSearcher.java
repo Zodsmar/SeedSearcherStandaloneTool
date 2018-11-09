@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -95,7 +96,13 @@ public class BiomeSearcher implements Runnable {
 			MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 		final MinecraftInstallation minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
-		final LauncherProfile launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
+		LauncherProfile launcherProfile = null;
+		try{
+			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
+		} catch (FileNotFoundException e) {
+			Util.console("No install directory found for Minecraft version " + minecraftVersion + "!");
+			throw e;
+		}
 		this.mMinecraftInterface = MinecraftInterfaces.fromLocalProfile(launcherProfile);
 		this.mSearchCenterKind = searchCenterKind;
 		this.mSearchQuadrantWidth = searchQuadrantWidth;
