@@ -72,11 +72,13 @@ public class GUI {
 	private static JTextField widthSearch;
 	private static JTextField heightSearch;
 	private static JTextField maxSeeds;
+	private static JTextField versionId;
 
 	
 	private static int searchQuadrantWidth = 2048;
 	private static int searchQuadrantHeight = 2048;
 	private static int maximumMatchingWorldsCount = 10;
+	private static String minecraftVersionId = "1.13.2";
 	
 
 
@@ -86,12 +88,11 @@ public class GUI {
 	}
 
 	static BiomeSearcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		String minecraftVersionId = "1.13";
 		BiomeSearcher.SearchCenterKind searchCenterKind = BiomeSearcher.SearchCenterKind.ORIGIN;
 
 
 		r = new BiomeSearcher(
-				minecraftVersionId,
+				versionId.getText(),
 				searchCenterKind,
 				Integer.parseInt(widthSearch.getText()),
 				Integer.parseInt(heightSearch.getText()),
@@ -310,6 +311,16 @@ public class GUI {
 		btnClear.setBounds(10, 424, 141, 23);
 		panel.add(btnClear);
 		
+		JLabel versionIdLabel = new JLabel("Minecraft Version:");
+		versionIdLabel.setBounds(161, 331, 121, 14);
+		panel.add(versionIdLabel);
+		
+		versionId = new JTextField();
+		versionId.setText(""+minecraftVersionId);
+		versionId.setBounds(300, 331, 86, 20);
+		panel.add(versionId);
+		versionId.setColumns(10);
+		
 		JLabel lblSearchSize = new JLabel("Search Size: (Width, Height) D: 2048");
 		lblSearchSize.setBounds(174, 360, 212, 14);
 		panel.add(lblSearchSize);
@@ -327,9 +338,8 @@ public class GUI {
 		heightSearch.setColumns(10);
 		
 		JLabel maxSeedsLabel = new JLabel("Max # Seeds to Find:");
-
 		maxSeedsLabel.setBounds(161, 428, 121, 14);
-		panel.add(maxSeedsLabel);
+		panel.add(maxSeedsLabel);	
 		
 		maxSeeds = new JTextField();
 		maxSeeds.setText(""+maximumMatchingWorldsCount);
