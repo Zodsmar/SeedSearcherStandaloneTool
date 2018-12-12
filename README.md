@@ -14,3 +14,4 @@ http://www.java2s.com/Code/Jar/j/jgoodies.htm
 
 #### User Credit
 scudobuio - for the initial search function
+fraffugooby - for MC version change ability
