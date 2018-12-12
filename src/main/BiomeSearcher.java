@@ -261,6 +261,8 @@ public class BiomeSearcher implements Runnable {
 	 */
 
 	Biome[] biomes = {};
+	Biome[] rejectedBiomes = {};
+	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
 	boolean accept(World world)
 			throws MinecraftInterfaceException,
@@ -282,26 +284,40 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-
+		System.out.println(biomeCodes.length);
+		boolean RejectedBiomes = false;
 		if (biomes.length == 0) {
 			Util.console("Creating Biomes from list");
 			biomes = GUI.manageCheckedCheckboxes();
-			
-			
+			if(rejectedBiomes.length == 0 && GUI.excludeBiome.isSelected()) {
+				rejectedBiomes = GUI.manageCheckedCheckboxesRejected();
+				RejectedBiomes = true;
+			}
+
 		}
+
+		
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
+		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				// A new biome has been found.
 				// Determine whether this was the last biome to find.
-
-				if (undiscoveredBiomes.isEmpty()) {
-					return true;
-				}
 			}
+			
+			// In theory this should return false if the world contains a specific biome
+			if(undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+				//Works except for ocean. No idea why
+			}
+
 		}
-		return false;
+
+		if(undiscoveredBiomes.isEmpty() && (undiscoveredRejectedBiomes.size() != 0 || RejectedBiomes == false)) {
+			return true;
+		}
+			return false;
+
 	}
 
 	/**
