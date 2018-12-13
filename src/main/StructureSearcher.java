@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import amidst.mojangapi.world.World;
 import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.icon.WorldIcon;
+import amidst.mojangapi.world.icon.locationchecker.VillageLocationChecker;
 
 
 public class StructureSearcher {
@@ -55,7 +57,24 @@ public class StructureSearcher {
 	}
 
 	private void findVillages() {
-		villages = world.getVillageProducer().getAt(origin, null);
+	   // new Collector(512, DefaultWorldIconTypes.VILLAGE).collect(world, villages = new ArrayList<>());
+	    try {
+	        for(WorldIcon icon : new HashSet<>(villages)) {
+	            List<Biome> villageBiomes = Arrays.asList(Biome.plains, Biome.desert, Biome.savanna, Biome.taiga);
+	            VillageLocationChecker checker = new VillageLocationChecker( world.getWorldSeed().getLong(), world.getBiomeDataOracle(),
+	                    villageBiomes, structureFound);
+	            int cx = (int) icon.getCoordinates().getX() / 16;
+	            int cy = (int) icon.getCoordinates().getY() / 16;
+	            if(!checker.isValidLocation(cx, cy)) {
+	                villages.remove(icon);
+	            } else {
+	                System.out.println(icon.getName() + " : " + icon.getCoordinates().toString() + " - " +
+	                		world.getWorldSeed().getLong() + " --> " + origin.getDistance(icon.getCoordinates()));
+	            }
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	private void findOceanMounments() {

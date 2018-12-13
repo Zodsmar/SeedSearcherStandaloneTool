@@ -262,8 +262,8 @@ public class BiomeSearcher implements Runnable {
 
 	Biome[] biomes = {};
 	Biome[] rejectedBiomes = {};
-	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
-
+	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plain
+	
 	boolean accept(World world)
 			throws MinecraftInterfaceException,
 			UnknownBiomeIndexException,
@@ -284,7 +284,7 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		System.out.println(biomeCodes.length);
+		System.out.println(Arrays.toString(biomeCodes));
 		boolean RejectedBiomes = false;
 		if (biomes.length == 0) {
 			Util.console("Creating Biomes from list");
@@ -312,7 +312,6 @@ public class BiomeSearcher implements Runnable {
 			}
 
 		}
-
 		if(undiscoveredBiomes.isEmpty() && (undiscoveredRejectedBiomes.size() != 0 || RejectedBiomes == false)) {
 			return true;
 		}
@@ -387,8 +386,8 @@ public class BiomeSearcher implements Runnable {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
 
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
-			if (GUI.paused == false) {
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && Main.running) {
+			if (Main.paused == false) {
 				World world;
 				
 				try {
@@ -429,7 +428,7 @@ public class BiomeSearcher implements Runnable {
 			System.out.print("");
 		}
 		
-		GUI.stop();
+		Main.stop();
 
 	}
 

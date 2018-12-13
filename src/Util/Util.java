@@ -6,6 +6,7 @@ import java.io.PrintStream;
 
 import gui.GUI;
 import gui.Old_GUI;
+import main.Main;
 
 public class Util {
 	/**

@@ -34,6 +34,8 @@ import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.parsing.FormatException;
 import main.BiomeSearcher;
+import main.Main;
+
 import javax.swing.JTextField;
 
 public class GUI {
@@ -45,16 +47,10 @@ public class GUI {
 	 * Launch the application.
 	 */
 
-	private static final int DELAY = 0;
-	static Timer timer;
-	public static boolean running;
-	public static boolean paused;
-	private static long startTime;
-	private static long elapsedTime = 0L;
-
-	static JButton btnClear;
-	static JButton btnStart;
-	static JButton btnPause;
+	
+	public  JButton btnClear;
+	public static JButton btnStart;
+	public static JButton btnPause;
 	public static JCheckBox excludeBiome;
 
 	public static JPanel checkBoxes;
@@ -69,152 +65,18 @@ public class GUI {
 	public static JLabel timeElapsed;
 	public static JTextArea console;
 
-	static Thread t;
-	static BiomeSearcher r;
-	private static JTextField widthSearch;
-	private static JTextField heightSearch;
-	private static JTextField maxSeeds;
-	private static JTextField versionId;
 
-	
-	private static int searchQuadrantWidth = 2048;
-	private static int searchQuadrantHeight = 2048;
-	private static int maximumMatchingWorldsCount = 10;
-	private static String minecraftVersionId = "1.13.2";
-	
-
-
-	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {
-		new GUI().startSeedSearcher();
-
-	}
-
-	static BiomeSearcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		BiomeSearcher.SearchCenterKind searchCenterKind = BiomeSearcher.SearchCenterKind.ORIGIN;
-
-
-		r = new BiomeSearcher(
-				versionId.getText(),
-				searchCenterKind,
-				Integer.parseInt(widthSearch.getText()),
-				Integer.parseInt(heightSearch.getText()),
-				Integer.parseInt(maxSeeds.getText()));
-		// t = new Thread(r);
-		return r;
-	}
-
-	void startSeedSearcher() throws IOException, FormatException, MinecraftInterfaceCreationException {
-
-		initTimer();
-		Util.console("Please select Biomes first!");
-		// Execute.
-	}
-
-	private void initTimer() {
-		Action updateLabelAction = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateDisplay();
-			}
-		};
-		timer = new Timer(DELAY, updateLabelAction);
-	}
-
-	private static void updateDisplay() {
-		if (!paused) {
-			// String text = String.format("%02d:%02d:%02d:%02d",
-			// this.hours, this.minutes, this.seconds, this.hundredths);
-			// this.timeLabel.setText(text);
-
-			timeElapsed.setText(
-					"Time Elapsed: " + Util.getElapsedTimeHoursMinutesFromMilliseconds(
-							elapsedTime = System.currentTimeMillis() - startTime));
-
-		}
-	}
-
-	private static void toggleRunning()
-			throws InterruptedException,
-			IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
-		if (running) {
-			System.out.println("Shutting Down...");
-			stop();
-		} else {
-			start();
-		}
-
-	}
-
-	private static void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		t = new Thread(createNewThread());
-		startTime = System.currentTimeMillis();
-		running = true;
-		t.start();
-		timer.restart();
-		btnStart.setText("Stop");
-		BiomeSearcher.totalRejectedSeedCount = 0;
-
-	}
-
-	public static void stop()
-			throws InterruptedException,
-			IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
-		btnStart.setText("Start");
-		running = false;
-		timer.stop();
-		t.interrupt();
-		t.join(1000);
-		t = new Thread(createNewThread());
-	}
-
-	private static void togglePause() {
-		paused = !paused;
-		String text = (paused) ? "Unfreeze" : "Freeze";
-		 long timeAtPause = 0;
-		 
-		if(paused) {
-			timer.stop();
-			timeAtPause = System.currentTimeMillis();
-		} else {
-			timer.start();
-			
-			//startTime = timeAtPause;
-		}
-		btnPause.setText(text);
-		updateDisplay();
-	}
-
-	private static void reset()
-			throws InterruptedException,
-			IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
-		if (paused) {
-			togglePause();
-		}
-		if (running) {
-			toggleRunning();
-		}
-		Util.consoleWipe();
-		timeElapsed.setText("Time Elapsed: 00:00:00");
-		startTime = System.currentTimeMillis();
-		seedCount.setText("Rejected Seed Count: 0");
-		totalSeedCount.setText("Total Rejected Seed Count: 0");
-		BiomeSearcher.totalRejectedSeedCount = 0;
-
-		updateDisplay();
-	}
+	public static JTextField widthSearch;
+	public static JTextField heightSearch;
+	public static JTextField maxSeeds;
+	public static JTextField versionId;
 
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnStart) {
 				try {
-					toggleRunning();
+					Main.toggleRunning();
 				} catch (
 						InterruptedException
 						| IOException
@@ -225,11 +87,11 @@ public class GUI {
 				}
 
 			} else if (e.getSource() == btnPause) {
-				togglePause();
+				Main.togglePause();
 			} else if (e.getSource() == btnClear) {
 
 				try {
-					reset();
+					Main.reset();
 				} catch (
 						InterruptedException
 						| IOException
@@ -259,7 +121,7 @@ public class GUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frmSeedTool = new JFrame();
 		frmSeedTool.setTitle("Seed Tool");
 		frmSeedTool.setResizable(false);
@@ -324,7 +186,7 @@ public class GUI {
 		panel.add(versionIdLabel);
 		
 		versionId = new JTextField();
-		versionId.setText(""+minecraftVersionId);
+		versionId.setText(""+Main.minecraftVersionId);
 		versionId.setBounds(300, 331, 86, 20);
 		panel.add(versionId);
 		versionId.setColumns(10);
@@ -334,13 +196,13 @@ public class GUI {
 		panel.add(lblSearchSize);
 		
 		widthSearch = new JTextField();
-		widthSearch.setText(""+searchQuadrantWidth);
+		widthSearch.setText(""+Main.searchQuadrantWidth);
 		widthSearch.setBounds(170, 391, 86, 20);
 		panel.add(widthSearch);
 		widthSearch.setColumns(10);
 		
 		heightSearch = new JTextField();
-		heightSearch.setText(""+searchQuadrantHeight);
+		heightSearch.setText(""+Main.searchQuadrantHeight);
 		heightSearch.setBounds(300, 391, 86, 20);
 		panel.add(heightSearch);
 		heightSearch.setColumns(10);
@@ -350,7 +212,7 @@ public class GUI {
 		panel.add(maxSeedsLabel);	
 		
 		maxSeeds = new JTextField();
-		maxSeeds.setText(""+maximumMatchingWorldsCount);
+		maxSeeds.setText(""+Main.maximumMatchingWorldsCount);
 		maxSeeds.setBounds(300, 427, 86, 20);
 		panel.add(maxSeeds);
 		maxSeeds.setColumns(10);
@@ -463,7 +325,7 @@ public class GUI {
 
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Ocean (Always true)");
 		checkBoxes.add(chckbxNewCheckBox, "2, 2");
-		chckbxNewCheckBox.setEnabled(false);
+		//chckbxNewCheckBox.setEnabled(false);
 
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Plains");
 		checkBoxes.add(chckbxNewCheckBox_1, "4, 2");
@@ -785,9 +647,9 @@ public class GUI {
 								FormSpecs.RELATED_GAP_ROWSPEC,
 								FormSpecs.DEFAULT_ROWSPEC,}));
 
-		JCheckBox chckbxNewCheckBox_73 = new JCheckBox("Ocean (Always true)");
+		JCheckBox chckbxNewCheckBox_73 = new JCheckBox("Ocean");
 		checkBoxes1.add(chckbxNewCheckBox_73, "2, 2");
-		chckbxNewCheckBox_73.setEnabled(false);
+		//chckbxNewCheckBox_73.setEnabled(false);
 
 		JCheckBox chckbxNewCheckBox_74 = new JCheckBox("Plains");
 		checkBoxes1.add(chckbxNewCheckBox_74, "4, 2");
@@ -1057,7 +919,7 @@ public class GUI {
 		if (biomes.length == 0) {
 			Util.console(
 					"Please select Biomes!\nPlease click start a few times to start again (Working on a fix)\nRecommend you clear also!");
-			stop();
+			Main.stop();
 		}
 		return biomes;
 
@@ -1096,7 +958,7 @@ public class GUI {
 		if (biomes.length == 0) {
 			Util.console(
 					"Please select Biomes!\nPlease click start a few times to start again (Working on a fix)\nRecommend you clear also!");
-			stop();
+			Main.stop();
 		}
 		return biomes;
 
@@ -1120,4 +982,5 @@ public class GUI {
 			// Remove Biome from arrayList
 		}
 	}
+
 }
