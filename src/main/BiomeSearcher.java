@@ -84,7 +84,7 @@ public class BiomeSearcher implements Runnable {
 	 * The value of this field is greater than or equal to {@code 0}.
 	 */
 	private int mMaximumMatchingWorldsCount;
-
+	//Pulls biome data from Minecraft
 	public BiomeSearcher(
 			String minecraftVersion,
 			SearchCenterKind searchCenterKind,
