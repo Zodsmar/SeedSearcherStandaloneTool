@@ -30,11 +30,14 @@ public class Main {
 	GUI gui;
 	static Thread t;
 	static BiomeSearcher r;
+	
+	//Initializes Seed searcher
 
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {
 		new Main().startSeedSearcher();
 
 	}
+	// Biome searcher function, returns a biome search
 
 	static BiomeSearcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
 		BiomeSearcher.SearchCenterKind searchCenterKind = BiomeSearcher.SearchCenterKind.ORIGIN;
@@ -57,6 +60,8 @@ public class Main {
 		Util.console("Please select Biomes first!");
 		// Execute.
 	}
+	
+	//Awaits User Input
 
 	private void initTimer() {
 		Action updateLabelAction = new AbstractAction() {
@@ -67,7 +72,8 @@ public class Main {
 		};
 		timer = new Timer(DELAY, updateLabelAction);
 	}
-
+	
+	//Updates panel with timer from initTimer
 	private static void updateDisplay() {
 		if (!paused) {
 			// String text = String.format("%02d:%02d:%02d:%02d",
@@ -80,7 +86,9 @@ public class Main {
 
 		}
 	}
-
+	
+	
+	//Toggles between start and end states
 	public static void toggleRunning()
 			throws InterruptedException,
 			IOException,
@@ -94,7 +102,7 @@ public class Main {
 		}
 
 	}
-
+	//Start state; initializes timer and changes start button to "stop"
 	public static void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
 		t = new Thread(createNewThread());
 		startTime = System.currentTimeMillis();
@@ -105,7 +113,7 @@ public class Main {
 		BiomeSearcher.totalRejectedSeedCount = 0;
 
 	}
-
+	//Stop state; stops the timer and initializes and new thread. Switches stop button to "start"
 	public static void stop()
 			throws InterruptedException,
 			IOException,
@@ -118,7 +126,8 @@ public class Main {
 		t.join(1000);
 		t = new Thread(createNewThread());
 	}
-
+	
+	//Pauses application without resetting thread.
 	public static void togglePause() {
 		paused = !paused;
 		String text = (paused) ? "Unfreeze" : "Freeze";
@@ -135,7 +144,8 @@ public class Main {
 		GUI.btnPause.setText(text);
 		updateDisplay();
 	}
-
+	
+	//Reset state, ran when "stop" is pressed. Sets timer to 0 and starts and new thread
 	public static void reset()
 			throws InterruptedException,
 			IOException,
