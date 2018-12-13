@@ -32,7 +32,7 @@ public class StructureSearcher {
 
 
 	//this.structs = new Structures(world.getWorldSeed().getLong());
-	
+	//Assigns biomes, mines, villages as a enumeration
 	public enum Type {
 		MINE, VILLAGE, STRONGHOLD, TEMPLE, MANSION, OCEAN_FEATURE, OCEAN_MONUMENT, SLIME_CHUNK, BIOME_DATA
 	}
@@ -42,6 +42,7 @@ public class StructureSearcher {
 			.OCEAN_FEATURE, Type.OCEAN_MONUMENT};
 	List[] simpleLists = new List[]{mines, villages, strongholds, temples, mansions, oceanFeatures,
 			oceanMonuments};
+	//Searches map for structures
 	public void findStructures() {
 		for(WorldIcon icon : mansions) {
 			// check if within expected distance
@@ -51,11 +52,11 @@ public class StructureSearcher {
 		}
 		
 	}
-
+	//Looks for mines on map
 	private void findMines() {
 		mines = world.getMineshaftProducer().getAt(origin, null);
 	}
-
+	//Looks for Villages on map
 	private void findVillages() {
 	   // new Collector(512, DefaultWorldIconTypes.VILLAGE).collect(world, villages = new ArrayList<>());
 	    try {
@@ -76,23 +77,23 @@ public class StructureSearcher {
 	        e.printStackTrace();
 	    }
 	}
-
+	//Find OceanMonuments on map
 	private void findOceanMounments() {
 		oceanMonuments = world.getOceanMonumentProducer().getAt(origin, null);
 	}
-
+	//Find OceanFeatures on map
 	private void findOceanFeatures() {
 		oceanFeatures = world.getOceanFeaturesProducer().getAt(origin, null);
 	}
-
+	//Find Strongholds on map
 	private void findStrongholds() {
 		strongholds = world.getStrongholdProducer().getAt(origin, null);
 	}
-
+	//Find Temples on map
 	private void findTemples() {
 		temples = world.getTempleProducer().getAt(origin, null);
 	}
-
+	//Find Mansions on map
 	private void findMansions() {
 		mansions = world.getWoodlandMansionProducer().getAt(origin, null);
 	}
