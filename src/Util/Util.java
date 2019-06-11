@@ -1,12 +1,13 @@
 package Util;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JLabel;
 
 import gui.GUI;
-import gui.Old_GUI;
-import main.Main;
 
 public class Util {
 	/**
@@ -59,4 +60,19 @@ public class Util {
 	public static void consoleWipe() {
 		GUI.console.setText("");
 	}
+	
+	public static void setFontSize(JLabel hotBiomesTxt, int size) {
+		Font font = hotBiomesTxt.getFont();
+		Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
+		attributes.put(TextAttribute.SIZE, size);
+		hotBiomesTxt.setFont(font.deriveFont(attributes));
+	}
+	
+	public static void Underline(JLabel hotBiomesTxt) {
+		Font font = hotBiomesTxt.getFont();
+		Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
+		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		hotBiomesTxt.setFont(font.deriveFont(attributes));
+	}
+	
 }

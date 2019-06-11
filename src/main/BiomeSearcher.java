@@ -1,8 +1,7 @@
 package main;
 
-import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,7 +61,7 @@ public class BiomeSearcher implements Runnable {
 	/**
 	 * The specification of the center of the search area.
 	 */
-	public static SearchCenterKind mSearchCenterKind;
+	public SearchCenterKind mSearchCenterKind;
 
 	/**
 	 * The width of each quadrant of the search area.
@@ -84,7 +83,7 @@ public class BiomeSearcher implements Runnable {
 	 * The value of this field is greater than or equal to {@code 0}.
 	 */
 	private int mMaximumMatchingWorldsCount;
-	//Pulls biome data from Minecraft
+
 	public BiomeSearcher(
 			String minecraftVersion,
 			SearchCenterKind searchCenterKind,
@@ -262,8 +261,8 @@ public class BiomeSearcher implements Runnable {
 
 	Biome[] biomes = {};
 	Biome[] rejectedBiomes = {};
-	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plain
-	
+	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
+
 	boolean accept(World world)
 			throws MinecraftInterfaceException,
 			UnknownBiomeIndexException,
@@ -284,7 +283,7 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		System.out.println(Arrays.toString(biomeCodes));
+		System.out.println(biomeCodes.length);
 		boolean RejectedBiomes = false;
 		if (biomes.length == 0) {
 			Util.console("Creating Biomes from list");
@@ -312,6 +311,7 @@ public class BiomeSearcher implements Runnable {
 			}
 
 		}
+
 		if(undiscoveredBiomes.isEmpty() && (undiscoveredRejectedBiomes.size() != 0 || RejectedBiomes == false)) {
 			return true;
 		}
@@ -386,15 +386,15 @@ public class BiomeSearcher implements Runnable {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
 
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && Main.running) {
-			if (Main.paused == false) {
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
+			if (GUI.paused == false) {
 				World world;
 				
 				try {
 					
 					world = createWorld();
 					
-				} catch (@SuppressWarnings("unused") MinecraftInterfaceException e) {
+				} catch (MinecraftInterfaceException e) {
 					// TODO log
 					rejectedWorldsCount++;
 					totalRejectedSeedCount++;
@@ -404,7 +404,7 @@ public class BiomeSearcher implements Runnable {
 				boolean isWorldAccepted;
 				try {
 					isWorldAccepted = accept(world);
-				} catch (@SuppressWarnings("unused") MinecraftInterfaceException | UnknownBiomeIndexException e) {
+				} catch (MinecraftInterfaceException | UnknownBiomeIndexException e) {
 					// Biome data for the world could not be obtained.
 					// Biome data included an unknown biome code.
 					// TODO log
@@ -428,7 +428,7 @@ public class BiomeSearcher implements Runnable {
 			System.out.print("");
 		}
 		
-		Main.stop();
+		GUI.stop();
 
 	}
 
