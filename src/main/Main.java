@@ -21,6 +21,12 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_WIDTH = (BACK_FRAME_WIDTH - CONSOLE_WIDTH) - 18;
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
+	public static boolean DEV_MODE = false;
+	/*
+	 Dev mode currently gives access to:
+	 	- Structures
+	 */
+	
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {
 		Version.registerSupportedVersions();
 		new GUI().startSeedSearcher();

@@ -289,29 +289,32 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 		
-		boolean hasStructures = false;
-		if (GUI.findStructures.isSelected()) {
-			Util.console("Creating Structures from list...");
-			structures = GUI.manageCheckedCheckboxesFindStructures();
-			
-			List<WorldIcon> foundStructures = new ArrayList<WorldIcon>();
-			for (Type type : structures) {
-				if (type.equals(Type.OCEAN_MONUMENT)) {
-					foundStructures.addAll(
-							StructureSearcher.findOceanMounments(
-									world,
-									searchCenterX - this.mSearchQuadrantWidth,
-									searchCenterY - this.mSearchQuadrantHeight));
+		if (Main.DEV_MODE) {
+			@SuppressWarnings("unused")
+			boolean hasStructures = false;
+			if (GUI.findStructures.isSelected()) {
+				Util.console("Creating Structures from list...");
+				structures = GUI.manageCheckedCheckboxesFindStructures();
+				
+				List<WorldIcon> foundStructures = new ArrayList<WorldIcon>();
+				for (Type type : structures) {
+					if (type.equals(Type.OCEAN_MONUMENT)) {
+						foundStructures.addAll(
+								StructureSearcher.findOceanMounments(
+										world,
+										searchCenterX - this.mSearchQuadrantWidth,
+										searchCenterY - this.mSearchQuadrantHeight));
+					}
 				}
-			}
-			
-			
-			if (foundStructures.size() > 0) {
-				Util.console("found monument");
-				hasStructures = true;
-			} else {
-				Util.console("no monument :(");
-			}
+				
+				
+				if (foundStructures.size() > 0) {
+					Util.console("found monument");
+					hasStructures = true;
+				} else {
+					Util.console("no monument :(");
+				}
+			}	
 		}
 		
 		// Start with a set of all biomes to find.
@@ -400,7 +403,7 @@ public class BiomeSearcher implements Runnable {
 	void search() throws InterruptedException,IOException, FormatException, MinecraftInterfaceCreationException {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
-
+		
 		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
 			if (!GUI.paused) {
 				World world;
@@ -441,7 +444,7 @@ public class BiomeSearcher implements Runnable {
 		}
 		
 		GUI.stop();
-
+		Util.console("Finished Search!");
 	}
 
 	/**

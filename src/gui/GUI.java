@@ -55,10 +55,16 @@ public class GUI {
 	static Timer timer;
 	public static boolean running;
 	public static boolean paused;
-	private static long startTime;
+	private static long pausedTime;
+	@SuppressWarnings("unused")
+	private static long startTime; // TODO use this in the future to tell user when they started
+	private static long elapsedTime;
+	
 	static JButton btnClear;
 	static JButton btnStart;
 	static JButton btnPause;
+	static JCheckBox chkboxDevMode;
+	
 	public static JCheckBox excludeBiome;
 	public static JCheckBox findStructures;
 
@@ -117,17 +123,14 @@ public class GUI {
 
 	public void startSeedSearcher() throws IOException, FormatException, MinecraftInterfaceCreationException {
 		initTimer();
-		Util.console("Please select Biomes first!");
-		// Execute.
+		Util.console("Welcome to SeedTool!");
+		Util.console("Please select at least one biome before searching!");
 	}
 
 	private void initTimer() {
 		Action updateLabelAction = new AbstractAction() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 3920770968451095353L;
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateDisplay();
@@ -135,19 +138,15 @@ public class GUI {
 		};
 		timer = new Timer(DELAY, updateLabelAction);
 	}
-
+	
 	private static void updateDisplay() {
 		if (!paused) {
-			// String text = String.format("%02d:%02d:%02d:%02d",
-			// this.hours, this.minutes, this.seconds, this.hundredths);
-			// this.timeLabel.setText(text);
-
-			timeElapsed.setText("Time Elapsed: " + Util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - startTime));
+			timeElapsed.setText("Time Elapsed: " + Util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
 		}
 	}
-
+	
 	private static void toggleRunning() throws InterruptedException, IOException, FormatException,
-			MinecraftInterfaceCreationException, UnknownBiomeIndexException {
+				MinecraftInterfaceCreationException, UnknownBiomeIndexException {
 		allowThreadToSearch = true;
 		if (running) {
 			System.out.println("Shutting Down...");
@@ -164,40 +163,49 @@ public class GUI {
 	}
 
 	private static void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		t = new Thread(createNewThread());
-		startTime = System.currentTimeMillis();
-		running = true;
-		t.start();
-		timer.restart();
 		btnStart.setText("Stop");
+		widthSearch.setEditable(false);
+		heightSearch.setEditable(false);
+		maxSeeds.setEditable(false);
+		startTime = System.currentTimeMillis();
+		elapsedTime = System.currentTimeMillis();
+		running = true;
+		timer.restart();
 		BiomeSearcher.totalRejectedSeedCount = 0;
-
+		t = new Thread(createNewThread());
+		t.start();
 	}
 
 	public static void stop() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException {
+		widthSearch.setEditable(true);
+		heightSearch.setEditable(true);
+		maxSeeds.setEditable(true);
 		btnStart.setText("Start");
 		btnPause.setText("Pause");
 		running = false;
 		timer.stop();
-		if (t != null) {
-			t.interrupt();
-			t = new Thread(createNewThread());
-		}
+		if (t != null) t.interrupt();
 	}
-
+	
 	private static void togglePause() {
-		paused = !paused;
-		String text = (paused) ? "Click To Unpause" : "Click to Pause";
-		 
-		if(paused) {
-			timer.stop();
+		if (!running) {
+			Util.console("Cannot pause when you aren't running!");
 		} else {
-			timer.start();
-			
-			//startTime = timeAtPause;
+			paused = !paused;
+			String text = (paused) ? "Click To Unpause" : "Click to Pause";
+			 
+			if (paused) {
+				pausedTime = System.currentTimeMillis();
+				timer.stop();
+			} else {
+				elapsedTime += System.currentTimeMillis() - pausedTime;
+				timer.start();
+				
+				//startTime = timeAtPause;
+			}
+			btnPause.setText(text);
+			updateDisplay();	
 		}
-		btnPause.setText(text);
-		updateDisplay();
 	}
 
 	private static void reset() throws InterruptedException, IOException, FormatException,
@@ -209,6 +217,8 @@ public class GUI {
 		Util.consoleWipe();
 		timeElapsed.setText("Time Elapsed: 00:00:00");
 		startTime = System.currentTimeMillis();
+		pausedTime = 0;
+		elapsedTime = System.currentTimeMillis();
 		seedCount.setText("Rejected Seed Count: 0");
 		totalSeedCount.setText("Total Rejected Seed Count: 0");
 		BiomeSearcher.totalRejectedSeedCount = 0;
@@ -219,7 +229,20 @@ public class GUI {
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == btnStart) {
+			if (Main.DEV_MODE) {
+				if(e.getSource() == findStructures) {
+					if (findStructures.isSelected()) {
+						tabbedPane.setEnabledAt(3, true);
+					} else {
+						tabbedPane.setEnabledAt(3, false);
+					}
+				}
+			}
+			
+			if (e.getSource() == chkboxDevMode) {
+				Main.DEV_MODE = !Main.DEV_MODE;
+				initialize();
+			} else if (e.getSource() == btnStart) {
 				try {
 					toggleRunning();
 				} catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
@@ -241,12 +264,13 @@ public class GUI {
 				} else {
 					tabbedPane.setEnabledAt(2, false);
 				}
-			} else if(e.getSource() == findStructures) {
-				if (findStructures.isSelected()) {
-					tabbedPane.setEnabledAt(3, true);
-				} else {
-					tabbedPane.setEnabledAt(3, false);
-				}
+			} else if (e.getSource() == versionBox) {
+				JComboBox<String> combo = versionBox;
+				String selected = (String) combo.getSelectedItem();
+				minecraftVersion = selected;
+				System.out.println("Version: "+minecraftVersion+":"+versionBox.getSelectedIndex());
+				versionBox.setSelectedIndex(versionBox.getSelectedIndex());
+				initialize();
 			}
 		}
 	}
@@ -255,20 +279,7 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
-		versionBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ev) {
-				if (ev.getSource() == versionBox) {
-					JComboBox<String> combo = versionBox;
-					String selected = (String) combo.getSelectedItem();
-					minecraftVersion = selected;
-					System.out.println("Version: "+minecraftVersion+":"+versionBox.getSelectedIndex());
-					versionBox.setSelectedIndex(versionBox.getSelectedIndex());
-					initialize();
-				}
-			}
-		});
-		
+		versionBox.addActionListener(listener);
 		initialize();
 	}
 
@@ -310,17 +321,17 @@ public class GUI {
 		tabbedPane.addTab("Data", null, panel, null);
 		panel.setLayout(null);
 		
-		seedCount = new JLabel("Rejected Seed Count: " + 0);
-		seedCount.setBounds(10, 11, 212, 14);
+		seedCount = new JLabel("Current Rejected Seed Count: " + 0);
+		seedCount.setBounds(10, 10, 250, 15);
 		panel.add(seedCount);
 		
-		timeElapsed = new JLabel("Time Elapsed: 00:00:00");
-		timeElapsed.setBounds(10, 331, 212, 14);
-		panel.add(timeElapsed);
-		
 		totalSeedCount = new JLabel("Total Rejected Seed Count: 0");
-		totalSeedCount.setBounds(10, 36, 212, 14);
+		totalSeedCount.setBounds(10, 30, 250, 15);
 		panel.add(totalSeedCount);
+		
+		timeElapsed = new JLabel("Time Elapsed: 00:00:00");
+		timeElapsed.setBounds(10, 325, 212, 14);
+		panel.add(timeElapsed);
 		
 		btnStart = new JButton("Start");
 		btnStart.addActionListener(listener);
@@ -337,35 +348,54 @@ public class GUI {
 		btnClear.setBounds(10, 420, 150, 25);
 		panel.add(btnClear);
 		
+		JLabel lblDevMode = new JLabel("Dev Mode?");
+		lblDevMode.setBounds(10, 290, 75, 20);
+		panel.add(lblDevMode);
+		
+		chkboxDevMode = new JCheckBox("");
+		chkboxDevMode.addActionListener(listener);
+		chkboxDevMode.setBounds(85, 290, 20, 20);
+		if (Main.DEV_MODE) {
+			chkboxDevMode.setText("True");
+			chkboxDevMode.setSelected(true);
+			Util.console("\n\nWARNING: dev features may be broken, or not work at all! Use at your own risk!\n\n");
+		} else {
+			chkboxDevMode.setText("False");
+			chkboxDevMode.setSelected(false);
+		}
+		panel.add(chkboxDevMode);
+		
 		Container cp = new Container();
 		JLabel versionLabel = new JLabel("Minecraft Version:");
 		cp.setLayout(new FlowLayout());
 		cp.add(versionLabel);
 		cp.add(versionBox);
-		cp.setBounds(10, 250, 140, 100);
+		cp.setBounds(10, 225, 100, 100);
 		panel.add(cp);
 		
 		JLabel lblExcludeBiomes = new JLabel("Exclude biomes?");
-		lblExcludeBiomes.setBounds(175, 275, 125, 20);
+		lblExcludeBiomes.setBounds(175, 250, 125, 20);
 		panel.add(lblExcludeBiomes);
 		
 		excludeBiome = new JCheckBox();
-		excludeBiome.setBounds(300, 275, 20, 20);
+		excludeBiome.setBounds(300, 250, 20, 20);
 		excludeBiome.addActionListener(listener);
 		panel.add(excludeBiome);
 		
 		JLabel lblFindStructures = new JLabel("Find structures?");
-		lblFindStructures.setBounds(175, 300, 125, 20);
+		lblFindStructures.setBounds(175, 275, 125, 20);
 		panel.add(lblFindStructures);
 		
-		JLabel findStructuresTxt = new JLabel("Coming Soon");
-		findStructuresTxt.setBounds(300, 300, 125, 20);
-		panel.add(findStructuresTxt);
-		
-//		findStructures = new JCheckBox();
-//		findStructures.setBounds(300, 300, 20, 20);
-//		findStructures.addActionListener(listener);
-//		panel.add(findStructures);
+		if (Main.DEV_MODE) {
+			findStructures = new JCheckBox();
+			findStructures.setBounds(300, 275, 20, 20);
+			findStructures.addActionListener(listener);
+			panel.add(findStructures);
+		} else {
+			JLabel findStructuresTxt = new JLabel("Coming Soon");
+			findStructuresTxt.setBounds(300, 275, 125, 20);
+			panel.add(findStructuresTxt);	
+		}
 		
 		JLabel lblSearchWidth = new JLabel("Search Width (x):");
 		lblSearchWidth.setBounds(175, 350, 200, 20);
@@ -1036,64 +1066,68 @@ public class GUI {
 			excludeCB.add(exb_oce_9, "4, 58");	
 		}
 		
-		// Panel 2: Exclusion
+		// Panel 3: Structures
 		
-		JPanel panel_3 = new JPanel();
-	//	tabbedPane.addTab("Structures", null, panel_3, null);
-		panel_3.setLayout(null);
-	//	tabbedPane.setEnabledAt(3, false);
-		JLabel lblStructuresSelectionTxt = new JLabel("Select Structures");
-		Util.setFontSize(lblStructuresSelectionTxt, 24);
-		lblStructuresSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
-		lblStructuresSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(lblStructuresSelectionTxt);
+		if (Main.DEV_MODE) {
+			JPanel panel_3 = new JPanel();
+			tabbedPane.addTab("Structures", null, panel_3, null);
+			panel_3.setLayout(null);
+			tabbedPane.setEnabledAt(3, false);
+			JLabel lblStructuresSelectionTxt = new JLabel("Select Structures");
+			Util.setFontSize(lblStructuresSelectionTxt, 24);
+			lblStructuresSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
+			lblStructuresSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			panel_3.add(lblStructuresSelectionTxt);
+			
+			JScrollPane lblStructuresSelectionScroll = new JScrollPane();
+			lblStructuresSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			lblStructuresSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
+			lblStructuresSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
+			panel_3.add(lblStructuresSelectionScroll);
+			
+			structures = new JPanel();
+			lblStructuresSelectionScroll.setViewportView(structures);
+			structures.setLayout(
+					new FormLayout(
+							new ColumnSpec[] {
+									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 1
+									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 2
+									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 3
+									},
+							new RowSpec[] {
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 2
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 4
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 6
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 8
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 10
+									FormSpecs.RELATED_GAP_ROWSPEC,}));
+			
+			/*
+			 FORMAT:
+			 
+			JCheckBox exb__ = new JCheckBox("");
+			excludeCB.add(exb__, "2, ");
+			
+			JCheckBox exb__ = new JCheckBox("");
+			excludeCB.add(exb__, "4, ");
+			
+			JCheckBox exb__ = new JCheckBox("");
+			excludeCB.add(exb__, "6, ");
+			 */
+			
+			JLabel ex_oceanFeaturesTxt = new JLabel("Ocean Features");
+			ex_oceanFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			Util.setFontSize(ex_oceanFeaturesTxt, 18);
+			Util.Underline(ex_oceanFeaturesTxt);
+			structures.add(ex_oceanFeaturesTxt, "4, 2");
+			
+			JCheckBox st_ocean = new JCheckBox("Ocean Monument");
+			structures.add(st_ocean, "2, 4");
+		}
 		
-		JScrollPane lblStructuresSelectionScroll = new JScrollPane();
-		lblStructuresSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		lblStructuresSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
-		lblStructuresSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
-		panel_3.add(lblStructuresSelectionScroll);
-		
-		structures = new JPanel();
-		lblStructuresSelectionScroll.setViewportView(structures);
-		structures.setLayout(
-				new FormLayout(
-						new ColumnSpec[] {
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 1
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 2
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 3
-								},
-						new RowSpec[] {
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 2
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 4
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 6
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 8
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 10
-								FormSpecs.RELATED_GAP_ROWSPEC,}));
-		
-		/*
-		 FORMAT:
-		 
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "2, ");
-		
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "4, ");
-		
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "6, ");
-		 */
-		
-		JLabel ex_oceanFeaturesTxt = new JLabel("Ocean Features");
-		ex_oceanFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_oceanFeaturesTxt, 18);
-		Util.Underline(ex_oceanFeaturesTxt);
-		structures.add(ex_oceanFeaturesTxt, "4, 2");
-		
-		JCheckBox st_ocean = new JCheckBox("Ocean Monument");
-		structures.add(st_ocean, "2, 4");
 	}
-
+	
+	
 	/**
 	 * Some Biomes come back as null. No idea. The Names match each other so it
 	 * should work (Apparently it works like 1 in 10 times...)
