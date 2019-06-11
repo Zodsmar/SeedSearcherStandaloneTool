@@ -2,8 +2,10 @@ package main;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -24,10 +26,12 @@ import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
+import amidst.mojangapi.world.icon.WorldIcon;
 import amidst.mojangapi.world.oracle.HeuristicWorldSpawnOracle;
 import amidst.mojangapi.world.oracle.WorldSpawnOracle;
 import amidst.parsing.FormatException;
 import gui.GUI;
+import main.StructureSearcher.Type;
 
 /**
  * A service that searches for worlds that match specific criteria.
@@ -84,15 +88,9 @@ public class BiomeSearcher implements Runnable {
 	 */
 	private int mMaximumMatchingWorldsCount;
 
-	public BiomeSearcher(
-			String minecraftVersion,
-			SearchCenterKind searchCenterKind,
-			int searchQuadrantWidth,
-			int searchQuadrantHeight,
-			int maximumMatchingWorldsCount)
-			throws IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
+	public BiomeSearcher( String minecraftVersion, SearchCenterKind searchCenterKind,
+			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
+			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 		final MinecraftInstallation minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
 		LauncherProfile launcherProfile = null;
@@ -261,15 +259,11 @@ public class BiomeSearcher implements Runnable {
 
 	Biome[] biomes = {};
 	Biome[] rejectedBiomes = {};
+	StructureSearcher.Type[] structures = {};
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
-	boolean accept(World world)
-			throws MinecraftInterfaceException,
-			UnknownBiomeIndexException,
-			InterruptedException,
-			IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
+	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
+			IOException, FormatException, MinecraftInterfaceCreationException {
 		CoordinatesInWorld searchCenter = getSearchCenter(world);
 		if (searchCenter == null) {
 			// The world spawn could not be determined.
@@ -283,18 +277,42 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		System.out.println(biomeCodes.length);
+		
+		System.out.println(biomeCodesCount);
 		boolean RejectedBiomes = false;
 		if (biomes.length == 0) {
-			Util.console("Creating Biomes from list");
+			Util.console("Creating Biomes from list...");
 			biomes = GUI.manageCheckedCheckboxes();
-			if(rejectedBiomes.length == 0 && GUI.excludeBiome.isSelected()) {
+			if (rejectedBiomes.length == 0 && GUI.excludeBiome.isSelected()) {
 				rejectedBiomes = GUI.manageCheckedCheckboxesRejected();
 				RejectedBiomes = true;
 			}
-
 		}
-
+		
+		boolean hasStructures = false;
+		if (GUI.findStructures.isSelected()) {
+			Util.console("Creating Structures from list...");
+			structures = GUI.manageCheckedCheckboxesFindStructures();
+			
+			List<WorldIcon> foundStructures = new ArrayList<WorldIcon>();
+			for (Type type : structures) {
+				if (type.equals(Type.OCEAN_MONUMENT)) {
+					foundStructures.addAll(
+							StructureSearcher.findOceanMounments(
+									world,
+									searchCenterX - this.mSearchQuadrantWidth,
+									searchCenterY - this.mSearchQuadrantHeight));
+				}
+			}
+			
+			
+			if (foundStructures.size() > 0) {
+				Util.console("found monument");
+				hasStructures = true;
+			} else {
+				Util.console("no monument :(");
+			}
+		}
 		
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
@@ -309,10 +327,12 @@ public class BiomeSearcher implements Runnable {
 			if(undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				//Works except for ocean. No idea why
 			}
-
+			
 		}
-
-		if(undiscoveredBiomes.isEmpty() && (undiscoveredRejectedBiomes.size() != 0 || RejectedBiomes == false)) {
+		
+		if (undiscoveredBiomes.isEmpty()
+				&& (undiscoveredRejectedBiomes.size() != 0 || !RejectedBiomes)) {
+	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
 			return true;
 		}
 			return false;
@@ -329,14 +349,13 @@ public class BiomeSearcher implements Runnable {
 	
 
 	static void updateRejectedWorldsProgress(int rejectedWorldsCount) {
-
-		GUI.seedCount.setText("Rejected Seed Count: " + rejectedWorldsCount);
+		GUI.seedCount.setText("Current Rejected Seed Count: " + rejectedWorldsCount);
 		GUI.totalSeedCount.setText("Total Rejected Seed Count: " + totalRejectedSeedCount);
-		if (rejectedWorldsCount % (1 << 4) == 0) {
+		if (rejectedWorldsCount % (1 << 6) == 0) {
 			// Print a dot, in order to give a sense of progress.
 			// Each dot represents 2^4 worlds that have been rejected.
 			Util.consoleNoLine(".");
-			if (rejectedWorldsCount % (1 << 10) == 0) {
+			if (rejectedWorldsCount % (1 << 16) == 0) {
 				// Print a newline, in order to complete a line of dots (so that
 				// the line doesn't get too long).
 				// Each complete line of dots represents 2^10 (~1000) worlds
@@ -378,22 +397,15 @@ public class BiomeSearcher implements Runnable {
 	 * @throws InterruptedException
 	 */
 	public static int totalRejectedSeedCount = 0;
-	void search()
-			throws InterruptedException,
-			IOException,
-			FormatException,
-			MinecraftInterfaceCreationException {
+	void search() throws InterruptedException,IOException, FormatException, MinecraftInterfaceCreationException {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
 
 		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
-			if (GUI.paused == false) {
+			if (!GUI.paused) {
 				World world;
-				
 				try {
-					
 					world = createWorld();
-					
 				} catch (MinecraftInterfaceException e) {
 					// TODO log
 					rejectedWorldsCount++;

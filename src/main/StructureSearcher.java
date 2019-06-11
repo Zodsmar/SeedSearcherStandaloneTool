@@ -31,7 +31,7 @@ public class StructureSearcher {
 	}
 	
 	
-	Type[] simpleTypes = new Type[]{Type.MINE, Type.VILLAGE, Type.STRONGHOLD, Type.TEMPLE, Type.MANSION, Type
+	static Type[] types = new Type[]{Type.MINE, Type.VILLAGE, Type.STRONGHOLD, Type.TEMPLE, Type.MANSION, Type
 			.OCEAN_FEATURE, Type.OCEAN_MONUMENT};
 	List<List<WorldIcon>> simpleLists = Arrays.asList(mines, villages, strongholds, temples, mansions, oceanFeatures,
 			oceanMonuments);
@@ -44,7 +44,7 @@ public class StructureSearcher {
 		}
 		
 	}
-
+	
 	@SuppressWarnings("unused")
 	private void findMines() {
 		mines = world.getMineshaftProducer().getAt(origin, null);
@@ -55,11 +55,10 @@ public class StructureSearcher {
 		villages = world.getVillageProducer().getAt(origin, null);
 	}
 
-	@SuppressWarnings("unused")
-	private void findOceanMounments() {
-		oceanMonuments = world.getOceanMonumentProducer().getAt(origin, null);
+	public static List<WorldIcon> findOceanMounments(World world, long nwCornerX, long nwCornerY) {
+		return world.getOceanMonumentProducer().getAt(CoordinatesInWorld.from(nwCornerX, nwCornerY), null);
 	}
-
+	
 	@SuppressWarnings("unused")
 	private void findOceanFeatures() {
 		oceanFeatures = world.getOceanFeaturesProducer().getAt(origin, null);
@@ -78,6 +77,11 @@ public class StructureSearcher {
 	@SuppressWarnings("unused")
 	private void findMansions() {
 		mansions = world.getWoodlandMansionProducer().getAt(origin, null);
+	}
+
+	@SuppressWarnings("null")
+	public static WorldIcon getByName(String string) {
+		return new WorldIcon(null, null, null, null, (Boolean) null);
 	}
 	
 }
