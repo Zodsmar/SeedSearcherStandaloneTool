@@ -329,8 +329,8 @@ public class BiomeSearcher implements Runnable {
 			// In theory this should return false if the world contains a specific biome
 			if(undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				//Works except for ocean. No idea why
+				return false; // Adding this makes excluded biomes not be resulted anymore. DO NOT REMOVE UNLESS YOU HAVE A FIX FOR THIS
 			}
-			
 		}
 		
 		if (undiscoveredBiomes.isEmpty()
@@ -457,12 +457,10 @@ public class BiomeSearcher implements Runnable {
 		try {
 			search();
 		} catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
+	
 	static {
 		// By default, AMIDST logs to the standard output stream and to an
 		// in-memory buffer.
