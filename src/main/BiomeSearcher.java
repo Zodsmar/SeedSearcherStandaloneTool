@@ -278,7 +278,7 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
 		
-		System.out.println(biomeCodesCount);
+		//System.out.println(biomeCodesCount);
 		boolean RejectedBiomes = false;
 		if (biomes.length == 0) {
 			Util.console("Creating Biomes from list...");
