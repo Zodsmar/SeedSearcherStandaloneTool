@@ -9,7 +9,7 @@ import gui.GUI;
 
 public class Main {
 	
-	public static final int BACK_FRAME_WIDTH = 800;
+	public static final int BACK_FRAME_WIDTH = 924;
 	public static final int BACK_FRAME_HEIGHT = 515;
 	
 	public static final int CONSOLE_WIDTH = 240;
@@ -21,10 +21,12 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_WIDTH = (BACK_FRAME_WIDTH - CONSOLE_WIDTH) - 18;
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
+	public static final String VERSION = "v0.3.0-alpha.1";
 	public static boolean DEV_MODE = false;
 	/*
 	 Dev mode currently gives access to:
 	 	- Structures
+	 	- New box selection for included/excluded biomes
 	 */
 	
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {

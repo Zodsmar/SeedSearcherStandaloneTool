@@ -2,10 +2,8 @@ package main;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -26,12 +24,8 @@ import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
-import amidst.mojangapi.world.icon.WorldIcon;
-import amidst.mojangapi.world.oracle.HeuristicWorldSpawnOracle;
-import amidst.mojangapi.world.oracle.WorldSpawnOracle;
 import amidst.parsing.FormatException;
 import gui.GUI;
-import main.StructureSearcher.Type;
 
 /**
  * A service that searches for worlds that match specific criteria.
@@ -43,29 +37,6 @@ public class BiomeSearcher implements Runnable {
 	private WorldBuilder mWorldBuilder;
 
 	private MinecraftInterface mMinecraftInterface;
-
-	public static enum SearchCenterKind {
-		// World origin.
-		// Always (0, 0).
-		ORIGIN,
-
-		// Northwest corner of the 1:1 map that contains the world origin.
-		// Always (-64, -64).
-		MAP_ORIGIN,
-
-		// World spawn.
-		SPAWN,
-
-		// Center point of the spawn chunks.
-		// Always the corner of four chunks, the middle side of two chunks, or
-		// the center of a chunk.
-		SPAWN_CHUNKS;
-	}
-
-	/**
-	 * The specification of the center of the search area.
-	 */
-	public SearchCenterKind mSearchCenterKind;
 
 	/**
 	 * The width of each quadrant of the search area.
@@ -88,7 +59,7 @@ public class BiomeSearcher implements Runnable {
 	 */
 	private int mMaximumMatchingWorldsCount;
 
-	public BiomeSearcher( String minecraftVersion, SearchCenterKind searchCenterKind,
+	public BiomeSearcher(String minecraftVersion,
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
@@ -101,7 +72,6 @@ public class BiomeSearcher implements Runnable {
 			throw e;
 		}
 		this.mMinecraftInterface = MinecraftInterfaces.fromLocalProfile(launcherProfile);
-		this.mSearchCenterKind = searchCenterKind;
 		this.mSearchQuadrantWidth = searchQuadrantWidth;
 		this.mSearchQuadrantHeight = searchQuadrantHeight;
 		this.mMaximumMatchingWorldsCount = maximumMatchingWorldsCount;
@@ -112,125 +82,11 @@ public class BiomeSearcher implements Runnable {
 	 * options.
 	 */
 	World createWorld() throws MinecraftInterfaceException {
-		// MainGUI.timeElapsed.setText("Time Elapsed: " +
-		// Util.getElapsedTimeHoursMinutesFromMilliseconds(elapsedTime =
-		// System.currentTimeMillis() - startTime));
-		Consumer<World> onDispose = world -> {
-		};
-		WorldOptions worldOptions = new WorldOptions(WorldSeed.random(), WorldType.DEFAULT);
+		Consumer<World> onDispose = world -> {};
+		WorldOptions worldOptions = new WorldOptions(WorldSeed.random(), WorldType.DEFAULT); // TODO allow players to choose?
 		return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 	}
-
-	static final CoordinatesInWorld CIW_ORIGIN = CoordinatesInWorld.from(0L, 0L);
-	static final CoordinatesInWorld CIW_MAP_ORIGIN = CoordinatesInWorld.from(-64L, -64L);
-
-	/**
-	 * Gets the coordinates of the world spawn.
-	 * <p>
-	 * The determination of the world spawn is a best effort. Sometimes, the
-	 * world spawn cannot be determined, or the world spawn is determined
-	 * incorrectly. Consequently, the world spawn should be verified in game.
-	 *
-	 * @return {@code null}, if the coordinates of the world spawn could not be
-	 *         determined
-	 */
-	static CoordinatesInWorld getSpawn(World world) {
-		// This oracle should be equivalent to the (inaccessible) oracle wrapped
-		// by world.getSpawnProducer().
-		WorldSpawnOracle worldSpawnOracle = new HeuristicWorldSpawnOracle(
-				world.getWorldSeed().getLong(),
-				world.getBiomeDataOracle(),
-				world.getVersionFeatures().getValidBiomesForStructure_Spawn());
-		return worldSpawnOracle.get();
-	}
-
-	/**
-	 * Rounds a coordinate of the world spawn toward the center of the spawn
-	 * chunks.
-	 */
-	static long getSpawnChunksCenterCoordinate(long spawnCoordinate) {
-		int spawnCoordinateRelativeToChunk = (int) (spawnCoordinate & 0xFL);
-		switch (spawnCoordinateRelativeToChunk) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7: {
-			// Round down toward the nw corner.
-			return (spawnCoordinate & ~0xCL);
-		}
-		case 8: {
-			// The coordinate of the world spawn is in the exact middle of a
-			// chunk.
-			return spawnCoordinate;
-		}
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15: {
-			// Round up toward the se corner.
-			return (spawnCoordinate & ~0xCL) + 16;
-		}
-		default: {
-			throw new AssertionError(spawnCoordinateRelativeToChunk);
-		}
-		}
-	}
-
-	/**
-	 * Gets the coordinates of the center point of the spawn chunks.
-	 * <p>
-	 * The determination of the world spawn is a best effort. Sometimes, the
-	 * world spawn cannot be determined, or the world spawn is determined
-	 * incorrectly. Consequently, the world spawn should be verified in game.
-	 *
-	 * @return {@code null}, if the coordinates of the world spawn could not be
-	 *         determined
-	 */
-	static CoordinatesInWorld getSpawnChunksCenter(World world) {
-		CoordinatesInWorld spawn = getSpawn(world);
-		if (spawn == null) {
-			// The world spawn could not be determined.
-			return null;
-		}
-		long spawnX = spawn.getX();
-		long spawnChunksCenterX = getSpawnChunksCenterCoordinate(spawnX);
-		long spawnY = spawn.getY();
-		long spawnChunksCenterY = getSpawnChunksCenterCoordinate(spawnY);
-		return CoordinatesInWorld.from(spawnChunksCenterX, spawnChunksCenterY);
-	}
-	/**
-	 * Determines the coordinates for the center of the search area.
-	 *
-	 * @return {@code null}, if the coordinates of the world spawn could not be
-	 *         determined
-	 */
-	CoordinatesInWorld getSearchCenter(World world) {
-		switch (this.mSearchCenterKind) {
-		case ORIGIN: {
-			return CIW_ORIGIN;
-		}
-		case MAP_ORIGIN: {
-			return CIW_MAP_ORIGIN;
-		}
-		case SPAWN: {
-			return getSpawn(world);
-		}
-		case SPAWN_CHUNKS: {
-			return getSpawnChunksCenter(world);
-		}
-		default: {
-			throw new AssertionError(this.mSearchCenterKind);
-		}
-		}
-	}
-
+	
 	int[] getBiomeCodes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException {
 		return this.mMinecraftInterface.getBiomeData(
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerX)),
@@ -240,14 +96,7 @@ public class BiomeSearcher implements Runnable {
 				true // useQuarterResolution
 		);
 	}
-
-	/*
-	 * OLD SEARCH static final Biome[] SEARCH_BIOMES = { Biome.icePlainsSpikes,
-	 * Biome.mushroomIsland, Biome.megaTaiga, Biome.mesa, Biome.savanna,
-	 * Biome.warmOcean, Biome.extremeHills, Biome.desert, Biome.jungle,
-	 * Biome.roofedForest, Biome.birchForest };
-	 */
-
+	
 	/**
 	 * Determines whether to accept a world.
 	 * 
@@ -257,14 +106,15 @@ public class BiomeSearcher implements Runnable {
 	 * @throws InterruptedException
 	 */
 
-	Biome[] biomes = {};
-	Biome[] rejectedBiomes = {};
+	Biome[] biomes = {}; boolean searchBiomes = true;
+	Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
 	StructureSearcher.Type[] structures = {};
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
 	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
 			IOException, FormatException, MinecraftInterfaceCreationException {
-		CoordinatesInWorld searchCenter = getSearchCenter(world);
+	//	CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
+		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 		if (searchCenter == null) {
 			// The world spawn could not be determined.
 			return false;
@@ -277,45 +127,55 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		
 		System.out.println(biomeCodesCount);
-		boolean RejectedBiomes = false;
-		if (biomes.length == 0) {
-			Util.console("Creating Biomes from list...");
+		
+		if (biomes.length == 0 && rejectedBiomes.length == 0) {
+			Util.console("Creating Selected Biomes from list...");
+			Util.console("Creating Rejected Biomes from list...");	
+		}
+		
+		if (biomes.length == 0 && searchBiomes) {
 			biomes = GUI.manageCheckedCheckboxes();
-			if (rejectedBiomes.length == 0 && GUI.excludeBiome.isSelected()) {
-				rejectedBiomes = GUI.manageCheckedCheckboxesRejected();
-				RejectedBiomes = true;
+			if (biomes.length == 0 && searchBiomes) {
+				searchBiomes = false;
+				System.out.println(searchBiomes);
 			}
 		}
 		
+		if (rejectedBiomes.length == 0 && searchRejectedBiomes) {
+			rejectedBiomes = GUI.manageCheckedCheckboxesRejected();
+			if (rejectedBiomes.length == 0 && searchRejectedBiomes) {
+				searchRejectedBiomes = false;
+				System.out.println(searchRejectedBiomes);
+			}
+		}
+		
+		if (!searchBiomes && !searchRejectedBiomes) {
+			Util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
+			GUI.stop();
+			return false;
+		}
+		
+		boolean hasRequiredStructures = false;
 		if (Main.DEV_MODE) {
-			@SuppressWarnings("unused")
-			boolean hasStructures = false;
-			if (GUI.findStructures.isSelected()) {
+			if (structures.length == 0 && GUI.findStructures.isSelected()) {
 				Util.console("Creating Structures from list...");
 				structures = GUI.manageCheckedCheckboxesFindStructures();
-				
-				List<WorldIcon> foundStructures = new ArrayList<WorldIcon>();
-				for (Type type : structures) {
-					if (type.equals(Type.OCEAN_MONUMENT)) {
-						foundStructures.addAll(
-								StructureSearcher.findOceanMounments(
-										world,
-										searchCenterX - this.mSearchQuadrantWidth,
-										searchCenterY - this.mSearchQuadrantHeight));
-					}
-				}
-				
-				
-				if (foundStructures.size() > 0) {
-					Util.console("found monument");
-					hasStructures = true;
-				} else {
-					Util.console("no monument :(");
-				}
-			}	
+			}
 		}
+		
+		if (structures.length > 0) {
+			hasRequiredStructures = StructureSearcher.hasStructures(
+					structures,
+					world,
+					searchCenterX,
+					searchCenterY
+					);
+			
+			// Could meet structure requirements, move to next seed.
+			if (!hasRequiredStructures) return false;	
+		}
+		
 		
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
@@ -333,13 +193,13 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 		
-		if (undiscoveredBiomes.isEmpty()
-				&& (undiscoveredRejectedBiomes.size() != 0 || !RejectedBiomes)) {
+		if (undiscoveredBiomes.isEmpty()) {
+			System.out.println("Valid Seed: "+world.getWorldSeed().getLong());
 	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
 			return true;
 		}
-			return false;
-
+		
+		return false;
 	}
 
 	/**
@@ -354,18 +214,6 @@ public class BiomeSearcher implements Runnable {
 	static void updateRejectedWorldsProgress(int rejectedWorldsCount) {
 		GUI.seedCount.setText("Current Rejected Seed Count: " + rejectedWorldsCount);
 		GUI.totalSeedCount.setText("Total Rejected Seed Count: " + totalRejectedSeedCount);
-		if (rejectedWorldsCount % (1 << 6) == 0) {
-			// Print a dot, in order to give a sense of progress.
-			// Each dot represents 2^4 worlds that have been rejected.
-			Util.consoleNoLine(".");
-			if (rejectedWorldsCount % (1 << 16) == 0) {
-				// Print a newline, in order to complete a line of dots (so that
-				// the line doesn't get too long).
-				// Each complete line of dots represents 2^10 (~1000) worlds
-				// that have been rejected.
-				Util.console("");
-			}
-		}
 	}
 
 	/**
@@ -443,8 +291,8 @@ public class BiomeSearcher implements Runnable {
 			System.out.print("");
 		}
 		
+//		Util.console("Finished Search!");
 		GUI.stop();
-		Util.console("Finished Search!");
 	}
 
 	/**
