@@ -36,7 +36,7 @@ import main.StructureSearcher.Type;
 /**
  * A service that searches for worlds that match specific criteria.
  *
- * @author scudobuio
+ * @author scudobuio, Zodsmar, YourCoalAlt
  */
 public class BiomeSearcher implements Runnable {
 
