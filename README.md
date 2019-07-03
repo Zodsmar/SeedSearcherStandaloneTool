@@ -18,3 +18,9 @@ scudobuio - for the initial search function
 fraffugooby - Updating dependencies
 
 YourCoalAlt - Updating to 1.14.3
+
+#### Contact
+
+Discord: Zodsmar#0877
+
+Email: zodsmar@gmail.com
