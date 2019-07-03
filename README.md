@@ -14,5 +14,7 @@ http://www.java2s.com/Code/Jar/j/jgoodies.htm
 
 #### User Credit
 scudobuio - for the initial search function
+
 fraffugooby - Updating dependencies
+
 YourCoalAlt - Updating to 1.14.3
