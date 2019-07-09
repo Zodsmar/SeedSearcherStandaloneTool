@@ -23,8 +23,10 @@ public class Main {
 	
 	public static boolean DEV_MODE = false;
 	/*
+		Quick test of git connection through VS Code
+
 	 Dev mode currently gives access to:
-	 	- Structures
+		 - Structures
 	 */
 	
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {
