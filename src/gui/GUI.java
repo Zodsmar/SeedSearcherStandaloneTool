@@ -65,11 +65,10 @@ public class GUI {
 	static JButton btnPause;
 	static JCheckBox chkboxDevMode;
 	
-	public static JCheckBox excludeBiome;
 	public static JCheckBox findStructures;
-
-	public static JPanel includeCB;
-	public static JPanel excludeCB;
+	
+	public static JPanel biomesPanel;
+	
 	public static JPanel structures;
 
 	public static String[] biomeSelected;
@@ -92,9 +91,9 @@ public class GUI {
 	private static int searchQuadrantWidth = 512;
 	private static int searchQuadrantHeight = 512;
 	private static int maximumMatchingWorldsCount = 10;
-	public static String minecraftVersion = "1.14.3";
+	public static String minecraftVersion = Version.V1_14_3;
 	String[] versions = {
-		/*1.14.x*/	Version.V1_14_3, Version.V1_14_2, Version.V1_14,
+		/*1.14.x*/	Version.V1_14_3, Version.V1_14,
 		/*1.13.x*/	Version.V1_13_2, Version.V1_13_1, Version.V1_13,
 		/*1.12.x*/	Version.V1_12_2, Version.V1_12,
 		/*1.11.x*/	Version.V1_11_2, Version.V1_11,
@@ -106,14 +105,11 @@ public class GUI {
 	
 	JComboBox<String> versionBox = new JComboBox<String>(versions);
 	
+	String[] include_exclude_txt = {"", "Include", "Exclude"};
 
 	static BiomeSearcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		BiomeSearcher.SearchCenterKind searchCenterKind = BiomeSearcher.SearchCenterKind.ORIGIN;
-
-
 		r = new BiomeSearcher(
 				minecraftVersion,
-				searchCenterKind,
 				Integer.parseInt(widthSearch.getText()),
 				Integer.parseInt(heightSearch.getText()),
 				Integer.parseInt(maxSeeds.getText()));
@@ -204,7 +200,7 @@ public class GUI {
 				//startTime = timeAtPause;
 			}
 			btnPause.setText(text);
-			updateDisplay();	
+			updateDisplay();
 		}
 	}
 
@@ -232,9 +228,9 @@ public class GUI {
 			if (Main.DEV_MODE) {
 				if(e.getSource() == findStructures) {
 					if (findStructures.isSelected()) {
-						tabbedPane.setEnabledAt(3, true);
+						tabbedPane.setEnabledAt(2, true);
 					} else {
-						tabbedPane.setEnabledAt(3, false);
+						tabbedPane.setEnabledAt(2, false);
 					}
 				}
 			}
@@ -257,12 +253,6 @@ public class GUI {
 				} catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
 						UnknownBiomeIndexException e1) {
 					e1.printStackTrace();
-				}
-			} else if(e.getSource() == excludeBiome) {
-				if (excludeBiome.isSelected()) {
-					tabbedPane.setEnabledAt(2, true);
-				} else {
-					tabbedPane.setEnabledAt(2, false);
 				}
 			} else if (e.getSource() == versionBox) {
 				JComboBox<String> combo = versionBox;
@@ -288,7 +278,7 @@ public class GUI {
 	 */
 	private void initialize() {
 		if (frmSeedTool != null) frmSeedTool.getContentPane().removeAll();
-		frmSeedTool.setTitle("Seed Tool");
+		frmSeedTool.setTitle("Seed Tool "+Main.VERSION);
 		frmSeedTool.setResizable(false);
 		frmSeedTool.setBounds(100, 100, Main.BACK_FRAME_WIDTH, Main.BACK_FRAME_HEIGHT);
 		frmSeedTool.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -365,36 +355,27 @@ public class GUI {
 		}
 		panel.add(chkboxDevMode);
 		
-		Container cp = new Container();
+		Container versionContainer = new Container();
 		JLabel versionLabel = new JLabel("Minecraft Version:");
-		cp.setLayout(new FlowLayout());
-		cp.add(versionLabel);
-		cp.add(versionBox);
-		cp.setBounds(10, 225, 100, 100);
-		panel.add(cp);
-		
-		JLabel lblExcludeBiomes = new JLabel("Exclude biomes?");
-		lblExcludeBiomes.setBounds(175, 250, 125, 20);
-		panel.add(lblExcludeBiomes);
-		
-		excludeBiome = new JCheckBox();
-		excludeBiome.setBounds(300, 250, 20, 20);
-		excludeBiome.addActionListener(listener);
-		panel.add(excludeBiome);
+		versionContainer.setLayout(new FlowLayout());
+		versionContainer.add(versionLabel);
+		versionContainer.add(versionBox);
+		versionContainer.setBounds(400, 380, 100, 100);
+		panel.add(versionContainer);
 		
 		JLabel lblFindStructures = new JLabel("Find structures?");
-		lblFindStructures.setBounds(175, 275, 125, 20);
+		lblFindStructures.setBounds(400, 350, 125, 20);
 		panel.add(lblFindStructures);
 		
 		if (Main.DEV_MODE) {
 			findStructures = new JCheckBox();
-			findStructures.setBounds(300, 275, 20, 20);
+			findStructures.setBounds(525, 350, 20, 20);
 			findStructures.addActionListener(listener);
 			panel.add(findStructures);
 		} else {
 			JLabel findStructuresTxt = new JLabel("Coming Soon");
-			findStructuresTxt.setBounds(300, 275, 125, 20);
-			panel.add(findStructuresTxt);	
+			findStructuresTxt.setBounds(525, 350, 125, 20);
+			panel.add(findStructuresTxt);
 		}
 		
 		JLabel lblSearchWidth = new JLabel("Search Width (x):");
@@ -427,32 +408,35 @@ public class GUI {
 		panel.add(maxSeeds);
 		maxSeeds.setColumns(10);
 		
-		// Panel 1: Inclusion
+		
+		
+		// Panel 1: Biomes
+		
 		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Inclusion", null, panel_1, null);
+		tabbedPane.addTab("Biomes", null, panel_1, null);
 		panel_1.setLayout(null);
 		
-		JLabel lblBiomeInclusionSelectionTxt = new JLabel("Biome Inclusion");
-		Util.setFontSize(lblBiomeInclusionSelectionTxt, 24);
-		lblBiomeInclusionSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
-		lblBiomeInclusionSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblBiomeInclusionSelectionTxt);
+		JLabel lblBiomeSelectionTxt = new JLabel("Biome Selection");
+		Util.setFontSize(lblBiomeSelectionTxt, 24);
+		lblBiomeSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
+		lblBiomeSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(lblBiomeSelectionTxt);
 		
-		JScrollPane lblBiomeInclusionSelectionScroll = new JScrollPane();
-		lblBiomeInclusionSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		lblBiomeInclusionSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
-		lblBiomeInclusionSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
-		panel_1.add(lblBiomeInclusionSelectionScroll);
+		JScrollPane lblBiomeSelectionScroll = new JScrollPane();
+		lblBiomeSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		lblBiomeSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
+		lblBiomeSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
+		panel_1.add(lblBiomeSelectionScroll);
 
-		includeCB = new JPanel();
-		lblBiomeInclusionSelectionScroll.setViewportView(includeCB);
-		includeCB.setLayout(
+		biomesPanel = new JPanel();
+		lblBiomeSelectionScroll.setViewportView(biomesPanel);
+		biomesPanel.setLayout(
 				new FormLayout(
 						new ColumnSpec[] {
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 1
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 2
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 3
-								},
+								FormSpecs.DEFAULT_COLSPEC, // Col 1
+								FormSpecs.DEFAULT_COLSPEC, // Col 2
+								FormSpecs.DEFAULT_COLSPEC, // Col 3
+								FormSpecs.RELATED_GAP_COLSPEC},
 						new RowSpec[] {
 								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 2
 								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 4
@@ -498,595 +482,494 @@ public class GUI {
 		includeCB.add(inb__, "6, ");
 		 */
 		
-		JLabel in_hotBiomesTxt = new JLabel("Hot Biomes");
-		in_hotBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(in_hotBiomesTxt, 18);
-		Util.Underline(in_hotBiomesTxt);
-		includeCB.add(in_hotBiomesTxt, "4, 2");
+		JLabel hotBiomesTxt = new JLabel("Hot Biomes");
+		hotBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
+		Util.setFontSize(hotBiomesTxt, 18);
+		Util.Underline(hotBiomesTxt);
+		biomesPanel.add(hotBiomesTxt, "2, 2");
 		
-		JCheckBox inb_des_1 = new JCheckBox("Desert");
-		includeCB.add(inb_des_1, "2, 4");
+		Container _2_4_container = new Container();
+		_2_4_container.add(new JLabel("Desert"));
+		_2_4_container.setLayout(new FlowLayout());
+		_2_4_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_4_container, "1, 4");
 		
-		JCheckBox inb_des_2 = new JCheckBox("Desert Hills");
-		includeCB.add(inb_des_2, "4, 4");
+		Container _4_4_container = new Container();
+		_4_4_container.add(new JLabel("Desert Hills"));
+		_4_4_container.setLayout(new FlowLayout());
+		_4_4_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_4_container, "2, 4");
 		
-		JCheckBox inb_des_3 = new JCheckBox("Desert M");
-		includeCB.add(inb_des_3, "6, 4");
+		Container _6_4_container = new Container();
+		_6_4_container.add(new JLabel("Desert M"));
+		_6_4_container.setLayout(new FlowLayout());
+		_6_4_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_4_container, "3, 4");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_sav_1 = new JCheckBox("Savanna");
-			includeCB.add(inb_sav_1, "2, 6");
+			Container _2_6_container = new Container();
+			_2_6_container.add(new JLabel("Savanna"));
+			_2_6_container.setLayout(new FlowLayout());
+			_2_6_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_6_container, "1, 6");
 			
-			JCheckBox inb_sav_2 = new JCheckBox("Savanna Plateau");
-			includeCB.add(inb_sav_2, "4, 6");
+			Container _4_6_container = new Container();
+			_4_6_container.add(new JLabel("Savanna Plateau"));
+			_4_6_container.setLayout(new FlowLayout());
+			_4_6_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_6_container, "2, 6");
 			
-			JCheckBox inb_sav_3 = new JCheckBox("Savanna M");
-			includeCB.add(inb_sav_3, "6, 6");
+			Container _6_6_container = new Container();
+			_6_6_container.add(new JLabel("Savanna M"));
+			_6_6_container.setLayout(new FlowLayout());
+			_6_6_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_6_container, "3, 6");
 			
-			JCheckBox inb_sav_4 = new JCheckBox("Savanna Plateau M");
-			includeCB.add(inb_sav_4, "2, 8");
-		
-			JCheckBox inb_mes_1 = new JCheckBox("Mesa");
-			includeCB.add(inb_mes_1, "4, 8");
+			Container _2_8_container = new Container();
+			_2_8_container.add(new JLabel("Savanna Plateau M"));
+			_2_8_container.setLayout(new FlowLayout());
+			_2_8_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_8_container, "1, 8");
 			
-			JCheckBox inb_mes_2 = new JCheckBox("Mesa Plateau F");
-			includeCB.add(inb_mes_2, "6, 8");
+			Container _4_8_container = new Container();
+			_4_8_container.add(new JLabel("Mesa"));
+			_4_8_container.setLayout(new FlowLayout());
+			_4_8_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_8_container, "2, 8");
 			
-			JCheckBox inb_mes_3 = new JCheckBox("Mesa Plateau");
-			includeCB.add(inb_mes_3, "2, 10");
+			Container _6_8_container = new Container();
+			_6_8_container.add(new JLabel("Mesa Plateau F"));
+			_6_8_container.setLayout(new FlowLayout());
+			_6_8_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_8_container, "3, 8");
 			
-			JCheckBox inb_mes_4 = new JCheckBox("Mesa (Bryce)");
-			includeCB.add(inb_mes_4, "4, 10");
+			Container _2_10_container = new Container();
+			_2_10_container.add(new JLabel("Mesa Plateau"));
+			_2_10_container.setLayout(new FlowLayout());
+			_2_10_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_10_container, "1, 10");
 			
-			JCheckBox inb_mes_5 = new JCheckBox("Mesa Plateau F M");
-			includeCB.add(inb_mes_5, "6, 10");
+			Container _4_10_container = new Container();
+			_4_10_container.add(new JLabel("Mesa (Bryce)"));
+			_4_10_container.setLayout(new FlowLayout());
+			_4_10_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_10_container, "2, 10");
 			
-			JCheckBox inb_mes_6= new JCheckBox("Mesa Plateau F M");
-			includeCB.add(inb_mes_6, "2, 12");	
+			Container _6_10_container = new Container();
+			_6_10_container.add(new JLabel("Mesa Plateau F M"));
+			_6_10_container.setLayout(new FlowLayout());
+			_6_10_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_10_container, "3, 10");
+			
+			Container _2_12_container = new Container();
+			_2_12_container.add(new JLabel("Mesa Plateau F M"));
+			_2_12_container.setLayout(new FlowLayout());
+			_2_12_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_12_container, "1, 12");
 		}
 		
 		JLabel in_lushBiomesTxt = new JLabel("Lush Biomes");
 		in_lushBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		Util.setFontSize(in_lushBiomesTxt, 18);
 		Util.Underline(in_lushBiomesTxt);
-		includeCB.add(in_lushBiomesTxt, "4, 14");
+		biomesPanel.add(in_lushBiomesTxt, "2, 14");
 		
-		JCheckBox inb_pla_1 = new JCheckBox("Plains");
-		includeCB.add(inb_pla_1, "2, 16");
-		
-		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_pla_2 = new JCheckBox("Sunflower Plains");
-			includeCB.add(inb_pla_2, "4, 16");
-		}
-		
-		JCheckBox inb_for_1 = new JCheckBox("Forest");
-		includeCB.add(inb_for_1, "6, 16");
-		
-		JCheckBox inb_for_2 = new JCheckBox("Forest Hills");
-		includeCB.add(inb_for_2, "2, 18");
+		Container _2_16_container = new Container();
+		_2_16_container.add(new JLabel("Plains"));
+		_2_16_container.setLayout(new FlowLayout());
+		_2_16_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_16_container, "1, 16");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_for_3 = new JCheckBox("Flower Forest");
-			includeCB.add(inb_for_3, "4, 18");	
-			
-			JCheckBox inb_bir_1 = new JCheckBox("Birch Forest");
-			includeCB.add(inb_bir_1, "6, 18");
-			
-			JCheckBox inb_bir_2 = new JCheckBox("Birch Forest Hills");
-			includeCB.add(inb_bir_2, "2, 20");
-			
-			JCheckBox inb_bir_3 = new JCheckBox("Birch Forest M");
-			includeCB.add(inb_bir_3, "4, 20");
-			
-			JCheckBox inb_bir_4 = new JCheckBox("Birch Forest Hills M");
-			includeCB.add(inb_bir_4, "6, 20");
-			
-			JCheckBox inb_roo_1 = new JCheckBox("Roofed Forest");
-			includeCB.add(inb_roo_1, "2, 22");
-			
-			JCheckBox inb_roo_2 = new JCheckBox("Roofed Forest M");
-			includeCB.add(inb_roo_2, "4, 22");
+			Container _4_16_container = new Container();
+			_4_16_container.add(new JLabel("Sunflower Plains"));
+			_4_16_container.setLayout(new FlowLayout());
+			_4_16_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_16_container, "2, 16");
 		}
 		
-		JCheckBox inb_swa_1 = new JCheckBox("Swampland");
-		includeCB.add(inb_swa_1, "6, 22");
+		Container _6_16_container = new Container();
+		_6_16_container.add(new JLabel("Forest"));
+		_6_16_container.setLayout(new FlowLayout());
+		_6_16_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_16_container, "3, 16");
 		
-		JCheckBox inb_swa_2 = new JCheckBox("Swampland M");
-		includeCB.add(inb_swa_2, "2, 24");
+		Container _2_18_container = new Container();
+		_2_18_container.add(new JLabel("Forest Hills"));
+		_2_18_container.setLayout(new FlowLayout());
+		_2_18_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_18_container, "1, 18");
 		
-		JCheckBox inb_jun_1 = new JCheckBox("Jungle");
-		includeCB.add(inb_jun_1, "4, 24");
-		
-		JCheckBox inb_jun_2 = new JCheckBox("Jungle Hills");
-		includeCB.add(inb_jun_2, "6, 24");
-		
-		JCheckBox inb_jun_3 = new JCheckBox("Jungle Edge");
-		includeCB.add(inb_jun_3, "2, 26");
-		
-		JCheckBox inb_jun_4 = new JCheckBox("Jungle M");
-		includeCB.add(inb_jun_4, "4, 26");
-		
-		JCheckBox inb_jun_5 = new JCheckBox("Jungle Edge M");
-		includeCB.add(inb_jun_5, "6, 26");
-		
-		if (Version.isOrNewerThanVersion(Version.V1_14_2)) {
-			JCheckBox inb_jun_6 = new JCheckBox("Bamboo Jungle");
-			includeCB.add(inb_jun_6, "2, 28");
+		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
+			Container _4_18_container = new Container();
+			_4_18_container.add(new JLabel("Flower Forest"));
+			_4_18_container.setLayout(new FlowLayout());
+			_4_18_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_18_container, "2, 18");
 			
-			JCheckBox inb_jun_7 = new JCheckBox("Bamboo Jungle Hills");
-			includeCB.add(inb_jun_7, "4, 28");
+			Container _6_18_container = new Container();
+			_6_18_container.add(new JLabel("Birch Forest"));
+			_6_18_container.setLayout(new FlowLayout());
+			_6_18_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_18_container, "3, 18");
+			
+			Container _2_20_container = new Container();
+			_2_20_container.add(new JLabel("Birch Forest Hills"));
+			_2_20_container.setLayout(new FlowLayout());
+			_2_20_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_20_container, "1, 20");
+			
+			Container _4_20_container = new Container();
+			_4_20_container.add(new JLabel("Birch Forest M"));
+			_4_20_container.setLayout(new FlowLayout());
+			_4_20_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_20_container, "2, 20");
+			
+			Container _6_20_container = new Container();
+			_6_20_container.add(new JLabel("Birch Forest Hills M"));
+			_6_20_container.setLayout(new FlowLayout());
+			_6_20_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_20_container, "3, 20");
+			
+			Container _2_22_container = new Container();
+			_2_22_container.add(new JLabel("Roofed Forest"));
+			_2_22_container.setLayout(new FlowLayout());
+			_2_22_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_22_container, "1, 22");
+			
+			Container _4_22_container = new Container();
+			_4_22_container.add(new JLabel("Roofed Forest M"));
+			_4_22_container.setLayout(new FlowLayout());
+			_4_22_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_22_container, "2, 22");
+		}
+		
+		Container _6_22_container = new Container();
+		_6_22_container.add(new JLabel("Swampland"));
+		_6_22_container.setLayout(new FlowLayout());
+		_6_22_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_22_container, "3, 22");
+		
+		Container _2_24_container = new Container();
+		_2_24_container.add(new JLabel("Swampland M"));
+		_2_24_container.setLayout(new FlowLayout());
+		_2_24_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_24_container, "1, 24");
+		
+		Container _4_24_container = new Container();
+		_4_24_container.add(new JLabel("Jungle"));
+		_4_24_container.setLayout(new FlowLayout());
+		_4_24_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_24_container, "2, 24");
+		
+		Container _6_24_container = new Container();
+		_6_24_container.add(new JLabel("Jungle Hills"));
+		_6_24_container.setLayout(new FlowLayout());
+		_6_24_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_24_container, "3, 24");
+		
+		Container _2_26_container = new Container();
+		_2_26_container.add(new JLabel("Jungle Edge"));
+		_2_26_container.setLayout(new FlowLayout());
+		_2_26_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_26_container, "1, 26");
+		
+		Container _4_26_container = new Container();
+		_4_26_container.add(new JLabel("Jungle M"));
+		_4_26_container.setLayout(new FlowLayout());
+		_4_26_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_26_container, "2, 26");
+		
+		Container _6_26_container = new Container();
+		_6_26_container.add(new JLabel("Jungle Edge M"));
+		_6_26_container.setLayout(new FlowLayout());
+		_6_26_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_26_container, "3, 26");
+		
+		if (Version.isOrNewerThanVersion(Version.V1_14_3)) {
+			Container _2_28_container = new Container();
+			_2_28_container.add(new JLabel("Bamboo Jungle"));
+			_2_28_container.setLayout(new FlowLayout());
+			_2_28_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_28_container, "1, 28");
+			
+			Container _4_28_container = new Container();
+			_4_28_container.add(new JLabel("Bamboo Jungle Hills"));
+			_4_28_container.setLayout(new FlowLayout());
+			_4_28_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_28_container, "2, 28");
 		}
 		
 		JLabel in_coldBiomesTxt = new JLabel("Cold Biomes");
 		in_coldBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		Util.setFontSize(in_coldBiomesTxt, 18);
 		Util.Underline(in_coldBiomesTxt);
-		includeCB.add(in_coldBiomesTxt, "4, 30");
+		biomesPanel.add(in_coldBiomesTxt, "2, 30");
 		
-		JCheckBox inb_ext_1 = new JCheckBox("Extreme Hills");
-		includeCB.add(inb_ext_1, "2, 32");
+		Container _2_32_container = new Container();
+		_2_32_container.add(new JLabel("Extreme Hills"));
+		_2_32_container.setLayout(new FlowLayout());
+		_2_32_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_32_container, "1, 32");
 		
-		JCheckBox inb_ext_2 = new JCheckBox("Extreme Hills Edge");
-		includeCB.add(inb_ext_2, "4, 32");
+		// Biome stopped spawning naturally as of 1.7
+		if (Version.isOrOlderThanVersion(Version.V1_6_4)) {
+			Container _4_32_container = new Container();
+			_4_32_container.add(new JLabel("Extreme Hills Edge"));
+			_4_32_container.setLayout(new FlowLayout());
+			_4_32_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_32_container, "2, 32");
+		}
 		
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_ext_3 = new JCheckBox("Extreme Hills+");
-			includeCB.add(inb_ext_3, "6, 32");
+			Container _6_32_container = new Container();
+			_6_32_container.add(new JLabel("Extreme Hills+"));
+			_6_32_container.setLayout(new FlowLayout());
+			_6_32_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_32_container, "3, 32");
 			
-			JCheckBox inb_ext_4 = new JCheckBox("Extreme Hills M");
-			includeCB.add(inb_ext_4, "2, 34");
+			Container _2_34_container = new Container();
+			_2_34_container.add(new JLabel("Extreme Hills M"));
+			_2_34_container.setLayout(new FlowLayout());
+			_2_34_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_34_container, "1, 34");
 			
-			JCheckBox inb_ext_5 = new JCheckBox("Extreme Hills+ M");
-			includeCB.add(inb_ext_5, "4, 34");
+			Container _4_34_container = new Container();
+			_4_34_container.add(new JLabel("Extreme Hills+ M"));
+			_4_34_container.setLayout(new FlowLayout());
+			_4_34_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_34_container, "2, 34");
+			
+			Container _6_34_container = new Container();
+			_6_34_container.add(new JLabel("Taiga"));
+			_6_34_container.setLayout(new FlowLayout());
+			_6_34_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_34_container, "3, 34");
 		
-			JCheckBox inb_tai_1 = new JCheckBox("Taiga");
-			includeCB.add(inb_tai_1, "6, 34");
+			Container _2_36_container = new Container();
+			_2_36_container.add(new JLabel("Taiga Hills"));
+			_2_36_container.setLayout(new FlowLayout());
+			_2_36_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_36_container, "1, 36");
 			
-			JCheckBox inb_tai_2 = new JCheckBox("Taiga Hills");
-			includeCB.add(inb_tai_2, "2, 36");
+			Container _4_36_container = new Container();
+			_4_36_container.add(new JLabel("Mega Taiga"));
+			_4_36_container.setLayout(new FlowLayout());
+			_4_36_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_36_container, "2, 36");
 			
-			JCheckBox inb_tai_3 = new JCheckBox("Mega Taiga");
-			includeCB.add(inb_tai_3, "4, 36");
+			Container _6_36_container = new Container();
+			_6_36_container.add(new JLabel("Mega Taiga Hills"));
+			_6_36_container.setLayout(new FlowLayout());
+			_6_36_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_36_container, "3, 36");
 			
-			JCheckBox inb_tai_4 = new JCheckBox("Mega Taiga Hills");
-			includeCB.add(inb_tai_4, "6, 36");
+			Container _2_38_container = new Container();
+			_2_38_container.add(new JLabel("Taiga M"));
+			_2_38_container.setLayout(new FlowLayout());
+			_2_38_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_38_container, "1, 38");
 			
-			JCheckBox inb_tai_5 = new JCheckBox("Taiga M");
-			includeCB.add(inb_tai_5, "2, 38");
+			Container _4_38_container = new Container();
+			_4_38_container.add(new JLabel("Mega Spruce Taiga"));
+			_4_38_container.setLayout(new FlowLayout());
+			_4_38_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_38_container, "2, 38");
 			
-			JCheckBox inb_tai_6 = new JCheckBox("Mega Spruce Taiga");
-			includeCB.add(inb_tai_6, "4, 38");
-			
-			JCheckBox inb_tai_7 = new JCheckBox("Mega Spruce Taiga (Hills)");
-			includeCB.add(inb_tai_7, "6, 38");	
+			Container _6_38_container = new Container();
+			_6_38_container.add(new JLabel("Mega Spruce Taiga (Hills)"));
+			_6_38_container.setLayout(new FlowLayout());
+			_6_38_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_38_container, "3, 38");
 		}
 		
 		JLabel in_snowyBiomesTxt = new JLabel("Snowy Biomes");
 		in_snowyBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		Util.setFontSize(in_snowyBiomesTxt, 18);
 		Util.Underline(in_snowyBiomesTxt);
-		includeCB.add(in_snowyBiomesTxt, "4, 40");
+		biomesPanel.add(in_snowyBiomesTxt, "2, 40");
 		
-		JCheckBox inb_col_1 = new JCheckBox("Cold Taiga");
-		includeCB.add(inb_col_1, "2, 42");
+		Container _2_42_container = new Container();
+		_2_42_container.add(new JLabel("Cold Taiga"));
+		_2_42_container.setLayout(new FlowLayout());
+		_2_42_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_42_container, "1, 42");
 		
-		JCheckBox inb_col_2 = new JCheckBox("Cold Taiga Hills");
-		includeCB.add(inb_col_2, "4, 42");
+		Container _4_42_container = new Container();
+		_4_42_container.add(new JLabel("Cold Taiga Hills"));
+		_4_42_container.setLayout(new FlowLayout());
+		_4_42_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_42_container, "2, 42");
 		
-		JCheckBox inb_col_3 = new JCheckBox("Cold Taiga M");
-		includeCB.add(inb_col_3, "6, 42");
+		Container _6_42_container = new Container();
+		_6_42_container.add(new JLabel("Cold Taiga M"));
+		_6_42_container.setLayout(new FlowLayout());
+		_6_42_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_6_42_container, "3, 42");
 		
-		JCheckBox inb_ice_1 = new JCheckBox("Ice Plains");
-		includeCB.add(inb_ice_1, "2, 44");
+		Container _2_44_container = new Container();
+		_2_44_container.add(new JLabel("Ice Plains"));
+		_2_44_container.setLayout(new FlowLayout());
+		_2_44_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_44_container, "1, 44");
 		
-		JCheckBox inb_ice_2 = new JCheckBox("Ice Mountains");
-		includeCB.add(inb_ice_2, "4, 44");
+		Container _4_44_container = new Container();
+		_4_44_container.add(new JLabel("Ice Mountains"));
+		_4_44_container.setLayout(new FlowLayout());
+		_4_44_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_44_container, "2, 44");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_ice_3 = new JCheckBox("Ice Plains Spikes");
-			includeCB.add(inb_ice_3, "6, 44");	
+			Container _6_44_container = new Container();
+			_6_44_container.add(new JLabel("Ice Plains Spikes"));
+			_6_44_container.setLayout(new FlowLayout());
+			_6_44_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_44_container, "3, 44");
 		}
 		
 		JLabel in_waterBiomesTxt = new JLabel("Water Biomes");
 		in_waterBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		Util.setFontSize(in_waterBiomesTxt, 18);
 		Util.Underline(in_waterBiomesTxt);
-		includeCB.add(in_waterBiomesTxt, "4, 46");
+		biomesPanel.add(in_waterBiomesTxt, "2, 46");
 		
-		JCheckBox inb_bea_1 = new JCheckBox("Beach");
-		includeCB.add(inb_bea_1, "2, 48");
-		
-		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_bea_2 = new JCheckBox("Stone Beach");
-			includeCB.add(inb_bea_2, "4, 48");
-			
-			JCheckBox inb_bea_3 = new JCheckBox("Cold Beach");
-			includeCB.add(inb_bea_3, "6, 48");	
-		}
-		
-		JCheckBox inb_oce_1 = new JCheckBox("River");
-		includeCB.add(inb_oce_1, "2, 50");
-		
-		JCheckBox inb_oce_2 = new JCheckBox("Ocean");
-		includeCB.add(inb_oce_2, "4, 50");
+		Container _2_48_container = new Container();
+		_2_48_container.add(new JLabel("Beach"));
+		_2_48_container.setLayout(new FlowLayout());
+		_2_48_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_48_container, "1, 48");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
-			JCheckBox inb_oce_3 = new JCheckBox("Deep Ocean");
-			includeCB.add(inb_oce_3, "6, 50");	
+			Container _4_48_container = new Container();
+			_4_48_container.add(new JLabel("Stone Beach"));
+			_4_48_container.setLayout(new FlowLayout());
+			_4_48_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_48_container, "2, 48");
+			
+			Container _6_48_container = new Container();
+			_6_48_container.add(new JLabel("Cold Beach"));
+			_6_48_container.setLayout(new FlowLayout());
+			_6_48_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_48_container, "3, 48");
 		}
 		
-		JCheckBox inb_fro_1 = new JCheckBox("Frozen River");
-		includeCB.add(inb_fro_1, "2, 52");
+		Container _2_50_container = new Container();
+		_2_50_container.add(new JLabel("River"));
+		_2_50_container.setLayout(new FlowLayout());
+		_2_50_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_50_container, "1, 50");
 		
-		JCheckBox inb_fro_2 = new JCheckBox("Frozen Ocean");
-		includeCB.add(inb_fro_2, "4, 52");
+		Container _4_50_container = new Container();
+		_4_50_container.add(new JLabel("Ocean"));
+		_4_50_container.setLayout(new FlowLayout());
+		_4_50_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_50_container, "2, 50");
+		
+		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
+			Container _6_50_container = new Container();
+			_6_50_container.add(new JLabel("Deep Ocean"));
+			_6_50_container.setLayout(new FlowLayout());
+			_6_50_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_50_container, "3, 50");
+		}
+		
+		Container _2_52_container = new Container();
+		_2_52_container.add(new JLabel("Frozen River"));
+		_2_52_container.setLayout(new FlowLayout());
+		_2_52_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_52_container, "1, 52");
+		
+		Container _4_52_container = new Container();
+		_4_52_container.add(new JLabel("Frozen Ocean"));
+		_4_52_container.setLayout(new FlowLayout());
+		_4_52_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_52_container, "2, 52");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_13_2)) {
-			JCheckBox inb_fro_3 = new JCheckBox("Frozen Deep Ocean");
-			includeCB.add(inb_fro_3, "4, 52");	
+			Container _6_52_container = new Container();
+			_6_52_container.add(new JLabel("Frozen Deep Ocean"));
+			_6_52_container.setLayout(new FlowLayout());
+			_6_52_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_52_container, "3, 52");
 		}
 		
-		JCheckBox inb_mus_1 = new JCheckBox("Mushroom Island");
-		includeCB.add(inb_mus_1, "2, 54");
+		Container _2_54_container = new Container();
+		_2_54_container.add(new JLabel("Mushroom Island"));
+		_2_54_container.setLayout(new FlowLayout());
+		_2_54_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_2_54_container, "1, 54");
 		
-		JCheckBox inb_mus_2 = new JCheckBox("Mushroom Island Shore");
-		includeCB.add(inb_mus_2, "4, 54");
+		Container _4_54_container = new Container();
+		_4_54_container.add(new JLabel("Mushroom Island Shore"));
+		_4_54_container.setLayout(new FlowLayout());
+		_4_54_container.add(new JComboBox<String>(include_exclude_txt));
+		biomesPanel.add(_4_54_container, "2, 54");
 		
 		if (Version.isOrNewerThanVersion(Version.V1_13_2)) {
-			JCheckBox inb_oce_4 = new JCheckBox("Warm Ocean");
-			includeCB.add(inb_oce_4, "6, 54");
-			
-			JCheckBox inb_oce_5 = new JCheckBox("Warm Deep Ocean");
-			includeCB.add(inb_oce_5, "2, 56");
-			
-			JCheckBox inb_oce_6 = new JCheckBox("Lukewarm Ocean");
-			includeCB.add(inb_oce_6, "4, 56");
-			
-			JCheckBox inb_oce_7 = new JCheckBox("Lukewarm Deep Ocean");
-			includeCB.add(inb_oce_7, "6, 56");
-			
-			JCheckBox inb_oce_8 = new JCheckBox("Cold Ocean");
-			includeCB.add(inb_oce_8, "2, 58");
-			
-			JCheckBox inb_oce_9 = new JCheckBox("Cold Deep Ocean");
-			includeCB.add(inb_oce_9, "4, 58");	
+			Container _6_54_container = new Container();
+			_6_54_container.add(new JLabel("Warm Ocean"));
+			_6_54_container.setLayout(new FlowLayout());
+			_6_54_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_54_container, "3, 54");
 		}
 		
-		
-		
-		// Panel 2: Exclusion
-		
-		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("Exclusion", null, panel_2, null);
-		panel_2.setLayout(null);
-		tabbedPane.setEnabledAt(2, false);
-		JLabel lblExclusionBiomeSelectionTxt = new JLabel("Biome Exclusion");
-		Util.setFontSize(lblExclusionBiomeSelectionTxt, 24);
-		lblExclusionBiomeSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
-		lblExclusionBiomeSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_2.add(lblExclusionBiomeSelectionTxt);
-		
-		JScrollPane lblExclusionBiomeSelectionScroll = new JScrollPane();
-		lblExclusionBiomeSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		lblExclusionBiomeSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
-		lblExclusionBiomeSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
-		panel_2.add(lblExclusionBiomeSelectionScroll);
-		
-		excludeCB = new JPanel();
-		lblExclusionBiomeSelectionScroll.setViewportView(excludeCB);
-		excludeCB.setLayout(
-				new FormLayout(
-						new ColumnSpec[] {
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 1
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 2
-								FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 3
-								},
-						new RowSpec[] {
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 2
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 4
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 6
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 8
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 10
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 12
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 14
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 16
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 18
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 20
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 22
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 24
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 26
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 28
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 30
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 32
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 34
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 36
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 38
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 40
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 42
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 44
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 46
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 48
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 50
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 52
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 54
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 56
-								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 58
-								FormSpecs.RELATED_GAP_ROWSPEC,}));
-		
-		/*
-		 FORMAT:
-		 
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "2, ");
-		
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "4, ");
-		
-		JCheckBox exb__ = new JCheckBox("");
-		excludeCB.add(exb__, "6, ");
-		 */
-		
-		JLabel ex_hotBiomesTxt = new JLabel("Hot Biomes");
-		ex_hotBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_hotBiomesTxt, 18);
-		Util.Underline(ex_hotBiomesTxt);
-		excludeCB.add(ex_hotBiomesTxt, "4, 2");
-		
-		JCheckBox exb_des_1 = new JCheckBox("Desert");
-		excludeCB.add(exb_des_1, "2, 4");
-		
-		JCheckBox exb_des_2 = new JCheckBox("Desert Hills");
-		excludeCB.add(exb_des_2, "4, 4");
-		
-		JCheckBox exb_des_3 = new JCheckBox("Desert M");
-		excludeCB.add(exb_des_3, "6, 4");
-		
-		JCheckBox exb_sav_1 = new JCheckBox("Savanna");
-		excludeCB.add(exb_sav_1, "2, 6");
-		
-		JCheckBox exb_sav_2 = new JCheckBox("Savanna Plateau");
-		excludeCB.add(exb_sav_2, "4, 6");
-		
-		JCheckBox exb_sav_3 = new JCheckBox("Savanna M");
-		excludeCB.add(exb_sav_3, "6, 6");
-		
-		JCheckBox exb_sav_4 = new JCheckBox("Savanna Plateau M");
-		excludeCB.add(exb_sav_4, "2, 8");
-		
-		JCheckBox exb_mes_1 = new JCheckBox("Mesa");
-		excludeCB.add(exb_mes_1, "4, 8");
-		
-		JCheckBox exb_mes_2 = new JCheckBox("Mesa Plateau F");
-		excludeCB.add(exb_mes_2, "6, 8");
-		
-		JCheckBox exb_mes_3 = new JCheckBox("Mesa Plateau");
-		excludeCB.add(exb_mes_3, "2, 10");
-		
-		JCheckBox exb_mes_4 = new JCheckBox("Mesa (Bryce)");
-		excludeCB.add(exb_mes_4, "4, 10");
-		
-		JCheckBox exb_mes_5 = new JCheckBox("Mesa Plateau F M");
-		excludeCB.add(exb_mes_5, "6, 10");
-		
-		JCheckBox exb_mes_6= new JCheckBox("Mesa Plateau F M");
-		excludeCB.add(exb_mes_6, "2, 12");
-		
-		JLabel ex_lushBiomesTxt = new JLabel("Lush Biomes");
-		ex_lushBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_lushBiomesTxt, 18);
-		Util.Underline(ex_lushBiomesTxt);
-		excludeCB.add(ex_lushBiomesTxt, "4, 14");
-		
-		JCheckBox exb_pla_1 = new JCheckBox("Plains");
-		excludeCB.add(exb_pla_1, "2, 16");
-		
-		JCheckBox exb_pla_2 = new JCheckBox("Sunflower Plains");
-		excludeCB.add(exb_pla_2, "4, 16");
-		
-		JCheckBox exb_for_1 = new JCheckBox("Forest");
-		excludeCB.add(exb_for_1, "6, 16");
-		
-		JCheckBox exb_for_2 = new JCheckBox("Forest Hills");
-		excludeCB.add(exb_for_2, "2, 18");
-		
-		JCheckBox exb_for_3 = new JCheckBox("Flower Forest");
-		excludeCB.add(exb_for_3, "4, 18");
-		
-		JCheckBox exb_bir_1 = new JCheckBox("Birch Forest");
-		excludeCB.add(exb_bir_1, "6, 18");
-		
-		JCheckBox exb_bir_2 = new JCheckBox("Birch Forest Hills");
-		excludeCB.add(exb_bir_2, "2, 20");
-		
-		JCheckBox exb_bir_3 = new JCheckBox("Birch Forest M");
-		excludeCB.add(exb_bir_3, "4, 20");
-		
-		JCheckBox exb_bir_4 = new JCheckBox("Birch Forest Hills M");
-		excludeCB.add(exb_bir_4, "6, 20");
-		
-		JCheckBox exb_roo_1 = new JCheckBox("Roofed Forest");
-		excludeCB.add(exb_roo_1, "2, 22");
-		
-		JCheckBox exb_roo_2 = new JCheckBox("Roofed Forest M");
-		excludeCB.add(exb_roo_2, "4, 22");
-		
-		JCheckBox exb_swa_1 = new JCheckBox("Swampland");
-		excludeCB.add(exb_swa_1, "6, 22");
-		
-		JCheckBox exb_swa_2 = new JCheckBox("Swampland M");
-		excludeCB.add(exb_swa_2, "2, 24");
-		
-		JCheckBox exb_jun_1 = new JCheckBox("Jungle");
-		excludeCB.add(exb_jun_1, "4, 24");
-		
-		JCheckBox exb_jun_2 = new JCheckBox("Jungle Hills");
-		excludeCB.add(exb_jun_2, "6, 24");
-		
-		JCheckBox exb_jun_3 = new JCheckBox("Jungle Edge");
-		excludeCB.add(exb_jun_3, "2, 26");
-		
-		JCheckBox exb_jun_4 = new JCheckBox("Jungle M");
-		excludeCB.add(exb_jun_4, "4, 26");
-		
-		JCheckBox exb_jun_5 = new JCheckBox("Jungle Edge M");
-		excludeCB.add(exb_jun_5, "6, 26");
-		
-//		if (Version.isOrGreaterThanSelectedVersion(Version.V1_14_2)) {
-			JCheckBox exb_jun_6 = new JCheckBox("Bamboo Jungle");
-			excludeCB.add(exb_jun_6, "2, 28");
-			
-			JCheckBox exb_jun_7 = new JCheckBox("Bamboo Jungle Hills");
-			excludeCB.add(exb_jun_7, "4, 28");
-//		}
-		
-		JLabel ex_coldBiomesTxt = new JLabel("Cold Biomes");
-		ex_coldBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_coldBiomesTxt, 18);
-		Util.Underline(ex_coldBiomesTxt);
-		excludeCB.add(ex_coldBiomesTxt, "4, 30");
-		
-		JCheckBox exb_ext_1 = new JCheckBox("Extreme Hills");
-		excludeCB.add(exb_ext_1, "2, 32");
-		
-		JCheckBox exb_ext_2 = new JCheckBox("Extreme Hills Edge");
-		excludeCB.add(exb_ext_2, "4, 32");
-		
-		JCheckBox exb_ext_3 = new JCheckBox("Extreme Hills+");
-		excludeCB.add(exb_ext_3, "6, 32");
-		
-		JCheckBox exb_ext_4 = new JCheckBox("Extreme Hills M");
-		excludeCB.add(exb_ext_4, "2, 34");
-		
-		JCheckBox exb_ext_5 = new JCheckBox("Extreme Hills+ M");
-		excludeCB.add(exb_ext_5, "4, 34");
-		
-		JCheckBox exb_tai_1 = new JCheckBox("Taiga");
-		excludeCB.add(exb_tai_1, "6, 34");
-		
-		JCheckBox exb_tai_2 = new JCheckBox("Taiga Hills");
-		excludeCB.add(exb_tai_2, "2, 36");
-		
-		JCheckBox exb_tai_3 = new JCheckBox("Mega Taiga");
-		excludeCB.add(exb_tai_3, "4, 36");
-		
-		JCheckBox exb_tai_4 = new JCheckBox("Mega Taiga Hills");
-		excludeCB.add(exb_tai_4, "6, 36");
-		
-		JCheckBox exb_tai_5 = new JCheckBox("Taiga M");
-		excludeCB.add(exb_tai_5, "2, 38");
-		
-		JCheckBox exb_tai_6 = new JCheckBox("Mega Spruce Taiga");
-		excludeCB.add(exb_tai_6, "4, 38");
-		
-		JCheckBox exb_tai_7 = new JCheckBox("Mega Spruce Taiga (Hills)");
-		excludeCB.add(exb_tai_7, "6, 38");
-		
-		JLabel ex_snowyBiomesTxt = new JLabel("Snowy Biomes");
-		ex_snowyBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_snowyBiomesTxt, 18);
-		Util.Underline(ex_snowyBiomesTxt);
-		excludeCB.add(ex_snowyBiomesTxt, "4, 40");
-		
-		JCheckBox exb_col_1 = new JCheckBox("Cold Taiga");
-		excludeCB.add(exb_col_1, "2, 42");
-		
-		JCheckBox exb_col_2 = new JCheckBox("Cold Taiga Hills");
-		excludeCB.add(exb_col_2, "4, 42");
-		
-		JCheckBox exb_col_3 = new JCheckBox("Cold Taiga M");
-		excludeCB.add(exb_col_3, "6, 42");
-		
-		JCheckBox exb_ice_1 = new JCheckBox("Ice Plains");
-		excludeCB.add(exb_ice_1, "2, 44");
-		
-		JCheckBox exb_ice_2 = new JCheckBox("Ice Mountains");
-		excludeCB.add(exb_ice_2, "4, 44");
-		
-		JCheckBox exb_ice_3 = new JCheckBox("Ice Plains Spikes");
-		excludeCB.add(exb_ice_3, "6, 44");
-		
-		JLabel ex_waterBiomesTxt = new JLabel("Water Biomes");
-		ex_waterBiomesTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		Util.setFontSize(ex_waterBiomesTxt, 18);
-		Util.Underline(ex_waterBiomesTxt);
-		excludeCB.add(ex_waterBiomesTxt, "4, 46");
-		
-		JCheckBox exb_bea_1 = new JCheckBox("Beach");
-		excludeCB.add(exb_bea_1, "2, 48");
-		
-		JCheckBox exb_bea_2 = new JCheckBox("Stone Beach");
-		excludeCB.add(exb_bea_2, "4, 48");
-		
-		JCheckBox exb_bea_3 = new JCheckBox("Cold Beach");
-		excludeCB.add(exb_bea_3, "6, 48");
-		
-		JCheckBox exb_oce_1 = new JCheckBox("River");
-		excludeCB.add(exb_oce_1, "2, 50");
-		
-		JCheckBox exb_oce_2 = new JCheckBox("Ocean");
-		excludeCB.add(exb_oce_2, "4, 50");
-		
-		JCheckBox exb_oce_3 = new JCheckBox("Deep Ocean");
-		excludeCB.add(exb_oce_3, "6, 50");
-		
-		JCheckBox exb_fro_1 = new JCheckBox("Frozen River");
-		excludeCB.add(exb_fro_1, "2, 52");
-		
-		JCheckBox exb_fro_2 = new JCheckBox("Frozen Ocean");
-		excludeCB.add(exb_fro_2, "4, 52");
+		if (Version.isOrNewerThanVersion(Version.V9_99_99)) {
+			Container _2_56_container = new Container();
+			_2_56_container.add(new JLabel("Warm Deep Ocean"));
+			_2_56_container.setLayout(new FlowLayout());
+			_2_56_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_56_container, "1, 56");
+		}
 		
 		if (Version.isOrNewerThanVersion(Version.V1_13_2)) {
-			JCheckBox exb_fro_3 = new JCheckBox("Frozen Deep Ocean");
-			excludeCB.add(exb_fro_3, "4, 52");
+			Container _4_56_container = new Container();
+			_4_56_container.add(new JLabel("Lukewarm Ocean"));
+			_4_56_container.setLayout(new FlowLayout());
+			_4_56_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_56_container, "2, 56");
+			
+			Container _6_56_container = new Container();
+			_6_56_container.add(new JLabel("Lukewarm Deep Ocean"));
+			_6_56_container.setLayout(new FlowLayout());
+			_6_56_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_6_56_container, "3, 56");
+			
+			Container _2_58_container = new Container();
+			_2_58_container.add(new JLabel("Cold Ocean"));
+			_2_58_container.setLayout(new FlowLayout());
+			_2_58_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_2_58_container, "1, 58");
+			
+			Container _4_58_container = new Container();
+			_4_58_container.add(new JLabel("Cold Deep Ocean"));
+			_4_58_container.setLayout(new FlowLayout());
+			_4_58_container.add(new JComboBox<String>(include_exclude_txt));
+			biomesPanel.add(_4_58_container, "2, 58");
 		}
 		
-		JCheckBox exb_mus_1 = new JCheckBox("Mushroom Island");
-		excludeCB.add(exb_mus_1, "2, 54");
 		
-		JCheckBox exb_mus_2 = new JCheckBox("Mushroom Island Shore");
-		excludeCB.add(exb_mus_2, "4, 54");
 		
-		if (Version.isOrNewerThanVersion(Version.V1_13_2)) {
-			JCheckBox exb_oce_4 = new JCheckBox("Warm Ocean");
-			excludeCB.add(exb_oce_4, "6, 54");
-			
-			JCheckBox exb_oce_5 = new JCheckBox("Warm Deep Ocean");
-			excludeCB.add(exb_oce_5, "2, 56");
-			
-			JCheckBox exb_oce_6 = new JCheckBox("Lukewarm Ocean");
-			excludeCB.add(exb_oce_6, "4, 56");
-			
-			JCheckBox exb_oce_7 = new JCheckBox("Lukewarm Deep Ocean");
-			excludeCB.add(exb_oce_7, "6, 56");
-			
-			JCheckBox exb_oce_8 = new JCheckBox("Cold Ocean");
-			excludeCB.add(exb_oce_8, "2, 58");
-			
-			JCheckBox exb_oce_9 = new JCheckBox("Cold Deep Ocean");
-			excludeCB.add(exb_oce_9, "4, 58");	
-		}
-		
-		// Panel 3: Structures
+		// Panel 2: Structures
 		
 		if (Main.DEV_MODE) {
-			JPanel panel_3 = new JPanel();
-			tabbedPane.addTab("Structures", null, panel_3, null);
-			panel_3.setLayout(null);
-			tabbedPane.setEnabledAt(3, false);
-			JLabel lblStructuresSelectionTxt = new JLabel("Select Structures");
-			Util.setFontSize(lblStructuresSelectionTxt, 24);
-			lblStructuresSelectionTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
-			lblStructuresSelectionTxt.setHorizontalAlignment(SwingConstants.CENTER);
-			panel_3.add(lblStructuresSelectionTxt);
+			JPanel panel_2 = new JPanel();
+			tabbedPane.addTab("Structures", null, panel_2, null);
+			panel_2.setLayout(null);
+			tabbedPane.setEnabledAt(2, false);
+			JLabel lblStructuresTxt = new JLabel("Select Structures");
+			Util.setFontSize(lblStructuresTxt, 24);
+			lblStructuresTxt.setBounds(0, 0, (Main.BACK_FRAME_WIDTH-Main.CONSOLE_WIDTH), 33);
+			lblStructuresTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			panel_2.add(lblStructuresTxt);
 			
-			JScrollPane lblStructuresSelectionScroll = new JScrollPane();
-			lblStructuresSelectionScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			lblStructuresSelectionScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
-			lblStructuresSelectionScroll.getVerticalScrollBar().setUnitIncrement(10);
-			panel_3.add(lblStructuresSelectionScroll);
+			JScrollPane lblStructuresScroll = new JScrollPane();
+			lblStructuresScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			lblStructuresScroll.setBounds(0, 33, Main.FRAME_SCROLL_BAR_WIDTH, Main.FRAME_SCROLL_BAR_HEIGHT);
+			lblStructuresScroll.getVerticalScrollBar().setUnitIncrement(10);
+			panel_2.add(lblStructuresScroll);
 			
 			structures = new JPanel();
-			lblStructuresSelectionScroll.setViewportView(structures);
+			lblStructuresScroll.setViewportView(structures);
 			structures.setLayout(
 					new FormLayout(
 							new ColumnSpec[] {
@@ -1115,14 +998,29 @@ public class GUI {
 			excludeCB.add(exb__, "6, ");
 			 */
 			
+			JLabel ex_undergroundFeaturesTxt = new JLabel("Underground Features");
+			ex_undergroundFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			Util.setFontSize(ex_undergroundFeaturesTxt, 18);
+			Util.Underline(ex_undergroundFeaturesTxt);
+			structures.add(ex_undergroundFeaturesTxt, "4, 2");
+			
+			JCheckBox cb_mineshaft = new JCheckBox("Mineshaft");
+			structures.add(cb_mineshaft, "2, 4");
+			
 			JLabel ex_oceanFeaturesTxt = new JLabel("Ocean Features");
 			ex_oceanFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 			Util.setFontSize(ex_oceanFeaturesTxt, 18);
 			Util.Underline(ex_oceanFeaturesTxt);
-			structures.add(ex_oceanFeaturesTxt, "4, 2");
+			structures.add(ex_oceanFeaturesTxt, "4, 6");
 			
-			JCheckBox st_ocean = new JCheckBox("Ocean Monument");
-			structures.add(st_ocean, "2, 4");
+			JCheckBox cb_ocean_monument = new JCheckBox("Ocean Monument");
+			structures.add(cb_ocean_monument, "2, 8");
+			
+			JCheckBox cb_ocean_features = new JCheckBox("Ocean Features");
+			structures.add(cb_ocean_features, "4, 8");
+			
+			JCheckBox cb_ocean_ruins = new JCheckBox("Ocean Ruins");
+			structures.add(cb_ocean_ruins, "6, 8");
 		}
 		
 	}
@@ -1142,17 +1040,19 @@ public class GUI {
 	 * @throws MinecraftInterfaceCreationException
 	 */
 	public static Biome[] manageCheckedCheckboxes() throws UnknownBiomeIndexException, InterruptedException,
-			IOException, FormatException, MinecraftInterfaceCreationException {
-		Component[] comps = includeCB.getComponents();
+				IOException, FormatException, MinecraftInterfaceCreationException {
+		Component[] comps = biomesPanel.getComponents();
 		List<String> checkedTexts = new ArrayList<String>();
-
 		for (Component comp : comps) {
-			if (comp instanceof JCheckBox) {
-				JCheckBox box = (JCheckBox) comp;
-				if (box.isSelected()) {
-					String text = box.getText();
-					// System.out.println(box.getText());
-					checkedTexts.add(text);
+			if (comp instanceof Container) {
+				Container container = (Container) comp;
+				if (container.getComponents().length < 2) continue;
+				@SuppressWarnings("unchecked")
+				JComboBox<String> box = (JComboBox<String>) container.getComponent(1);
+				if (box.getSelectedIndex() == 1) {
+					JLabel biome_name_lbl = (JLabel) container.getComponent(0);
+					checkedTexts.add(biome_name_lbl.getText());
+					System.out.println("Include Biome "+biome_name_lbl.getText());
 				}
 			}
 		}
@@ -1162,26 +1062,28 @@ public class GUI {
 			biomes[i] = Biome.getByName(checkedTexts.get(i));
 		}
 		
-		if (biomes.length == 0) {
-			allowThreadToSearch = false;
-			Util.console("Please select Biomes!\nSearch has cancelled.\nRecommend you clear console!");
-			stop();
-		}
+//		if (biomes.length == 0) {
+//			allowThreadToSearch = false;
+//			Util.console("\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
+//			stop();
+//		}
 		return biomes;
-		
 	}
 	
 	public static Biome[] manageCheckedCheckboxesRejected() throws UnknownBiomeIndexException, InterruptedException,
-			IOException, FormatException, MinecraftInterfaceCreationException {
-		Component[] comps = excludeCB.getComponents();
+				IOException, FormatException, MinecraftInterfaceCreationException {
+		Component[] comps = biomesPanel.getComponents();
 		List<String> checkedTexts = new ArrayList<String>();
 		for (Component comp : comps) {
-			if (comp instanceof JCheckBox) {
-				JCheckBox box = (JCheckBox) comp;
-				if (box.isSelected()) {
-					String text = box.getText();
-					// System.out.println(box.getText());
-					checkedTexts.add(text);
+			if (comp instanceof Container) {
+				Container container = (Container) comp;
+				if (container.getComponents().length < 2) continue;
+				@SuppressWarnings("unchecked")
+				JComboBox<String> box = (JComboBox<String>) container.getComponent(1);
+				if (box.getSelectedIndex() == 2) {
+					JLabel biome_name_lbl = (JLabel) container.getComponent(0);
+					checkedTexts.add(biome_name_lbl.getText());
+					System.out.println("Exclude Biome "+biome_name_lbl.getText());
 				}
 			}
 		}
@@ -1191,15 +1093,15 @@ public class GUI {
 			biomes[i] = Biome.getByName(checkedTexts.get(i));
 		}
 		
-		if (biomes.length == 0) {
-			Util.console("Please select Rejected Biomes!\nSearch has cancelled.\nRecommend you clear console!");
-			stop();
-		}
+//		if (biomes.length == 0) {
+//			Util.console("\nPlease select Rejected Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
+//			stop();
+//		}
 		return biomes;
 	}
 	
 	public static Type[] manageCheckedCheckboxesFindStructures() throws UnknownBiomeIndexException, InterruptedException,
-	IOException, FormatException, MinecraftInterfaceCreationException {
+				IOException, FormatException, MinecraftInterfaceCreationException {
 		Component[] comps = structures.getComponents();
 		List<String> checkedTexts = new ArrayList<String>();
 		for (Component comp : comps) {
@@ -1209,6 +1111,7 @@ public class GUI {
 					String text = box.getText();
 					// System.out.println(box.getText());
 					checkedTexts.add(text);
+					System.out.println("Include Structures "+text);
 				}
 			}
 		}
@@ -1219,7 +1122,7 @@ public class GUI {
 		}
 		
 		if (structures.length == 0) {
-			Util.console("Please select Structures!\nSearch has cancelled.\nRecommend you clear console!");
+			Util.console("\nPlease select Structures!\nSearch has cancelled.\nRecommend you clear console!\n");
 			stop();
 		}
 		return structures;

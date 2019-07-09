@@ -7,8 +7,8 @@ import gui.GUI;
 
 public class Version {
 	
+	public static final String V9_99_99 = "9.99.9"; // Used to block out unsupported biomes/structures
 	public static final String V1_14_3 = "1.14.3";
-	public static final String V1_14_2 = "1.14.2";
 	public static final String V1_14 = "1.14";
 	public static final String V1_13_2 = "1.13.2";
 	public static final String V1_13_1 = "1.13.1";
@@ -31,8 +31,8 @@ public class Version {
 	private static Map<String, Integer> versions = new HashMap<String, Integer>();
 	
 	public static void registerSupportedVersions() {
+		versions.put(V9_99_99, 99999);
 		versions.put(V1_14_3, 1403);
-		versions.put(V1_14_2, 1402);
 		versions.put(V1_14, 1400);
 		versions.put(V1_13_2, 1302);
 		versions.put(V1_13_1, 1301);
@@ -56,6 +56,13 @@ public class Version {
 		int selected = versions.get(GUI.minecraftVersion);
 		int wanted = versions.get(version);
 		if (selected >= wanted) return true;
+		else return false;
+	}
+	
+	public static boolean isOrOlderThanVersion(String version) {
+		int selected = versions.get(GUI.minecraftVersion);
+		int wanted = versions.get(version);
+		if (selected <= wanted) return true;
 		else return false;
 	}
 	
