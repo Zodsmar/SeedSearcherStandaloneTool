@@ -27,6 +27,7 @@ import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
+import amidst.mojangapi.world.oracle.WorldSpawnOracle;
 import amidst.parsing.FormatException;
 import gui.GUI;
 
@@ -78,6 +79,7 @@ public class BiomeSearcher implements Runnable {
 		this.mSearchQuadrantWidth = searchQuadrantWidth;
 		this.mSearchQuadrantHeight = searchQuadrantHeight;
 		this.mMaximumMatchingWorldsCount = maximumMatchingWorldsCount;
+
 	}
 
 	/**
@@ -118,8 +120,15 @@ public class BiomeSearcher implements Runnable {
 
 	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
 			IOException, FormatException, MinecraftInterfaceCreationException {
-	//	CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
+		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
+		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
+		//! this is incorrect and amidst is... no idea why...
+		// TODO: Look into this (probably will fix the structures being off too...)
+		//CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
+		
+		// ! This returns [0, 0] everytime
 		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
+
 		if (searchCenter == null) {
 			// The world spawn could not be determined.
 			return false;
@@ -132,7 +141,7 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantWidth,
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		System.out.println(biomeCodesCount);
+		//System.out.println(biomeCodesCount);
 		
 		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0) {
 			Util.console("Creating Selected Biomes from list...");

@@ -1113,6 +1113,7 @@ public class GUI {
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 6
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 8
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 10
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 12
 									FormSpecs.RELATED_GAP_ROWSPEC,}));
 			
 			/*
@@ -1151,6 +1152,15 @@ public class GUI {
 			
 			JCheckBox cb_ocean_ruins = new JCheckBox("Ocean Ruins");
 			structures.add(cb_ocean_ruins, "6, 8");
+
+			JLabel ex_surfaceFeaturesTxt = new JLabel("Surface Features");
+			ex_surfaceFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			Util.setFontSize(ex_surfaceFeaturesTxt, 18);
+			Util.Underline(ex_surfaceFeaturesTxt);
+			structures.add(ex_surfaceFeaturesTxt, "4, 10");
+
+			JCheckBox cb_mansion = new JCheckBox("Mansion");
+			structures.add(cb_mansion, "2, 12");
 		}
 		
 	}

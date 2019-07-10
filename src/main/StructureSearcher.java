@@ -14,7 +14,11 @@ public class StructureSearcher {
 	public enum Type {
 		MINESHAFT, OCEAN_RUINS, OCEAN_FEATURES, VILLAGE, STRONGHOLD, TEMPLE, MANSION, OCEAN_MONUMENT, SLIME_CHUNK, BIOME_DATA
 	}
-	
+
+	public static List<WorldIcon> findMansion(World world, CoordinatesInWorld coords) {
+		return world.getWoodlandMansionProducer().getAt(coords, null);
+	}
+
 	public static List<WorldIcon> findMineshafts(World world, CoordinatesInWorld coords) {
 		return world.getMineshaftProducer().getAt(coords, null);
 	}
@@ -68,6 +72,11 @@ public class StructureSearcher {
 						coords);
 				if (ocean_monuments.size() < 1) return false;
 				System.out.println("has ocean monument");
+			} else if (type.equals(Type.MANSION)) {
+				List<WorldIcon> mansion = StructureSearcher.findMansion(
+						world,
+						coords);
+				if (mansion.size() < 1) return false;
 			}
 		}
 		
