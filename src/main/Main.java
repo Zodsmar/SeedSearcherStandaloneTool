@@ -24,7 +24,7 @@ public class Main {
 	public static final String VERSION = "v0.3.0-alpha.1";
 	public static boolean DEV_MODE = false;
 	/*
-		Quick test of git connection through VS Code
+	 Quick test of git connection through VS Code
 
 	 Dev mode currently gives access to:
 	 	- Structures

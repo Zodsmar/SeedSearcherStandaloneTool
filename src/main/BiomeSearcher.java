@@ -3,7 +3,10 @@ package main;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.*;
 
@@ -108,6 +111,8 @@ public class BiomeSearcher implements Runnable {
 
 	Biome[] biomes = {}; boolean searchBiomes = true;
 	Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
+	HashMap<Biome, String> biomeSets = new HashMap<Biome, String>(); boolean searchBiomeSets = true;
+	HashMap<Biome, String> rejectedBiomeSets = new HashMap<Biome, String>(); boolean searchRejectedBiomesSets = true;
 	StructureSearcher.Type[] structures = {};
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
@@ -129,7 +134,7 @@ public class BiomeSearcher implements Runnable {
 		int biomeCodesCount = biomeCodes.length;
 		System.out.println(biomeCodesCount);
 		
-		if (biomes.length == 0 && rejectedBiomes.length == 0) {
+		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0) {
 			Util.console("Creating Selected Biomes from list...");
 			Util.console("Creating Rejected Biomes from list...");	
 		}
@@ -149,8 +154,24 @@ public class BiomeSearcher implements Runnable {
 				System.out.println(searchRejectedBiomes);
 			}
 		}
+
+		if (biomeSets.size() == 0 && searchBiomeSets) {
+			biomeSets = GUI.manageCheckedCheckboxesSets();
+			if (biomeSets.size() == 0 && searchBiomeSets) {
+				searchBiomeSets = false;
+				System.out.println(searchBiomeSets);
+			}
+		}
+
+		if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
+			rejectedBiomeSets = GUI.manageCheckedCheckboxesSetsRejected();
+			if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
+				searchRejectedBiomesSets = false;
+				System.out.println(rejectedBiomeSets);
+			}
+		}
 		
-		if (!searchBiomes && !searchRejectedBiomes) {
+		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets) {
 			Util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
 			GUI.stop();
 			return false;
@@ -180,6 +201,9 @@ public class BiomeSearcher implements Runnable {
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
+		HashMap<Biome, String> undiscoveredBiomeSets = biomeSets;
+		HashMap<Biome, String> undiscoveredRejectedBiomeSets = rejectedBiomeSets;
+
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				// A new biome has been found.
@@ -191,9 +215,21 @@ public class BiomeSearcher implements Runnable {
 				//Works except for ocean. No idea why
 				return false; // Adding this makes excluded biomes not be resulted anymore. DO NOT REMOVE UNLESS YOU HAVE A FIX FOR THIS
 			}
+
+			if (undiscoveredBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+				String setValue = undiscoveredBiomeSets.get(Biome.getByIndex(biomeCodes[biomeCodeIndex]));
+				// Get the iterator over the HashMap 
+				undiscoveredBiomeSets.entrySet() 
+				.removeIf( 
+					entry -> (setValue.equals(entry.getValue()))); 
+			}
+
+			if (undiscoveredRejectedBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+				return false;
+			}
 		}
-		
-		if (undiscoveredBiomes.isEmpty()) {
+
+		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty()) {
 			System.out.println("Valid Seed: "+world.getWorldSeed().getLong());
 	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
 			return true;
@@ -235,7 +271,7 @@ public class BiomeSearcher implements Runnable {
 		}
 		Util.console(
 				acceptedWorldsCount + ": " + acceptedWorld.getWorldSeed().getLong() + " (rejected "
-						+ rejectedWorldsCount + ")");
+						+ rejectedWorldsCount + ")");			
 	}
 	
 	/**
