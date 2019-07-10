@@ -785,6 +785,12 @@ public class GUI {
 				_2_70_container.setLayout(new FlowLayout());
 				_2_70_container.add(new JComboBox<String>(include_exclude_txt));
 				biomesPanel.add(_2_70_container, "2, 70");
+
+				Container _3_70_container = new Container();
+				_3_70_container.add(new JLabel("Frozen Ocean Set"));
+				_3_70_container.setLayout(new FlowLayout());
+				_3_70_container.add(new JComboBox<String>(include_exclude_txt));
+				biomesPanel.add(_3_70_container, "3, 70");
 		/*
 		 FORMAT:
 		 
@@ -1256,9 +1262,11 @@ public class GUI {
 					JComboBox<String> box = (JComboBox<String>) container.getComponent(1);
 					if (box.getSelectedIndex() == 1) {
 						JLabel biome_name_lbl = (JLabel) container.getComponent(0);
-						checkedTexts.putAll(biomeSets(biome_name_lbl.getText()));
-						// checkedTexts.add(biome_name_lbl.getText());
-						// System.out.println("Include Biome "+biome_name_lbl.getText());
+						if(biome_name_lbl.getText().contains(" Set")){
+							checkedTexts.putAll(biomeSets(biome_name_lbl.getText()));
+							// checkedTexts.add(biome_name_lbl.getText());
+							System.out.println("Include Biome Sets "+biome_name_lbl.getText());
+						}
 					}
 				}
 			}
@@ -1286,9 +1294,11 @@ public class GUI {
 				JComboBox<String> box = (JComboBox<String>) container.getComponent(1);
 				if (box.getSelectedIndex() == 2) {
 					JLabel biome_name_lbl = (JLabel) container.getComponent(0);
-					checkedTexts.putAll(biomeSets(biome_name_lbl.getText()));
-					// checkedTexts.add(biome_name_lbl.getText());
-					// System.out.println("Include Biome "+biome_name_lbl.getText());
+					if(biome_name_lbl.getText().contains(" Set")){
+						checkedTexts.putAll(biomeSets(biome_name_lbl.getText()));
+						// checkedTexts.add(biome_name_lbl.getText());
+						System.out.println("Rejected Biome Sets "+biome_name_lbl.getText());
+					}
 				}
 			}
 		}
@@ -1406,8 +1416,12 @@ public class GUI {
 				checkedTexts.put("Cold Taiga M", "Cold Taiga Set");
 				break;
 			case "Mushroom Island Set":
-				checkedTexts.put("Mushroom Island", "Mushroom Island Set Set");
-				checkedTexts.put("Mushroom Island Shore", "Mushroom Island Set Set");
+				checkedTexts.put("Mushroom Island", "Mushroom Island Set");
+				checkedTexts.put("Mushroom Island Shore", "Mushroom Island Set");
+				break;
+			case "Frozen Ocean Set":
+				checkedTexts.put("Frozen Ocean", "Frozen Ocean Set");
+				checkedTexts.put("Frozen Deep Ocean", "Frozen Ocean Set");
 				break;
 			default: 
 

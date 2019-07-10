@@ -125,7 +125,7 @@ public class BiomeSearcher implements Runnable {
 		//! this is incorrect and amidst is... no idea why...
 		// TODO: Look into this (probably will fix the structures being off too...)
 		//CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
-		
+
 		// ! This returns [0, 0] everytime
 		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
@@ -210,8 +210,8 @@ public class BiomeSearcher implements Runnable {
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
-		HashMap<Biome, String> undiscoveredBiomeSets = biomeSets;
-		HashMap<Biome, String> undiscoveredRejectedBiomeSets = rejectedBiomeSets;
+		HashMap<Biome, String> undiscoveredBiomeSets = new HashMap<>(biomeSets);
+		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
 
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
@@ -243,7 +243,8 @@ public class BiomeSearcher implements Runnable {
 	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
 			return true;
 		}
-		
+		System.out.println(undiscoveredBiomes);
+		System.out.println(undiscoveredBiomeSets);
 		return false;
 	}
 
