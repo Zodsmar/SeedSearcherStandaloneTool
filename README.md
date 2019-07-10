@@ -5,6 +5,8 @@ This toolis built to be standalone but has some depencies if you would like to d
 
 ![SeedTool Image 2](https://imgur.com/8b6Rspy.png)
 
+![SeedTool Image 3](https://i.imgur.com/fCgzNpv.png)
+
 ## Credit
 
 #### Dependency
