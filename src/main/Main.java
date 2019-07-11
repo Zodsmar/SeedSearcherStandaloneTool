@@ -21,7 +21,7 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_WIDTH = (BACK_FRAME_WIDTH - CONSOLE_WIDTH) - 18;
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
-	public static final String VERSION = "v0.3.0";
+	public static final String VERSION = "v0.3.1";
 	public static boolean DEV_MODE = false;
 	/*
 	 Quick test of git connection through VS Code
