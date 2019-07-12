@@ -22,13 +22,13 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
 	public static final String VERSION = "v0.3.1";
-	public static boolean DEV_MODE = false;
+	public static boolean DEV_MODE = true;
 	/*
 	 Quick test of git connection through VS Code
 
 	 Dev mode currently gives access to:
-	 	- Structures
-	 	- New box selection for included/excluded biomes
+	 	 Structures
+	 	 New box selection for included/excluded biomes
 	 */
 	
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {

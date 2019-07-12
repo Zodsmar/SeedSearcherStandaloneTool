@@ -1167,6 +1167,12 @@ public class GUI {
 
 			JCheckBox cb_mansion = new JCheckBox("Mansion");
 			structures.add(cb_mansion, "2, 12");
+
+			JCheckBox cb_stronghold = new JCheckBox("Stronghold");
+			structures.add(cb_stronghold, "4, 12");
+
+			JCheckBox cb_village = new JCheckBox("Village");
+			structures.add(cb_village, "6, 12");
 		}
 		
 	}

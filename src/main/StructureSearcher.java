@@ -14,6 +14,13 @@ public class StructureSearcher {
 	public enum Type {
 		MINESHAFT, OCEAN_RUINS, OCEAN_FEATURES, VILLAGE, STRONGHOLD, TEMPLE, MANSION, OCEAN_MONUMENT, SLIME_CHUNK, BIOME_DATA
 	}
+	public static List<WorldIcon> findVillage(World world, CoordinatesInWorld coords) {
+		return world.getVillageProducer().getAt(coords, null);
+	}
+
+	public static List<WorldIcon> findStronghold(World world, CoordinatesInWorld coords) {
+		return world.getStrongholdProducer().getAt(coords, null);
+	}
 
 	public static List<WorldIcon> findMansion(World world, CoordinatesInWorld coords) {
 		return world.getWoodlandMansionProducer().getAt(coords, null);
@@ -77,6 +84,16 @@ public class StructureSearcher {
 						world,
 						coords);
 				if (mansion.size() < 1) return false;
+			} else if (type.equals(Type.STRONGHOLD)) {
+				List<WorldIcon> stronghold = StructureSearcher.findStronghold(
+						world,
+						coords);
+				if (stronghold.size() < 1) return false;
+			} else if (type.equals(Type.VILLAGE)) {
+				List<WorldIcon> village = StructureSearcher.findVillage(
+						world,
+						coords);
+				if (village.size() < 1) return false;
 			}
 		}
 		

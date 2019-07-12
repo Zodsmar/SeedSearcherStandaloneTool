@@ -115,7 +115,7 @@ public class BiomeSearcher implements Runnable {
 	Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
 	HashMap<Biome, String> biomeSets = new HashMap<Biome, String>(); boolean searchBiomeSets = true;
 	HashMap<Biome, String> rejectedBiomeSets = new HashMap<Biome, String>(); boolean searchRejectedBiomesSets = true;
-	StructureSearcher.Type[] structures = {};
+	StructureSearcher.Type[] structures = {}; boolean searchStructures = true;
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
 	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
@@ -126,6 +126,11 @@ public class BiomeSearcher implements Runnable {
 		// TODO: Look into this (probably will fix the structures being off too...)
 		//CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
 
+		//? Trying to figure out the spawn locations I think there is another step required to actually get it this gets closer ish...
+		// searchCenter.getXRelativeToFragment();
+		// searchCenter.getYRelativeToFragment();
+
+		
 		// ! This returns [0, 0] everytime
 		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
@@ -133,8 +138,10 @@ public class BiomeSearcher implements Runnable {
 			// The world spawn could not be determined.
 			return false;
 		}
+
 		long searchCenterX = searchCenter.getX();
 		long searchCenterY = searchCenter.getY();
+
 		int[] biomeCodes = getBiomeCodes(
 				searchCenterX - this.mSearchQuadrantWidth,
 				searchCenterY - this.mSearchQuadrantHeight,
@@ -142,8 +149,9 @@ public class BiomeSearcher implements Runnable {
 				2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
 		//System.out.println(biomeCodesCount);
-		
-		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0) {
+		System.out.println(searchCenterX);
+		System.out.println(searchCenterY);
+		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0) {
 			Util.console("Creating Selected Biomes from list...");
 			Util.console("Creating Rejected Biomes from list...");	
 		}
@@ -179,13 +187,7 @@ public class BiomeSearcher implements Runnable {
 				System.out.println(rejectedBiomeSets);
 			}
 		}
-		
-		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets) {
-			Util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
-			GUI.stop();
-			return false;
-		}
-		
+
 		boolean hasRequiredStructures = false;
 		if (Main.DEV_MODE) {
 			if (structures.length == 0 && GUI.findStructures.isSelected()) {
@@ -193,13 +195,23 @@ public class BiomeSearcher implements Runnable {
 				structures = GUI.manageCheckedCheckboxesFindStructures();
 			}
 		}
+
+		if(structures.length == 0){
+			searchStructures = false;
+		}
 		
-		if (structures.length > 0) {
+		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures) {
+			Util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
+			GUI.stop();
+			return false;
+		}
+		
+		if (structures.length > 0 && searchStructures) {
 			hasRequiredStructures = StructureSearcher.hasStructures(
 					structures,
 					world,
-					searchCenterX,
-					searchCenterY
+					searchCenterX - this.mSearchQuadrantWidth,
+					searchCenterY - this.mSearchQuadrantHeight
 					);
 			
 			// Could meet structure requirements, move to next seed.
@@ -239,7 +251,7 @@ public class BiomeSearcher implements Runnable {
 		}
 
 		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty()) {
-			System.out.println("Valid Seed: "+world.getWorldSeed().getLong());
+		
 	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
 			return true;
 		}
@@ -328,6 +340,7 @@ public class BiomeSearcher implements Runnable {
 					updateRejectedWorldsProgress(rejectedWorldsCount);
 					continue;
 				}
+				System.out.println("Valid Seed: "+world.getWorldSeed().getLong());
 				acceptedWorldsCount++;
 				updateAcceptedWorldsProgress(rejectedWorldsCount, acceptedWorldsCount, world);
 				rejectedWorldsCount = 0;
