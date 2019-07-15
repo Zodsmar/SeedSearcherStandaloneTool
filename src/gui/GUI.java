@@ -47,6 +47,8 @@ import main.StructureSearcher.Type;
 import java.awt.Font;
 import javax.swing.JTextPane;
 
+import gui.DevConsole;
+
 public class GUI {
 	
 	private JFrame frmSeedTool = new JFrame();
@@ -69,6 +71,7 @@ public class GUI {
 	static JButton btnStart;
 	static JButton btnPause;
 	static JCheckBox chkboxDevMode;
+	static JButton btnDevCon;
 	
 	public static JCheckBox findStructures;
 	
@@ -268,6 +271,8 @@ public class GUI {
 				System.out.println("Version: "+minecraftVersion+":"+versionBox.getSelectedIndex());
 				versionBox.setSelectedIndex(versionBox.getSelectedIndex());
 				initialize();
+			} else if (e.getSource() == btnDevCon) {
+				DevConsole.showDevConsole();
 			}
 		}
 	}
@@ -307,6 +312,7 @@ public class GUI {
 		
 		console = new JTextArea();
 		console.setLineWrap(true);
+		console.setEditable(false);
 		consoleScrollBar.setViewportView(console);
 		
 		tabbedPane.removeAll();
@@ -374,6 +380,11 @@ public class GUI {
 		JLabel lblDevMode = new JLabel("Dev Mode?");
 		lblDevMode.setBounds(10, 290, 75, 20);
 		panel.add(lblDevMode);
+
+		btnDevCon = new JButton("Dev Console");
+		btnDevCon.addActionListener(listener);
+		btnDevCon.setBounds(10, 60, 150, 25);
+		panel.add(btnDevCon);
 		
 		chkboxDevMode = new JCheckBox("");
 		chkboxDevMode.addActionListener(listener);
