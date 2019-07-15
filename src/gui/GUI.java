@@ -271,7 +271,7 @@ public class GUI {
 				System.out.println("Version: "+minecraftVersion+":"+versionBox.getSelectedIndex());
 				versionBox.setSelectedIndex(versionBox.getSelectedIndex());
 				initialize();
-			} else if (e.getSource() == btnDevCon) {
+			}  else if (e.getSource() == btnDevCon) {
 				DevConsole.showDevConsole();
 			}
 		}
@@ -381,10 +381,12 @@ public class GUI {
 		lblDevMode.setBounds(10, 290, 75, 20);
 		panel.add(lblDevMode);
 
-		btnDevCon = new JButton("Dev Console");
-		btnDevCon.addActionListener(listener);
-		btnDevCon.setBounds(10, 60, 150, 25);
-		panel.add(btnDevCon);
+		if (Main.DEV_MODE) {
+			btnDevCon = new JButton("Dev Console");
+			btnDevCon.addActionListener(listener);
+			btnDevCon.setBounds(10, 60, 150, 25);
+			panel.add(btnDevCon);
+		}
 		
 		chkboxDevMode = new JCheckBox("");
 		chkboxDevMode.addActionListener(listener);

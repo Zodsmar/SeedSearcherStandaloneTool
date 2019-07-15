@@ -124,7 +124,7 @@ public class BiomeSearcher implements Runnable {
 		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
 		//! this is incorrect and amidst is... no idea why...
 		// TODO: Look into this (probably will fix the structures being off too...)
-		//CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
+		CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
 
 		//? Trying to figure out the spawn locations I think there is another step required to actually get it this gets closer ish...
 		// searchCenter.getXRelativeToFragment();
@@ -132,7 +132,7 @@ public class BiomeSearcher implements Runnable {
 
 		
 		// ! This returns [0, 0] everytime
-		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
+		//CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
 		if (searchCenter == null) {
 			// The world spawn could not be determined.
