@@ -101,7 +101,7 @@ public class GUI {
 	private static int maximumMatchingWorldsCount = 10;
 	public static String minecraftVersion = Version.V1_14_3;
 	String[] versions = {
-		/*1.14.x*/	Version.V1_14_3, Version.V1_14,
+		/*1.14.x*/	Version.V1_14_4, Version.V1_14_3, Version.V1_14,
 		/*1.13.x*/	Version.V1_13_2, Version.V1_13_1, Version.V1_13,
 		/*1.12.x*/	Version.V1_12_2, Version.V1_12,
 		/*1.11.x*/	Version.V1_11_2, Version.V1_11,
@@ -387,7 +387,7 @@ public class GUI {
 			btnDevCon.setBounds(10, 60, 150, 25);
 			panel.add(btnDevCon);
 		}
-		
+
 		chkboxDevMode = new JCheckBox("");
 		chkboxDevMode.addActionListener(listener);
 		chkboxDevMode.setBounds(85, 290, 20, 20);

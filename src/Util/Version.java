@@ -8,6 +8,7 @@ import gui.GUI;
 public class Version {
 	
 	public static final String V9_99_99 = "9.99.9"; // Used to block out unsupported biomes/structures
+	public static final String V1_14_4 = "1.14.4";
 	public static final String V1_14_3 = "1.14.3";
 	public static final String V1_14 = "1.14";
 	public static final String V1_13_2 = "1.13.2";
@@ -32,6 +33,7 @@ public class Version {
 	
 	public static void registerSupportedVersions() {
 		versions.put(V9_99_99, 99999);
+		versions.put(V1_14_4, 1404);
 		versions.put(V1_14_3, 1403);
 		versions.put(V1_14, 1400);
 		versions.put(V1_13_2, 1302);
