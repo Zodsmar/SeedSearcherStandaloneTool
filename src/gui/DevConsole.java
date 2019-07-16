@@ -4,6 +4,8 @@ import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 
+import Util.CustomOutputStream;
+
 public class DevConsole{
 
     /**
@@ -34,6 +36,10 @@ public class DevConsole{
                         console.setLineWrap(true);
                         console.setEditable(false);
                         consoleScrollBar.setViewportView(console);
+
+                        PrintStream printStream = new PrintStream(new CustomOutputStream(console));
+                        System.setOut(printStream);
+                        System.setErr(printStream);
         
         devConsole.setLocationRelativeTo(null);
         devConsole.pack();
