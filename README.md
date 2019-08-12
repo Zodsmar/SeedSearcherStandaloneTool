@@ -5,6 +5,8 @@ This toolis built to be standalone but has some depencies if you would like to d
 
 ![SeedTool Image 2](https://imgur.com/8b6Rspy.png)
 
+![SeedTool Image 3](https://i.imgur.com/fCgzNpv.png)
+
 ## Credit
 
 #### Dependency
@@ -14,3 +16,13 @@ http://www.java2s.com/Code/Jar/j/jgoodies.htm
 
 #### User Credit
 scudobuio - for the initial search function
+
+fraffugooby - Updating dependencies
+
+YourCoalAlt - Updating to 1.14.3
+
+#### Contact
+
+Discord: Zodsmar#0877
+
+Email: zodsmar@gmail.com
