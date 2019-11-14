@@ -1,3 +1,4 @@
+// @formatter:off
 package gui;
 
 import java.awt.BorderLayout;
@@ -82,6 +83,11 @@ public class GUI {
 
 	public static JLabel seedCount;
 	public static JLabel totalSeedCount;
+	
+	public static JLabel lblMinecraftDirectory;
+	public static JTextField textBoxMinecraftDir;
+	private static JLabel lblMinecraftDirectoryInfo;
+	
 	public static JLabel timeElapsed;
 	public static JTextArea console;
 
@@ -196,7 +202,7 @@ public class GUI {
 		} else {
 			paused = !paused;
 			String text = (paused) ? "Click To Unpause" : "Click to Pause";
-			 
+			
 			if (paused) {
 				pausedTime = System.currentTimeMillis();
 				timer.stop();
@@ -351,6 +357,20 @@ public class GUI {
 		totalSeedCount = new JLabel("Total Rejected Seed Count: 0");
 		totalSeedCount.setBounds(10, 30, 250, 15);
 		panel.add(totalSeedCount);
+		
+		
+		lblMinecraftDirectory = new JLabel("Path to .minecraft directory (optional)");
+		lblMinecraftDirectory.setBounds(10, 60, 400, 15);
+		panel.add(lblMinecraftDirectory);
+
+		lblMinecraftDirectoryInfo = new JLabel("If path is blank/invalid, default .minecraft path will be used");
+		lblMinecraftDirectoryInfo.setBounds(10, 80, 450, 15);
+		panel.add(lblMinecraftDirectoryInfo);
+
+		textBoxMinecraftDir = new JTextField();
+		textBoxMinecraftDir.setBounds(10, 100, 400, 15);
+		panel.add(textBoxMinecraftDir);
+
 		
 		timeElapsed = new JLabel("Time Elapsed: 00:00:00");
 		timeElapsed.setBounds(10, 325, 212, 14);
@@ -1175,7 +1195,7 @@ public class GUI {
 	/**
 	 * Some Biomes come back as null. No idea. The Names match each other so it
 	 * should work (Apparently it works like 1 in 10 times...)
-	 * 
+	 *
 	 * @param biomeCodesCount
 	 * @param biomeCodes
 	 * @return
@@ -1345,7 +1365,7 @@ public class GUI {
 	public static HashMap<String, String> biomeSets(String name){
 		HashMap<String, String> checkedTexts = new HashMap<String, String>();
 		switch(name){
-			case "Desert Set": 
+			case "Desert Set":
 				checkedTexts.put("Desert", "Desert Set");
 				checkedTexts.put("Desert Hills", "Desert Set");
 				checkedTexts.put("Desert M", "Desert Set");
@@ -1377,7 +1397,7 @@ public class GUI {
 				checkedTexts.put("Roofed Forest", "Roofed Forest Set");
 				checkedTexts.put("Roofed Forest M", "Roofed Forest Set");
 				break;
-			case "Swampland Set": 
+			case "Swampland Set":
 				checkedTexts.put("Swampland", "Swampland Set");
 				checkedTexts.put("Swampland M", "Swampland Set");
 				break;
@@ -1423,7 +1443,7 @@ public class GUI {
 				checkedTexts.put("Frozen Ocean", "Frozen Ocean Set");
 				checkedTexts.put("Frozen Deep Ocean", "Frozen Ocean Set");
 				break;
-			default: 
+			default:
 
 				break;
 		}

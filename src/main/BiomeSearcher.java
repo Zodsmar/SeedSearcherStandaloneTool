@@ -1,3 +1,4 @@
+// @formatter:off
 package main;
 
 import java.io.FileNotFoundException;
@@ -67,7 +68,16 @@ public class BiomeSearcher implements Runnable {
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
-		final MinecraftInstallation minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
+		MinecraftInstallation minecraftInstallation;
+
+		String pathToDirectory = GUI.textBoxMinecraftDir.getText();
+		if (pathToDirectory == null ||
+			pathToDirectory.trim().equals(""))
+		{
+			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
+		} else {
+			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(pathToDirectory);
+		}
 		LauncherProfile launcherProfile = null;
 		try{
 			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
@@ -104,7 +114,7 @@ public class BiomeSearcher implements Runnable {
 	
 	/**
 	 * Determines whether to accept a world.
-	 * 
+	 *
 	 * @throws MinecraftInterfaceCreationException
 	 * @throws FormatException
 	 * @throws IOException
@@ -145,7 +155,7 @@ public class BiomeSearcher implements Runnable {
 		
 		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0) {
 			Util.console("Creating Selected Biomes from list...");
-			Util.console("Creating Rejected Biomes from list...");	
+			Util.console("Creating Rejected Biomes from list...");
 		}
 		
 		if (biomes.length == 0 && searchBiomes) {
@@ -203,7 +213,7 @@ public class BiomeSearcher implements Runnable {
 					);
 			
 			// Could meet structure requirements, move to next seed.
-			if (!hasRequiredStructures) return false;	
+			if (!hasRequiredStructures) return false;
 		}
 		
 		
@@ -227,10 +237,10 @@ public class BiomeSearcher implements Runnable {
 
 			if (undiscoveredBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				String setValue = undiscoveredBiomeSets.get(Biome.getByIndex(biomeCodes[biomeCodeIndex]));
-				// Get the iterator over the HashMap 
-				undiscoveredBiomeSets.entrySet() 
-				.removeIf( 
-					entry -> (setValue.equals(entry.getValue()))); 
+				// Get the iterator over the HashMap
+				undiscoveredBiomeSets.entrySet()
+				.removeIf(
+					entry -> (setValue.equals(entry.getValue())));
 			}
 
 			if (undiscoveredRejectedBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
@@ -281,13 +291,13 @@ public class BiomeSearcher implements Runnable {
 		}
 		Util.console(
 				acceptedWorldsCount + ": " + acceptedWorld.getWorldSeed().getLong() + " (rejected "
-						+ rejectedWorldsCount + ")");			
+						+ rejectedWorldsCount + ")");
 	}
 	
 	/**
 	 * Searches for matching worlds, and prints the seed of each matching world
 	 * to the given output stream.
-	 * 
+	 *
 	 * @throws MinecraftInterfaceCreationException
 	 * @throws FormatException
 	 * @throws IOException
@@ -378,7 +388,7 @@ public class BiomeSearcher implements Runnable {
 	 * Execute. new BiomeSearcher(minecraftVersionId, searchCenterKind,
 	 * searchQuadrantWidth, searchQuadrantHeight,
 	 * maximumMatchingWorldsCount).run();
-	 * 
+	 *
 	 * }
 	 */
 }
