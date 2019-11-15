@@ -68,16 +68,7 @@ public class BiomeSearcher implements Runnable {
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
-		MinecraftInstallation minecraftInstallation;
-
-		String pathToDirectory = GUI.textBoxMinecraftDir.getText();
-		if (pathToDirectory == null ||
-			pathToDirectory.trim().equals(""))
-		{
-			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
-		} else {
-			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(pathToDirectory);
-		}
+		final MinecraftInstallation minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
 		LauncherProfile launcherProfile = null;
 		try{
 			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);

@@ -68,10 +68,6 @@ public class GUI {
 	public static JLabel seedCount;
 	public static JLabel totalSeedCount;
 	
-	public static JLabel lblMinecraftDirectory;
-	public static JTextField textBoxMinecraftDir;
-	private static JLabel lblMinecraftDirectoryInfo;
-	
 	public static JLabel timeElapsed;
 	public static JTextArea console;
 
@@ -341,20 +337,6 @@ public class GUI {
 		totalSeedCount = new JLabel("Total Rejected Seed Count: 0");
 		totalSeedCount.setBounds(10, 30, 250, 15);
 		panel.add(totalSeedCount);
-		
-		
-		lblMinecraftDirectory = new JLabel("Path to .minecraft directory (optional)");
-		lblMinecraftDirectory.setBounds(10, 60, 400, 15);
-		panel.add(lblMinecraftDirectory);
-
-		lblMinecraftDirectoryInfo = new JLabel("If path is blank/invalid, default .minecraft path will be used");
-		lblMinecraftDirectoryInfo.setBounds(10, 80, 450, 15);
-		panel.add(lblMinecraftDirectoryInfo);
-
-		textBoxMinecraftDir = new JTextField();
-		textBoxMinecraftDir.setBounds(10, 100, 400, 15);
-		panel.add(textBoxMinecraftDir);
-
 		
 		timeElapsed = new JLabel("Time Elapsed: 00:00:00");
 		timeElapsed.setBounds(10, 325, 212, 14);
