@@ -1,5 +1,7 @@
+// formatter:off
 package main;
 
+import java.awt.*;
 import java.io.IOException;
 
 import Util.Version;
@@ -8,12 +10,15 @@ import amidst.parsing.FormatException;
 import gui.GUI;
 
 public class Main {
+
+//	public static final int BACK_FRAME_WIDTH = 924;
+//	public static final int BACK_FRAME_HEIGHT = 515;
 	
-	public static final int BACK_FRAME_WIDTH = 924;
-	public static final int BACK_FRAME_HEIGHT = 515;
+	public static final int BACK_FRAME_WIDTH = Math.max(924, (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.9));
+	public static final int BACK_FRAME_HEIGHT = Math.max(515, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.8));
 	
-	public static final int CONSOLE_WIDTH = 240;
-	public static final int CONSOLE_HEIGHT = BACK_FRAME_HEIGHT - 100;
+	public static final int CONSOLE_WIDTH = Math.max((int) (BACK_FRAME_WIDTH * 0.3), 240);
+	public static final int CONSOLE_HEIGHT = (int) (BACK_FRAME_HEIGHT * 0.8);
 	
 	public static final int FRAME_WITHOUT_CONSOLE_WIDTH = BACK_FRAME_WIDTH - CONSOLE_WIDTH;
 	public static final int FRAME_WITHOUT_CONSOLE_HEIGHT = BACK_FRAME_HEIGHT - CONSOLE_HEIGHT;
