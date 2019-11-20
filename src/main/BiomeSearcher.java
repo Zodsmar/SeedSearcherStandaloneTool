@@ -213,8 +213,8 @@ public class BiomeSearcher implements Runnable {
 			hasRequiredStructures = StructureSearcher.hasStructures(
 					structures,
 					world,
-					searchCenterX,
-					searchCenterY
+					searchCenterX - this.mSearchQuadrantWidth,
+					searchCenterY - this.mSearchQuadrantHeight
 					);
 			
 			// Could meet structure requirements, move to next seed.

@@ -56,7 +56,7 @@ public class StructureSearcher {
 
 	public static boolean hasStructures(Type[] structures, World world, long nwCornerX, long nwCornerY) {
 		CoordinatesInWorld coords = coords(nwCornerX, nwCornerY);
-//		System.out.println(nwCornerX+","+nwCornerY+"---"+coords.getX()+","+coords.getY());
+		System.out.println(nwCornerX+","+nwCornerY+"---"+coords.getX()+","+coords.getY());
 		for (Type type : structures) {
 			if (type.equals(Type.MINESHAFT)) {
 				List<WorldIcon> ocean_monuments = StructureSearcher.findMineshafts(
@@ -83,7 +83,12 @@ public class StructureSearcher {
 				List<WorldIcon> mansion = StructureSearcher.findMansion(
 						world,
 						coords);
+				System.out.println(mansion + ", " + mansion.size());
+				if(mansion.size() > 1){
+					System.out.println(mansion.get(1));
+				}
 				if (mansion.size() < 1) return false;
+
 			} else if (type.equals(Type.STRONGHOLD)) {
 				List<WorldIcon> stronghold = StructureSearcher.findStronghold(
 						world,
@@ -93,12 +98,21 @@ public class StructureSearcher {
 				List<WorldIcon> village = StructureSearcher.findVillage(
 						world,
 						coords);
-				if (village.size() < 1) return false;
+				System.out.println(village + ", " + village.size());
+				if(village.size() >= 1){
+					WorldIcon test = village.get(0);
+					//Found a stupid way of making structures work... need to keep looking into this
+					System.out.println(test + ", " + test.getCoordinates().getX());
+				}
+				if (village.size() >= 1 && village.get(0).getCoordinates().getX() < 100 && village.get(0).getCoordinates().getX() > -100 && village.get(0).getCoordinates().getY() < 100 && village.get(0).getCoordinates().getY() > -100){
+					System.out.println("Approved Buildings!");
+					return true;
+				}
 			}
 		}
 		
-		System.out.println("Approved Buildings!");
-		return true;
+
+		return false;
 	}
 	
 }
