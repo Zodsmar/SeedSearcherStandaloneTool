@@ -1,16 +1,6 @@
 // @formatter:off
 package main;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.*;
-
 import Util.Util;
 import amidst.logging.AmidstLogger;
 import amidst.mojangapi.file.LauncherProfile;
@@ -19,18 +9,21 @@ import amidst.mojangapi.minecraftinterface.MinecraftInterface;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceException;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaces;
-import amidst.mojangapi.world.World;
-import amidst.mojangapi.world.WorldBuilder;
-import amidst.mojangapi.world.WorldOptions;
-import amidst.mojangapi.world.WorldSeed;
-import amidst.mojangapi.world.WorldType;
+import amidst.mojangapi.world.*;
 import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
-import amidst.mojangapi.world.oracle.WorldSpawnOracle;
 import amidst.parsing.FormatException;
 import gui.GUI;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * A service that searches for worlds that match specific criteria.
@@ -68,7 +61,16 @@ public class BiomeSearcher implements Runnable {
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
-		final MinecraftInstallation minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
+		MinecraftInstallation minecraftInstallation;
+
+		String pathToDirectory = GUI.textBoxMinecraftDir.getText();
+		if (pathToDirectory == null ||
+			pathToDirectory.trim().equals(""))
+		{
+			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
+		} else {
+			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(pathToDirectory);
+		}
 		LauncherProfile launcherProfile = null;
 		try{
 			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
