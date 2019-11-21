@@ -380,7 +380,7 @@ public class GUI {
 		if (Main.DEV_MODE) {
 			btnDevCon = new JButton("Dev Console");
 			btnDevCon.addActionListener(listener);
-			btnDevCon.setBounds(10, 60, 150, 25);
+			btnDevCon.setBounds(250, 290, 150, 25);
 			panel.add(btnDevCon);
 		}
 
@@ -1121,6 +1121,8 @@ public class GUI {
 									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 1
 									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 2
 									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 3
+									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 4
+									FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, // Col 5
 									},
 							new RowSpec[] {
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 2
@@ -1129,6 +1131,7 @@ public class GUI {
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 8
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 10
 									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 12
+									FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 14
 									FormSpecs.RELATED_GAP_ROWSPEC,}));
 			
 			/*
@@ -1168,6 +1171,12 @@ public class GUI {
 			JCheckBox cb_ocean_ruins = new JCheckBox("Ocean Ruins");
 			structures.add(cb_ocean_ruins, "6, 8");
 
+			JCheckBox cb_shipwreck = new JCheckBox("Shipwreck");
+			structures.add(cb_shipwreck, "8, 8");
+
+			JCheckBox cb_buriedtreasure = new JCheckBox("Buried Treasure");
+			structures.add(cb_buriedtreasure, "10, 8");
+
 			JLabel ex_surfaceFeaturesTxt = new JLabel("Surface Features");
 			ex_surfaceFeaturesTxt.setHorizontalAlignment(SwingConstants.CENTER);
 			Util.setFontSize(ex_surfaceFeaturesTxt, 18);
@@ -1182,6 +1191,21 @@ public class GUI {
 
 			JCheckBox cb_village = new JCheckBox("Village");
 			structures.add(cb_village, "6, 12");
+
+			JCheckBox cb_pillageroutpost = new JCheckBox("Pillager Outpost");
+			structures.add(cb_pillageroutpost, "8, 12");
+
+			JCheckBox cb_deserttemple = new JCheckBox("Desert Temple");
+			structures.add(cb_deserttemple, "2, 14");
+
+			JCheckBox cb_jungletemple = new JCheckBox("Jungle Temple");
+			structures.add(cb_jungletemple, "4, 14");
+
+			JCheckBox cb_witchhut = new JCheckBox("Witch Hut");
+			structures.add(cb_witchhut, "6, 14");
+
+			JCheckBox cb_igloo = new JCheckBox("Igloo");
+			structures.add(cb_igloo, "8, 14");
 		}
 		
 	}
