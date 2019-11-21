@@ -27,7 +27,7 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
 	public static final String VERSION = "v0.4.0";
-	public static boolean DEV_MODE = true;
+	public static boolean DEV_MODE = false;
 	/*
 	 Quick test of git connection through VS Code
 

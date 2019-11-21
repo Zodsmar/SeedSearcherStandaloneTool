@@ -192,12 +192,11 @@ public class BiomeSearcher implements Runnable {
 		}
 
 		boolean hasRequiredStructures = false;
-		if (Main.DEV_MODE) {
-			if (structures.length == 0 && GUI.findStructures.isSelected()) {
-				Util.console("Creating Structures from list...");
-				structures = GUI.manageCheckedCheckboxesFindStructures();
-			}
-		}
+
+        if (structures.length == 0 && GUI.findStructures.isSelected()) {
+            Util.console("Creating Structures from list...");
+            structures = GUI.manageCheckedCheckboxesFindStructures();
+        }
 
 		if(structures.length == 0){
 			searchStructures = false;
