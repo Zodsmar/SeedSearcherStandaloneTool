@@ -1,7 +1,6 @@
-// @formatter:off
-package main;
+package sassa.main;
 
-import Util.Util;
+import sassa.util.Util;
 import amidst.logging.AmidstLogger;
 import amidst.mojangapi.file.LauncherProfile;
 import amidst.mojangapi.file.MinecraftInstallation;
@@ -15,7 +14,7 @@ import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
-import gui.GUI;
+import sassa.gui.GUI;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

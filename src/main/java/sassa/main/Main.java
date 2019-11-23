@@ -1,9 +1,9 @@
-package main;
+package sassa.main;
 
-import Util.Version;
+import sassa.util.Version;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.parsing.FormatException;
-import gui.GUI;
+import sassa.gui.GUI;
 
 import java.awt.*;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class Main {
 	public static final int FRAME_SCROLL_BAR_WIDTH = (BACK_FRAME_WIDTH - CONSOLE_WIDTH) - 18;
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
-	public static final String VERSION = "v0.4.0";
+	public static final String VERSION = "v0.4.1";
 	public static boolean DEV_MODE = false;
 	/*
 	 Quick test of git connection through VS Code

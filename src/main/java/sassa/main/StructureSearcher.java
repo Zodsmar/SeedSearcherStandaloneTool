@@ -1,4 +1,4 @@
-package main;
+package sassa.main;
 
 import java.util.ArrayList;
 import java.util.List;
