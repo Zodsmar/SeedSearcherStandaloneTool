@@ -13,8 +13,7 @@
 *.ear
 
 # IntelliJ IDEA project files #
-/SeedTool.eml
-/SeedTool.iml.iml
+/*.iml
 /.idea/*
 /bin
 /dist
