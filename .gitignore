@@ -5,3 +5,26 @@
 /jgoodies-common-1.4.0.jar
 /target/
 .vscode
+
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+# IntelliJ IDEA project files #
+/SeedTool.eml
+/SeedTool.iml.iml
+/.idea/*
+/bin
+/dist
+/logs
+/nbproject
+/build
+/lib/logs
+
+history.txt
+target/
+/dependency-reduced-pom.xml
+devtools.properties
+tests
