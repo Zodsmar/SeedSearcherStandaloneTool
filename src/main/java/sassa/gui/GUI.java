@@ -49,6 +49,8 @@ public class GUI {
 	static JButton btnPause;
 	static JCheckBox chkboxDevMode;
 	static JButton btnDevCon;
+	static JLabel lblDonate;
+	static JButton btnDonate;
 	
 	public static JCheckBox findStructures;
 	
@@ -381,6 +383,19 @@ public class GUI {
 			btnDevCon.setBounds(250, 290, 150, 25);
 			panel.add(btnDevCon);
 		}
+		lblDonate = new JLabel("Love the tool?");
+		lblDonate.setBounds(450, 260, 150, 25);
+		panel.add(lblDonate);
+		btnDonate = new JButton("Donate!");
+		btnDonate.setBounds(450, 290, 150, 25);
+		btnDonate.addActionListener( new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Util.openWebPage("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url");
+			}
+		});
+		panel.add(btnDonate);
 
 		chkboxDevMode = new JCheckBox("");
 		chkboxDevMode.addActionListener(listener);

@@ -80,5 +80,13 @@ public class Util {
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		hotBiomesTxt.setFont(font.deriveFont(attributes));
 	}
-	
+
+	public static void openWebPage(String url){
+		try {
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+		}
+		catch (java.io.IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
