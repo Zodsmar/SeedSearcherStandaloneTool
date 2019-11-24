@@ -1,6 +1,8 @@
 package sassa.util;
 
-import java.awt.Font;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +53,10 @@ public class Util {
 	}
 */
 	public static void console(String output) {
+
+		StringSelection stringSelection = new StringSelection(output);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
 		GUI.console.append(output + "\n");
 	}
 	public static void consoleNoLine(String output) {

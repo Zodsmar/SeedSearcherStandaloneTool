@@ -1202,8 +1202,6 @@ public class GUI {
 	 * Some Biomes come back as null. No idea. The Names match each other so it
 	 * should work (Apparently it works like 1 in 10 times...)
 	 *
-	 * @param biomeCodesCount
-	 * @param biomeCodes
 	 * @return
 	 * @throws UnknownBiomeIndexException
 	 * @throws InterruptedException
