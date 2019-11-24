@@ -27,5 +27,5 @@ Discord: Zodsmar#0877
 
 Email: zodsmar@gmail.com
 
-
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url)
 
