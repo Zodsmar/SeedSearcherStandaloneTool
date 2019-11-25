@@ -4,11 +4,17 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JLabel;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import sassa.gui.GUI;
 
 public class Util {
@@ -88,5 +94,19 @@ public class Util {
 		catch (java.io.IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public static void jsonParser() throws IOException, ParseException {
+
+		// TODO: Deep dive into parsing and figure out best way to parse everything and setup new GUI with JSON structures
+		//Basic parser :)
+		String fileName = "sassa/json/sassa.json";
+		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+
+		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(fileName).getFile()));
+		JSONObject jo = (JSONObject) obj;
+		System.out.println(jo.get("width"));
+
+
 	}
 }

@@ -1,0 +1,161 @@
+{
+  "Biomes": {
+    "ANY_V": {
+      "Hot Biomes": [
+        "Desert",
+        "Desert Hills",
+        "Desert M"
+      ],
+      "Lush Biomes": [
+        "Plains",
+        "Forest",
+        "Forest Hills",
+        "Swampland",
+        "Swampland M",
+        "Jungle",
+        "Jungle Hills",
+        "Jungle Edge",
+        "Jungle M",
+        "Jungle Edge M"
+      ],
+      "Cold Biomes": [
+        "Extreme Hills"
+      ],
+      "Snowy Biomes": [
+        "Cold Taiga",
+        "Cold Taiga Hills",
+        "Cold Taiga M",
+        "Ice Plains",
+        "Ice Mountains"
+
+      ],
+      "Water Biomes": [
+        "Beach",
+        "River",
+        "Ocean",
+        "Frozen River",
+        "Frozen Ocean",
+        "Mushroom Island",
+        "Mushroom Island Shore"
+      ]
+    },
+    "V1_7_10": {
+      "Hot Biomes": [
+        "Savanna",
+        "Savanna Plateau",
+        "Savanna M",
+        "Savanna Plateau M",
+        "Mesa",
+        "Mesa Plateau F",
+        "Mesa Plateau",
+        "Mesa (Bryce)",
+        "Mesa Plateau F M",
+        "Mesa Plateau F M"
+      ],
+      "Lush Biomes": [
+        "Sunflower Plains",
+        "Flower Forest",
+        "Birch Forest",
+        "Birch Forest Hills",
+        "Birch Forest M",
+        "Birch Forest Hills M",
+        "Roofed Forest",
+        "Roofed Forest M"
+      ],
+      "Cold Biomes": [
+        "Extreme Hills+",
+        "Extreme Hills M",
+        "Extreme Hills+ M",
+        "Taiga",
+        "Taiga Hills",
+        "Taiga M",
+        "Mega Taiga",
+        "Mega Taiga Hills",
+        "Mega Spruce Taiga",
+        "Mega Spruce Taiga (Hills)"
+
+      ],
+      "Snowy Biomes": [
+        "Ice Plains Spikes"
+
+      ],
+      "Water Biomes": [
+        "Stone Beach",
+        "Cold Beach",
+        "Deep Ocean"
+      ]
+    },
+    "V1_13": {
+      "Water Biomes": [
+        "Frozen Deep Ocean",
+        "Warm Ocean",
+        "Lukewarm Ocean",
+        "Lukewarm Deep Ocean",
+        "Cold Ocean",
+        "Cold Deep Ocean"
+      ]
+    },
+    "V1_14": {
+      "Lush Biomes": [
+        "Bamboo Jungle",
+        "Bamboo Jungle Hills"
+      ]
+    },
+    "V9_99_99": {
+      "Water Biomes": [
+        "Warm Deep Ocean"
+      ]
+    },
+    "PREV1_6_4": {
+      "Cold Biomes": [
+        "Extreme Hills Edge"
+      ]
+    }
+  },
+  "Biome Sets": {
+    "Forest Set": [
+
+    ]
+  },
+  "Structures": {
+    "ANY_V": [
+      "Mineshaft",
+      "Stronghold",
+      "Village",
+      "Desert Temple",
+      "Jungle Temple",
+      "Witch Hut"
+    ],
+    "V1_8": [
+      "Ocean Monument"
+    ],
+    "V1_9": [
+      "Igloo"
+    ],
+    "V1_11":[
+      "Mansion"
+    ],
+    "V1_13": [
+      "Ocean Ruins",
+      "Shipwreck",
+      "Buried Treasure"
+    ],
+    "V1_14": [
+      "Pillager Outpost"
+    ]
+  },
+  "defaultJSONStructure": {
+    "Hot Biomes": [
+
+    ],
+    "Lush Biomes": [
+
+    ],
+    "Cold Biomes": [
+    ],
+    "Snowy Biomes": [
+    ],
+    "Water Biomes": [
+    ]
+  }
+}
