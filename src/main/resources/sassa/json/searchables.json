@@ -39,7 +39,7 @@
         "Mushroom Island Shore"
       ]
     },
-    "V1_7_10": {
+    "710": {
       "Hot Biomes": [
         "Savanna",
         "Savanna Plateau",
@@ -85,7 +85,7 @@
         "Deep Ocean"
       ]
     },
-    "V1_13": {
+    "1300": {
       "Water Biomes": [
         "Frozen Deep Ocean",
         "Warm Ocean",
@@ -95,13 +95,13 @@
         "Cold Deep Ocean"
       ]
     },
-    "V1_14": {
+    "1400": {
       "Lush Biomes": [
         "Bamboo Jungle",
         "Bamboo Jungle Hills"
       ]
     },
-    "V9_99_99": {
+    "99999": {
       "Water Biomes": [
         "Warm Deep Ocean"
       ]
@@ -126,21 +126,21 @@
       "Jungle Temple",
       "Witch Hut"
     ],
-    "V1_8": [
+    "800": [
       "Ocean Monument"
     ],
-    "V1_9": [
+    "920": [
       "Igloo"
     ],
-    "V1_11":[
+    "1100":[
       "Mansion"
     ],
-    "V1_13": [
+    "1300": [
       "Ocean Ruins",
       "Shipwreck",
       "Buried Treasure"
     ],
-    "V1_14": [
+    "1400": [
       "Pillager Outpost"
     ]
   },

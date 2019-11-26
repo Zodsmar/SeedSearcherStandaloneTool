@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -87,6 +87,10 @@ public class Util {
 		hotBiomesTxt.setFont(font.deriveFont(attributes));
 	}
 
+	/**
+	 * pass a url to open a web browser with that link
+	 * @param url
+	 */
 	public static void openWebPage(String url){
 		try {
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
@@ -96,17 +100,35 @@ public class Util {
 		}
 	}
 
-	public static void jsonParser() throws IOException, ParseException {
+	/**
+	 * Grabs JSON file and puts it into a JSONObject
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public JSONObject jsonParser(String fileName) throws IOException, ParseException {
 
 		// TODO: Deep dive into parsing and figure out best way to parse everything and setup new GUI with JSON structures
-		//Basic parser :)
-		String fileName = "sassa/json/sassa.json";
+		String file = "sassa/json/" + fileName;
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
-		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(fileName).getFile()));
+		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(file).getFile()));
 		JSONObject jo = (JSONObject) obj;
-		System.out.println(jo.get("width"));
 
+		return jo;
+	}
 
+	public void generateBiomes() throws IOException, ParseException {
+
+		String minecraftVersion = GUI.minecraftVersion;
+
+		JSONObject jo = jsonParser("searchables.json");
+		JSONObject biomes = (JSONObject) jo.get("Biomes");
+		JSONObject any_v = (JSONObject) biomes.get("ANY_V");
+		JSONArray hot_biomes = (JSONArray) any_v.get("Hot Biomes");
+		System.out.println(hot_biomes);
+		Map<String, Integer> versions = Version.getVersions();
+		System.out.println(versions.get(minecraftVersion));
 	}
 }

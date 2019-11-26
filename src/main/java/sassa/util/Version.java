@@ -26,7 +26,7 @@ public class Version {
 	public static final String V1_8_1 = "1.8.1";
 	public static final String V1_8 = "1.8";
 	public static final String V1_7_10 = "1.7.10";
-	public static final String V1_6_4 = "1.6.4";
+	//public static final String V1_6_4 = "1.6.4";
 	
 	
 	private static Map<String, Integer> versions = new HashMap<String, Integer>();
@@ -51,7 +51,7 @@ public class Version {
 		versions.put(V1_8_1, 801);
 		versions.put(V1_8, 800);
 		versions.put(V1_7_10, 710);
-		versions.put(V1_6_4, 604);
+		//versions.put(V1_6_4, 604);
 	}
 	
 	public static boolean isOrNewerThanVersion(String version) {
@@ -73,5 +73,9 @@ public class Version {
 //		if (version >= selected) return true;
 //		else return false;
 //	}
+
+	public static Map<String, Integer> getVersions(){
+		return versions;
+	}
 	
 }

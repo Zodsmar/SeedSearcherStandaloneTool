@@ -38,8 +38,10 @@ public class Main {
 	 	- New box selection for included/excluded biomes
 	 */
 	
-	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException {
+	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		Version.registerSupportedVersions();
+		Util gen = new Util();
+		gen.generateBiomes();
 		new GUI().startSeedSearcher();
 	}
 	

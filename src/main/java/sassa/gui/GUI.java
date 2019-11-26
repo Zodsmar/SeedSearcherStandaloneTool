@@ -92,8 +92,8 @@ public class GUI {
 		/*1.10.x*/	Version.V1_10_2,
 		/*1.9.x*/	Version.V1_9_4, Version.V1_9_2,
 		/*1.8.x*/	Version.V1_8_9, Version.V1_8_3, Version.V1_8_1, Version.V1_8,
-		/*1.7.x*/	Version.V1_7_10,
-		/*1.6.x*/	Version.V1_6_4};
+		/*1.7.x*/	Version.V1_7_10};
+		///*1.6.x*/	Version.V1_6_4};
 	
 	DefaultComboBoxModel<String> versionModel = new DefaultComboBoxModel<String>(versions);
 	JComboBox<String> versionBox = new JComboBox<String>(versionModel);
@@ -948,13 +948,13 @@ public class GUI {
 		}
 
 		// Biome stopped spawning naturally as of 1.7
-		if (Version.isOrOlderThanVersion(Version.V1_6_4)) {
-			Container _4_32_container = new Container();
-			_4_32_container.add(new JLabel("Extreme Hills Edge"));
-			_4_32_container.setLayout(new BoxLayout(_4_32_container, BoxLayout.PAGE_AXIS));
-			_4_32_container.add(new JComboBox<String>(include_exclude_txt));
-			biomesPanel.add(_4_32_container, "2, 32");
-		}
+//		if (Version.isOrOlderThanVersion(Version.V1_6_4)) {
+//			Container _4_32_container = new Container();
+//			_4_32_container.add(new JLabel("Extreme Hills Edge"));
+//			_4_32_container.setLayout(new BoxLayout(_4_32_container, BoxLayout.PAGE_AXIS));
+//			_4_32_container.add(new JComboBox<String>(include_exclude_txt));
+//			biomesPanel.add(_4_32_container, "2, 32");
+//		}
 
 		if (Version.isOrNewerThanVersion(Version.V1_7_10)) {
 			Container _6_32_container = new Container();
@@ -1467,5 +1467,9 @@ public class GUI {
 				break;
 		}
 		return checkedTexts;
+	}
+
+	public String getMinecraftVersion(){
+		return minecraftVersion;
 	}
 }
