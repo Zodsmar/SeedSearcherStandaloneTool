@@ -6,7 +6,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JLabel;
@@ -113,22 +115,56 @@ public class Util {
 		String file = "sassa/json/" + fileName;
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
-		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(file).getFile()));
+		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(file).getFile().replaceAll("%20", " ")));
 		JSONObject jo = (JSONObject) obj;
 
 		return jo;
 	}
 
-	public void generateBiomes() throws IOException, ParseException {
+	/* Removing support for 1.6.4 because its a pain. If people really want it I can look into in the future
+	"PREV1_6_4": {
+      "Cold Biomes": [
+        "Extreme Hills Edge"
+      ]
+    }
+	 */
 
+
+	public ArrayList<String> generateSearchLists(JSONObject obj)  {
+		ArrayList<String> list = new ArrayList<String>();
 		String minecraftVersion = GUI.minecraftVersion;
+		Map<String, Integer> versions = Version.getVersions();
+		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			if(Integer.valueOf(key) <= Integer.valueOf(versions.get(minecraftVersion))){
+				JSONObject subGroup = (JSONObject) obj.get(key);
+				for(Iterator iterator1 = subGroup.keySet().iterator(); iterator1.hasNext();){
+
+					String key1 = (String) iterator1.next();
+					JSONArray subGArray = (JSONArray)subGroup.get(key1);
+					for(int i = 0; i < subGArray.size(); i++){
+						list.add((String)subGArray.get(i));
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	public void createSearchLists() throws IOException, ParseException{
 
 		JSONObject jo = jsonParser("searchables.json");
+
 		JSONObject biomes = (JSONObject) jo.get("Biomes");
-		JSONObject any_v = (JSONObject) biomes.get("ANY_V");
-		JSONArray hot_biomes = (JSONArray) any_v.get("Hot Biomes");
-		System.out.println(hot_biomes);
-		Map<String, Integer> versions = Version.getVersions();
-		System.out.println(versions.get(minecraftVersion));
+		ArrayList<String> biomeList;
+
+		JSONObject structures = (JSONObject) jo.get("Structures");
+		ArrayList<String> structureList;
+
+		biomeList = generateSearchLists(biomes);
+		structureList = generateSearchLists(structures);
+
+		System.out.println(biomeList);
+		System.out.println(structureList);
 	}
 }

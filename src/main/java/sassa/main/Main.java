@@ -41,7 +41,7 @@ public class Main {
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		Version.registerSupportedVersions();
 		Util gen = new Util();
-		gen.generateBiomes();
+		gen.createSearchLists();
 		new GUI().startSeedSearcher();
 	}
 	

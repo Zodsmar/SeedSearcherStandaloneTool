@@ -1,6 +1,6 @@
 {
   "Biomes": {
-    "ANY_V": {
+    "0": {
       "Hot Biomes": [
         "Desert",
         "Desert Hills",
@@ -105,11 +105,6 @@
       "Water Biomes": [
         "Warm Deep Ocean"
       ]
-    },
-    "PREV1_6_4": {
-      "Cold Biomes": [
-        "Extreme Hills Edge"
-      ]
     }
   },
   "Biome Sets": {
@@ -118,31 +113,47 @@
     ]
   },
   "Structures": {
-    "ANY_V": [
-      "Mineshaft",
-      "Stronghold",
-      "Village",
-      "Desert Temple",
-      "Jungle Temple",
-      "Witch Hut"
-    ],
-    "800": [
-      "Ocean Monument"
-    ],
-    "920": [
-      "Igloo"
-    ],
-    "1100":[
-      "Mansion"
-    ],
-    "1300": [
-      "Ocean Ruins",
-      "Shipwreck",
-      "Buried Treasure"
-    ],
-    "1400": [
+    "0": {
+      "Underground Features": [
+        "Mineshaft"
+      ],
+      "Surface Features": [
+        "Stronghold",
+        "Village",
+        "Desert Temple",
+        "Jungle Temple",
+        "Witch Hut"
+      ]
+    },
+    "800": {
+      "Ocean Features": [
+        "Ocean Monument"
+      ]
+    },
+
+    "920": {
+      "Surface Features": [
+        "Igloo"
+      ]
+    },
+    "1100":{
+      "Surface Features": [
+        "Mansion"
+      ]
+    },
+
+    "1300": {
+      "Ocean Features": [
+        "Ocean Ruins",
+        "Shipwreck",
+        "Buried Treasure"
+        ]
+    },
+    "1400": {
+      "Surface Features":[
       "Pillager Outpost"
-    ]
+      ]
+    }
   },
   "defaultJSONStructure": {
     "Hot Biomes": [
