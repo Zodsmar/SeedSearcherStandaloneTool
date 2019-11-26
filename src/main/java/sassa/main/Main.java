@@ -1,6 +1,7 @@
 package sassa.main;
 
 import org.json.simple.parser.ParseException;
+import sassa.gui.GenerateGUI;
 import sassa.util.Util;
 import sassa.util.Version;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
@@ -40,8 +41,7 @@ public class Main {
 	
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		Version.registerSupportedVersions();
-		Util gen = new Util();
-		gen.createSearchLists();
+		GenerateGUI.showGenerateGUI();
 		new GUI().startSeedSearcher();
 	}
 	

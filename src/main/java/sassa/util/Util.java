@@ -151,20 +151,15 @@ public class Util {
 		return list;
 	}
 
-	public void createSearchLists() throws IOException, ParseException{
+	public ArrayList<String> createSearchLists(String searchName) throws IOException, ParseException{
 
 		JSONObject jo = jsonParser("searchables.json");
 
-		JSONObject biomes = (JSONObject) jo.get("Biomes");
-		ArrayList<String> biomeList;
+		JSONObject jObj = (JSONObject) jo.get(searchName);
+		ArrayList<String> jObjList;
 
-		JSONObject structures = (JSONObject) jo.get("Structures");
-		ArrayList<String> structureList;
+		jObjList = generateSearchLists(jObj);
 
-		biomeList = generateSearchLists(biomes);
-		structureList = generateSearchLists(structures);
-
-		System.out.println(biomeList);
-		System.out.println(structureList);
+		return jObjList;
 	}
 }
