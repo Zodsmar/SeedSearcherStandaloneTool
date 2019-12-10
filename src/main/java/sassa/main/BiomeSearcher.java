@@ -206,7 +206,30 @@ public class BiomeSearcher implements Runnable {
 			GUI.stop();
 			return false;
 		}
-		
+		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
+		System.out.println(undiscoveredStructures);
+		System.out.println(undiscoveredStructures.size());
+		for(int i =0; i <= undiscoveredStructures.size(); i++){
+		    StructureSearcher.Type struct = StructureSearcher.hasStructures(
+					undiscoveredStructures,
+                    world,
+                    searchCenterX - this.mSearchQuadrantHeight,
+                    searchCenterY -  this.mSearchQuadrantWidth,
+                    this.mSearchQuadrantHeight * 2,
+                    this.mSearchQuadrantWidth * 2);
+
+		    if(undiscoveredStructures.contains(struct)){
+		        undiscoveredStructures.remove(struct);
+            } else {
+		        return false;
+            }
+			System.out.println(undiscoveredStructures);
+            if(undiscoveredStructures.isEmpty()){
+                return true;
+            }
+        }
+
+		/*
 		if (structures.length > 0 && searchStructures) {
 			hasRequiredStructures = StructureSearcher.hasStructures(
 					structures,
@@ -220,7 +243,7 @@ public class BiomeSearcher implements Runnable {
 			// Could meet structure requirements, move to next seed.
 			if (!hasRequiredStructures) return false;
 		}
-		
+		*/
 		
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
