@@ -33,6 +33,7 @@ public class GenerateGUI {
         panel_generated.add(generatedScrollBar);
 
         JPanel biomesPanel = new JPanel();
+
         Util gen = new Util();
         ArrayList<String> searchingList = gen.createSearchLists("Biomes");
 
