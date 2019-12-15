@@ -125,7 +125,7 @@
         <dependency>
             <groupId>com.github.toolbox4minecraft</groupId>
             <artifactId>amidst</artifactId>
-            <version>v4.3</version>
+            <version>v4.4-beta1</version>
         </dependency>
         <dependency>
             <groupId>com.jgoodies</groupId>

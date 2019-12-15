@@ -16,6 +16,7 @@ import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
 import sassa.gui.GUI;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class BiomeSearcher implements Runnable {
 		{
 			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
 		} else {
-			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(pathToDirectory);
+			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(new File(pathToDirectory));
 		}
 		LauncherProfile launcherProfile = null;
 		try{
@@ -207,8 +208,8 @@ public class BiomeSearcher implements Runnable {
 			return false;
 		}
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
-		System.out.println(undiscoveredStructures);
-		System.out.println(undiscoveredStructures.size());
+		//System.out.println(undiscoveredStructures);
+		//System.out.println(undiscoveredStructures.size());
 		for(int i =0; i <= undiscoveredStructures.size(); i++){
 		    StructureSearcher.Type struct = StructureSearcher.hasStructures(
 					undiscoveredStructures,
