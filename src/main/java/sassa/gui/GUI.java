@@ -83,9 +83,9 @@ public class GUI {
 	private static int searchQuadrantWidth = 512;
 	private static int searchQuadrantHeight = 512;
 	private static int maximumMatchingWorldsCount = 10;
-	public static String minecraftVersion = Version.V1_15;
+	public static String minecraftVersion = Version.V1_15_1;
 	String[] versions = {
-	    /*1.15.x*/	Version.V1_15,
+	    /*1.15.x*/	Version.V1_15_1, Version.V1_15,
 		/*1.14.x*/	Version.V1_14_4, Version.V1_14_3, Version.V1_14,
 		/*1.13.x*/	Version.V1_13_2, Version.V1_13_1, Version.V1_13,
 		/*1.12.x*/	Version.V1_12_2, Version.V1_12,

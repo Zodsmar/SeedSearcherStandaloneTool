@@ -221,13 +221,12 @@ public class BiomeSearcher implements Runnable {
 
 		    if(undiscoveredStructures.contains(struct)){
 		        undiscoveredStructures.remove(struct);
-            } else {
+            }
+
+		    /*else {
 		        return false;
-            }
-			System.out.println(undiscoveredStructures);
-            if(undiscoveredStructures.isEmpty()){
-                return true;
-            }
+            }*/
+
         }
 
 		/*
@@ -251,7 +250,7 @@ public class BiomeSearcher implements Runnable {
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
 		HashMap<Biome, String> undiscoveredBiomeSets = new HashMap<>(biomeSets);
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
-
+		System.out.println(undiscoveredBiomes);
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				// A new biome has been found.
@@ -277,11 +276,11 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 
-		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty()) {
-		
-	//			&& (GUI.findStructures.isSelected() && hasStructures)) {
+		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty() && undiscoveredStructures.isEmpty()) {
 			return true;
 		}
+
+		System.out.println(undiscoveredStructures);
 		System.out.println(undiscoveredBiomes);
 		System.out.println(undiscoveredBiomeSets);
 		return false;
