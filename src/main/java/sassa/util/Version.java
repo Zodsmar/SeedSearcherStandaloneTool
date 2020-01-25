@@ -8,6 +8,7 @@ import sassa.gui.GUI;
 public class Version {
 	
 	public static final String V9_99_99 = "9.99.9"; // Used to block out unsupported biomes/structures
+	public static final String V1_15_2 = "1.15.2";
 	public static final String V1_15_1 = "1.15.1";
 	public static final String V1_15 = "1.15";
 	public static final String V1_14_4 = "1.14.4";
@@ -35,6 +36,7 @@ public class Version {
 	
 	public static void registerSupportedVersions() {
 		versions.put(V9_99_99, 99999);
+		versions.put(V1_15_2, 1502);
 		versions.put(V1_15_1, 1501);
 		versions.put(V1_15, 1500);
 		versions.put(V1_14_4, 1404);
