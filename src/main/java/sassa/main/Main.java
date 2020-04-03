@@ -31,6 +31,7 @@ public class Main {
 	
 	public static final String VERSION = "v0.4.4";
 	public static boolean DEV_MODE = false;
+	public static boolean RANDOM_SEEDS = true;
 	/*
 	 Quick test of git connection through VS Code
 
