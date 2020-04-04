@@ -57,8 +57,13 @@ public class BiomeSearcher implements Runnable {
 	 */
 	private int mMaximumMatchingWorldsCount;
 
+	private long mMinSeed;
+	private long mMaxSeed;
+
+	public static long currentSeedCheck = 0L;
+
 	public BiomeSearcher(String minecraftVersion,
-			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount)
+			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 		MinecraftInstallation minecraftInstallation;
@@ -82,7 +87,9 @@ public class BiomeSearcher implements Runnable {
 		this.mSearchQuadrantWidth = searchQuadrantWidth;
 		this.mSearchQuadrantHeight = searchQuadrantHeight;
 		this.mMaximumMatchingWorldsCount = maximumMatchingWorldsCount;
-
+		this.mMinSeed = minSeed;
+		this.mMaxSeed = maxSeed;
+		this.currentSeedCheck = minSeed;
 	}
 
 	/**
@@ -91,8 +98,14 @@ public class BiomeSearcher implements Runnable {
 	 */
 	World createWorld() throws MinecraftInterfaceException {
 		Consumer<World> onDispose = world -> {};
-		WorldOptions worldOptions = new WorldOptions(WorldSeed.random(), WorldType.DEFAULT); // TODO allow players to choose?
-		return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
+		if (Main.RANDOM_SEEDS) {
+			WorldOptions worldOptions = new WorldOptions(WorldSeed.random(), WorldType.DEFAULT);
+			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
+		} else {
+			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), WorldType.DEFAULT);
+			this.currentSeedCheck++;
+			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
+		}
 	}
 	
 	int[] getBiomeCodes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException {
@@ -146,10 +159,10 @@ public class BiomeSearcher implements Runnable {
 		long searchCenterY = searchCenter.getY();
 
 		int[] biomeCodes = getBiomeCodes(
-				searchCenterX - this.mSearchQuadrantWidth,
-				searchCenterY - this.mSearchQuadrantHeight,
-				2 * this.mSearchQuadrantWidth,
-				2 * this.mSearchQuadrantHeight);
+			searchCenterX - this.mSearchQuadrantWidth,
+			searchCenterY - this.mSearchQuadrantHeight,
+			2 * this.mSearchQuadrantWidth,
+			2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
 		//System.out.println(biomeCodesCount);
 		System.out.println(searchCenterX);
@@ -193,10 +206,10 @@ public class BiomeSearcher implements Runnable {
 
 		boolean hasRequiredStructures = false;
 
-        if (structures.length == 0 && GUI.findStructures.isSelected()) {
-            Util.console("Creating Structures from list...");
-            structures = GUI.manageCheckedCheckboxesFindStructures();
-        }
+		if (structures.length == 0 && GUI.findStructures.isSelected()) {
+			Util.console("Creating Structures from list...");
+			structures = GUI.manageCheckedCheckboxesFindStructures();
+		}
 
 		if(structures.length == 0){
 			searchStructures = false;
@@ -211,33 +224,33 @@ public class BiomeSearcher implements Runnable {
 		//System.out.println(undiscoveredStructures);
 		//System.out.println(undiscoveredStructures.size());
 		for(int i =0; i <= undiscoveredStructures.size(); i++){
-		    StructureSearcher.Type struct = StructureSearcher.hasStructures(
+			StructureSearcher.Type struct = StructureSearcher.hasStructures(
 					undiscoveredStructures,
-                    world,
-                    searchCenterX - this.mSearchQuadrantHeight,
-                    searchCenterY -  this.mSearchQuadrantWidth,
-                    this.mSearchQuadrantHeight * 2,
-                    this.mSearchQuadrantWidth * 2);
+					world,
+					searchCenterX - this.mSearchQuadrantHeight,
+					searchCenterY -  this.mSearchQuadrantWidth,
+					this.mSearchQuadrantHeight * 2,
+					this.mSearchQuadrantWidth * 2);
 
-		    if(undiscoveredStructures.contains(struct)){
-		        undiscoveredStructures.remove(struct);
-            }
+			if(undiscoveredStructures.contains(struct)){
+				undiscoveredStructures.remove(struct);
+			}
 
-		    /*else {
-		        return false;
-            }*/
+			/*else {
+				return false;
+			}*/
 
-        }
+		}
 
 		/*
 		if (structures.length > 0 && searchStructures) {
 			hasRequiredStructures = StructureSearcher.hasStructures(
 					structures,
 					world,
-                    searchCenterX - this.mSearchQuadrantHeight,
-                    searchCenterY -  this.mSearchQuadrantWidth,
-                    this.mSearchQuadrantHeight * 2,
-                    this.mSearchQuadrantWidth * 2
+					searchCenterX - this.mSearchQuadrantHeight,
+					searchCenterY -  this.mSearchQuadrantWidth,
+					this.mSearchQuadrantHeight * 2,
+					this.mSearchQuadrantWidth * 2
 					);
 			
 			// Could meet structure requirements, move to next seed.
@@ -298,6 +311,7 @@ public class BiomeSearcher implements Runnable {
 	static void updateRejectedWorldsProgress(int rejectedWorldsCount) {
 		GUI.seedCount.setText("Current Rejected Seed Count: " + rejectedWorldsCount);
 		GUI.totalSeedCount.setText("Total Rejected Seed Count: " + totalRejectedSeedCount);
+		GUI.currentSeedChecking.setText("Current Sequenced Seed being Checked: " + currentSeedCheck);
 	}
 
 	/**
@@ -335,8 +349,8 @@ public class BiomeSearcher implements Runnable {
 	void search() throws InterruptedException,IOException, FormatException, MinecraftInterfaceCreationException {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
-		
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running) {
+
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running && this.currentSeedCheck < this.mMaxSeed) {
 			if (!GUI.paused) {
 				World world;
 				try {

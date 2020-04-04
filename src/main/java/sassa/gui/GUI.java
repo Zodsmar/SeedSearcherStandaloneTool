@@ -53,6 +53,7 @@ public class GUI {
 	static JButton btnDonate;
 	
 	public static JCheckBox findStructures;
+	public static JCheckBox randomSeedCheck;
 	
 	public static JPanel biomesPanel;
 	
@@ -64,6 +65,7 @@ public class GUI {
 
 	public static JLabel seedCount;
 	public static JLabel totalSeedCount;
+	public static JLabel currentSeedChecking;
 	
 	public static JLabel lblMinecraftDirectory;
 	public static JTextField textBoxMinecraftDir;
@@ -78,14 +80,18 @@ public class GUI {
 	private static JTextField widthSearch;
 	private static JTextField heightSearch;
 	private static JTextField maxSeeds;
+	private static JTextField minSeed;
+	private static JTextField maxSeed;
 	
 	
 	private static int searchQuadrantWidth = 512;
 	private static int searchQuadrantHeight = 512;
 	private static int maximumMatchingWorldsCount = 10;
+	private static long minSeedVal = -128;
+	private static long maxSeedVal = 128;
 	public static String minecraftVersion = Version.V1_15_2;
 	String[] versions = {
-	    /*1.15.x*/	Version.V1_15_2, Version.V1_15_1, Version.V1_15,
+		/*1.15.x*/	Version.V1_15_2, Version.V1_15_1, Version.V1_15,
 		/*1.14.x*/	Version.V1_14_4, Version.V1_14_3, Version.V1_14,
 		/*1.13.x*/	Version.V1_13_2, Version.V1_13_1, Version.V1_13,
 		/*1.12.x*/	Version.V1_12_2, Version.V1_12,
@@ -107,7 +113,9 @@ public class GUI {
 				minecraftVersion,
 				Integer.parseInt(widthSearch.getText()),
 				Integer.parseInt(heightSearch.getText()),
-				Integer.parseInt(maxSeeds.getText()));
+				Integer.parseInt(maxSeeds.getText()),
+				Long.parseLong(minSeed.getText()),
+				Long.parseLong(maxSeed.getText()));
 		// t = new Thread(r);
 		return r;
 	}
@@ -212,6 +220,7 @@ public class GUI {
 		elapsedTime = System.currentTimeMillis();
 		seedCount.setText("Rejected Seed Count: 0");
 		totalSeedCount.setText("Total Rejected Seed Count: 0");
+		currentSeedChecking.setText("Current Sequenced Seed being Checked: 0");
 		BiomeSearcher.totalRejectedSeedCount = 0;
 
 		updateDisplay();
@@ -232,6 +241,9 @@ public class GUI {
 			
 			if (e.getSource() == chkboxDevMode) {
 				Main.DEV_MODE = !Main.DEV_MODE;
+				initialize();
+			} else if (e.getSource() == randomSeedCheck) {
+				Main.RANDOM_SEEDS = !Main.RANDOM_SEEDS;
 				initialize();
 			} else if (e.getSource() == btnStart) {
 				try {
@@ -343,16 +355,22 @@ public class GUI {
 		totalSeedCount.setBounds(10, 30, 250, 15);
 		panel.add(totalSeedCount);
 
+		currentSeedChecking = new JLabel("Current Sequenced Seed being Checked: " + 0);
+		currentSeedChecking.setBounds(10, 50, 350, 15);
+		panel.add(currentSeedChecking);
+
+		currentSeedChecking.setVisible(!Main.RANDOM_SEEDS);
+
 		lblMinecraftDirectory = new JLabel("Path to .minecraft directory (optional)");
-		lblMinecraftDirectory.setBounds(10, 60, 400, 15);
+		lblMinecraftDirectory.setBounds(10, 70, 400, 15);
 		panel.add(lblMinecraftDirectory);
 
 		lblMinecraftDirectoryInfo = new JLabel("If path is blank/invalid, default .minecraft path will be used");
-		lblMinecraftDirectoryInfo.setBounds(10, 80, 450, 15);
+		lblMinecraftDirectoryInfo.setBounds(10, 90, 450, 15);
 		panel.add(lblMinecraftDirectoryInfo);
 
 		textBoxMinecraftDir = new JTextField();
-		textBoxMinecraftDir.setBounds(10, 100, 400, 15);
+		textBoxMinecraftDir.setBounds(10, 110, 400, 20);
 		panel.add(textBoxMinecraftDir);
 
 		timeElapsed = new JLabel("Time Elapsed: 00:00:00");
@@ -458,6 +476,45 @@ public class GUI {
 		panel.add(maxSeeds);
 		maxSeeds.setColumns(10);
 
+		JLabel randomSeedLabel = new JLabel("Randomize Seeds:");
+		randomSeedLabel.setBounds(175, 455, 150, 20);
+		panel.add(randomSeedLabel);
+
+		randomSeedCheck = new JCheckBox();
+		randomSeedCheck.setBounds(285, 455, 20, 20);
+		randomSeedCheck.addActionListener(listener);
+		if (Main.RANDOM_SEEDS) {
+			randomSeedCheck.setText("True");
+			randomSeedCheck.setSelected(true);
+		} else {
+			randomSeedCheck.setText("False");
+			randomSeedCheck.setSelected(false);
+		}
+		panel.add(randomSeedCheck);
+
+		JLabel randomSeedMin = new JLabel("Minimum Seed:");
+		randomSeedMin.setBounds(175, 490, 150, 20);
+		panel.add(randomSeedMin);
+		randomSeedMin.setVisible(!Main.RANDOM_SEEDS);
+
+		minSeed = new JTextField();
+		minSeed.setText("" + minSeedVal);
+		minSeed.setBounds(285, 490, 85, 20);
+		panel.add(minSeed);
+		minSeed.setColumns(10);
+		minSeed.setVisible(!Main.RANDOM_SEEDS);
+
+		JLabel randomSeedMax = new JLabel("Maximum Seed:");
+		randomSeedMax.setBounds(400, 490, 150, 20);
+		panel.add(randomSeedMax);
+		randomSeedMax.setVisible(!Main.RANDOM_SEEDS);
+
+		maxSeed = new JTextField();
+		maxSeed.setText("" + maxSeedVal);
+		maxSeed.setBounds(525, 490, 85, 20);
+		panel.add(maxSeed);
+		maxSeed.setColumns(10);
+		maxSeed.setVisible(!Main.RANDOM_SEEDS);
 
 		// Panel 1: Biomes
 
