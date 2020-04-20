@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Info" />
+          <Tab text="Data" />
+            <Tab text="Biomes">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </content></Tab>
+            <Tab disable="true" text="Structures" />
+        </tabs>
+      </TabPane>
+   </center>
+   <left>
+      <BorderPane prefHeight="576.0" prefWidth="343.0" BorderPane.alignment="CENTER">
+         <top>
+            <Pane prefHeight="29.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text layoutX="130.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console Output" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <content>
+                  <TextArea editable="false" prefHeight="345.0" prefWidth="222.0" />
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </left>
+   <bottom>
+      <BorderPane prefHeight="24.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <left>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Paused" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="20.0" />
+               </BorderPane.margin>
+            </Text>
+         </left>
+         <right>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
+            </Text>
+         </right>
+      </BorderPane>
+   </bottom>
+</BorderPane>

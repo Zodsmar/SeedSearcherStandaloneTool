@@ -1,7 +1,16 @@
 package sassa.main;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 import sassa.gui.GenerateGUI;
+import sassa.gui.fxmlController;
 import sassa.util.Util;
 import sassa.util.Version;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
@@ -10,8 +19,9 @@ import sassa.gui.GUI;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 
-public class Main {
+public class Main extends Application {
 
 
 //	public static final int BACK_FRAME_WIDTH = 924;
@@ -43,7 +53,19 @@ public class Main {
 	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		Version.registerSupportedVersions();
 		//GenerateGUI.showGenerateGUI();
+		Application.launch(args);
 		new GUI().startSeedSearcher();
 	}
-	
+
+	@Override
+	public void start(Stage mainStage) throws Exception {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/sassa/fxml/layout.fxml"));
+		BorderPane vbox = loader.load();
+
+		Scene scene = new Scene(vbox);
+		mainStage.setTitle("Sassa: " + VERSION);
+		mainStage.setScene(scene);
+		mainStage.show();
+	}
 }
