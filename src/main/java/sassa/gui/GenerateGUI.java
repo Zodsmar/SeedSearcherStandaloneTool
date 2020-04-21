@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GenerateGUI {
-
+/*
     public static void showGenerateGUI() throws IOException, ParseException {
         JFrame genGUI = new JFrame("Generated GUI");
 
@@ -65,4 +65,5 @@ public class GenerateGUI {
         genGUI.pack();
         genGUI.setVisible(true);
     }
+    */
 }

@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
+import javafx.scene.control.TextArea;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +21,10 @@ import org.json.simple.parser.ParseException;
 import sassa.gui.GUI;
 
 public class Util {
+	static TextArea console;
+	public Util(TextArea console){
+		this.console = console;
+	}
 	/**
 	 * elapsed time in hours/minutes/seconds
 	 * 
@@ -65,14 +70,14 @@ public class Util {
 		StringSelection stringSelection = new StringSelection(output);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
-		GUI.console.append(output + "\n");
+		console.appendText(output + "\n");
 	}
 	public static void consoleNoLine(String output) {
-		GUI.console.append(output);
+		console.appendText(output);
 	}
 	
 	public static void consoleWipe() {
-		GUI.console.setText("");
+		console.setText("");
 	}
 	
 	public static void setFontSize(JLabel hotBiomesTxt, int size) {

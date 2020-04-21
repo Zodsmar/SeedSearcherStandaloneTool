@@ -60,10 +60,12 @@ public class BiomeSearcher implements Runnable {
 	private long mMinSeed;
 	private long mMaxSeed;
 
+	private boolean RANDOM_SEEDS;
+
 	public static long currentSeedCheck = 0L;
 
 	public BiomeSearcher(String minecraftVersion,
-			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed)
+			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 		MinecraftInstallation minecraftInstallation;
@@ -90,6 +92,7 @@ public class BiomeSearcher implements Runnable {
 		this.mMinSeed = minSeed;
 		this.mMaxSeed = maxSeed;
 		this.currentSeedCheck = minSeed;
+		this.RANDOM_SEEDS = randSeed;
 	}
 
 	/**
@@ -98,7 +101,7 @@ public class BiomeSearcher implements Runnable {
 	 */
 	World createWorld() throws MinecraftInterfaceException {
 		Consumer<World> onDispose = world -> {};
-		if (Main.RANDOM_SEEDS) {
+		if (RANDOM_SEEDS) {
 			WorldOptions worldOptions = new WorldOptions(WorldSeed.random(), WorldType.DEFAULT);
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		} else {
@@ -398,7 +401,7 @@ public class BiomeSearcher implements Runnable {
 	 * Searches for matching worlds, and prints the seed of each matching world
 	 * to the standard output stream.
 	 */
-	@Override
+
 	public void run() {
 		//Util.printingSetup();
 		try {

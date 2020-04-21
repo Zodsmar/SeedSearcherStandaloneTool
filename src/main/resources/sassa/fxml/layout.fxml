@@ -1,24 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Info" />
-          <Tab text="Data" />
-            <Tab text="Biomes">
+          <Tab text="Info">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="134.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="317.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="382.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="421.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="334.0" minHeight="0.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="161.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To SASSA" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Stand Alone Seed Searcher App)" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. To get started please select a biome(s) from the biomes tab" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="25.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Set the search size within the Data Tab" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="25.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Choose how many seeds to find before the program stops searching" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="25.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left!" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="25.0" />
+                           </GridPane.margin>
+                        </Text>
+                     </children>
+                  </GridPane>
+               </content></Tab>
+          <Tab text="Data">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="cRejSeedCount" layoutX="182.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="14.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tRejSeedCount" layoutX="168.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="startBtn" layoutX="14.0" layoutY="508.0" mnemonicParsing="false" prefWidth="41.0" text="Start" />
+                        <Button fx:id="pauseBtn" layoutX="64.0" layoutY="508.0" mnemonicParsing="false" text="Pause" />
+                        <Button fx:id="clearBtn" layoutX="127.0" layoutY="508.0" mnemonicParsing="false" text="Clear" />
+                        <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Elapsed:" wrappingWidth="90.13671875">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="timeElapsed" layoutX="95.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="mcVersions" layoutX="179.0" layoutY="508.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Text layoutX="175.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
+                        <TextField fx:id="mcPath" layoutX="282.0" layoutY="508.0" prefHeight="25.0" prefWidth="359.0" />
+                        <Text layoutX="282.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path to .minecraft directory (OPTIONAL, if blank default is used)" wrappingWidth="354.13671875" />
+                        <TextField fx:id="seedsToFind" layoutX="106.0" layoutY="163.0" prefHeight="25.0" prefWidth="70.0" text="10" />
+                        <TextField fx:id="searchX" layoutX="106.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" text="512" />
+                        <TextField fx:id="searchZ" layoutX="106.0" layoutY="229.0" prefHeight="25.0" prefWidth="70.0" text="512" />
+                        <Text layoutX="14.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
+                        <Text layoutX="14.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (X)" />
+                        <Text layoutX="15.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (Z)" />
+                        <CheckBox fx:id="findStructures" layoutX="13.0" layoutY="265.0" mnemonicParsing="false" text="Find Structures" />
+                        <CheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false" text="Bedrock Mode" />
+                        <CheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds" />
+                        <CheckBox fx:id="devMode" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
+                        <Pane fx:id="randomSeedPane" layoutX="9.0" layoutY="339.0" prefHeight="43.0" prefWidth="324.0" visible="false">
+                           <children>
+                              <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimum Seed" wrappingWidth="80.12109375" />
+                              <Text layoutX="208.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximum Seed" wrappingWidth="82.037109375" />
+                              <TextField fx:id="minSeed" layoutY="18.0" text="-128" />
+                              <TextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+               </content></Tab>
+            <Tab fx:id="biomesTab" text="Biomes">
                <content>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                      <content>
@@ -33,7 +144,7 @@
                      </content>
                   </ScrollPane>
                </content></Tab>
-            <Tab disable="true" text="Structures" />
+            <Tab fx:id="structuresTab" disable="true" text="Structures" />
         </tabs>
       </TabPane>
    </center>
@@ -49,7 +160,7 @@
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
-                  <TextArea editable="false" prefHeight="345.0" prefWidth="222.0" />
+                  <TextArea fx:id="console" editable="false" prefHeight="345.0" prefWidth="222.0" />
                </content>
             </ScrollPane>
          </center>
@@ -58,7 +169,7 @@
    <bottom>
       <BorderPane prefHeight="24.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Paused" BorderPane.alignment="CENTER">
+            <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="20.0" />
                </BorderPane.margin>

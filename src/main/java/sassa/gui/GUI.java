@@ -115,13 +115,14 @@ public class GUI {
 				Integer.parseInt(heightSearch.getText()),
 				Integer.parseInt(maxSeeds.getText()),
 				Long.parseLong(minSeed.getText()),
-				Long.parseLong(maxSeed.getText()));
+				Long.parseLong(maxSeed.getText()),
+				false);
 		// t = new Thread(r);
 		return r;
 	}
 
 	public void startSeedSearcher() throws IOException, FormatException, MinecraftInterfaceCreationException {
-		initTimer();
+		//initTimer();
 		Util.console("Welcome to SeedTool!");
 		Util.console("Please select at least one biome before searching!");
 	}
@@ -243,7 +244,7 @@ public class GUI {
 				Main.DEV_MODE = !Main.DEV_MODE;
 				initialize();
 			} else if (e.getSource() == randomSeedCheck) {
-				Main.RANDOM_SEEDS = !Main.RANDOM_SEEDS;
+				//Main.RANDOM_SEEDS = !Main.RANDOM_SEEDS;
 				initialize();
 			} else if (e.getSource() == btnStart) {
 				try {
@@ -359,7 +360,7 @@ public class GUI {
 		currentSeedChecking.setBounds(10, 50, 350, 15);
 		panel.add(currentSeedChecking);
 
-		currentSeedChecking.setVisible(!Main.RANDOM_SEEDS);
+		//currentSeedChecking.setVisible(!Main.RANDOM_SEEDS);
 
 		lblMinecraftDirectory = new JLabel("Path to .minecraft directory (optional)");
 		lblMinecraftDirectory.setBounds(10, 70, 400, 15);
@@ -483,38 +484,38 @@ public class GUI {
 		randomSeedCheck = new JCheckBox();
 		randomSeedCheck.setBounds(285, 455, 20, 20);
 		randomSeedCheck.addActionListener(listener);
-		if (Main.RANDOM_SEEDS) {
-			randomSeedCheck.setText("True");
-			randomSeedCheck.setSelected(true);
-		} else {
-			randomSeedCheck.setText("False");
-			randomSeedCheck.setSelected(false);
-		}
-		panel.add(randomSeedCheck);
-
-		JLabel randomSeedMin = new JLabel("Minimum Seed:");
-		randomSeedMin.setBounds(175, 490, 150, 20);
-		panel.add(randomSeedMin);
-		randomSeedMin.setVisible(!Main.RANDOM_SEEDS);
+//		if (Main.RANDOM_SEEDS) {
+//			randomSeedCheck.setText("True");
+//			randomSeedCheck.setSelected(true);
+//		} else {
+//			randomSeedCheck.setText("False");
+//			randomSeedCheck.setSelected(false);
+//		}
+//		panel.add(randomSeedCheck);
+//
+//		JLabel randomSeedMin = new JLabel("Minimum Seed:");
+//		randomSeedMin.setBounds(175, 490, 150, 20);
+//		panel.add(randomSeedMin);
+//		randomSeedMin.setVisible(!Main.RANDOM_SEEDS);
 
 		minSeed = new JTextField();
 		minSeed.setText("" + minSeedVal);
 		minSeed.setBounds(285, 490, 85, 20);
 		panel.add(minSeed);
 		minSeed.setColumns(10);
-		minSeed.setVisible(!Main.RANDOM_SEEDS);
+		//minSeed.setVisible(!Main.RANDOM_SEEDS);
 
 		JLabel randomSeedMax = new JLabel("Maximum Seed:");
 		randomSeedMax.setBounds(400, 490, 150, 20);
 		panel.add(randomSeedMax);
-		randomSeedMax.setVisible(!Main.RANDOM_SEEDS);
+		//randomSeedMax.setVisible(!Main.RANDOM_SEEDS);
 
 		maxSeed = new JTextField();
 		maxSeed.setText("" + maxSeedVal);
 		maxSeed.setBounds(525, 490, 85, 20);
 		panel.add(maxSeed);
 		maxSeed.setColumns(10);
-		maxSeed.setVisible(!Main.RANDOM_SEEDS);
+		//maxSeed.setVisible(!Main.RANDOM_SEEDS);
 
 		// Panel 1: Biomes
 

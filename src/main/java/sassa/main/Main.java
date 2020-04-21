@@ -39,9 +39,9 @@ public class Main extends Application {
 	public static final int FRAME_SCROLL_BAR_WIDTH = (BACK_FRAME_WIDTH - CONSOLE_WIDTH) - 18;
 	public static final int FRAME_SCROLL_BAR_HEIGHT = BACK_FRAME_HEIGHT - 93;
 	
-	public static final String VERSION = "v0.4.4";
+	public static final String VERSION = "v0.5.0";
 	public static boolean DEV_MODE = false;
-	public static boolean RANDOM_SEEDS = true;
+
 	/*
 	 Quick test of git connection through VS Code
 
@@ -54,7 +54,7 @@ public class Main extends Application {
 		Version.registerSupportedVersions();
 		//GenerateGUI.showGenerateGUI();
 		Application.launch(args);
-		new GUI().startSeedSearcher();
+		//new GUI().startSeedSearcher();
 	}
 
 	@Override
@@ -67,5 +67,7 @@ public class Main extends Application {
 		mainStage.setTitle("Sassa: " + VERSION);
 		mainStage.setScene(scene);
 		mainStage.show();
+		fxmlController fxml = new fxmlController();
+		fxml.startSeedSearcher();
 	}
 }
