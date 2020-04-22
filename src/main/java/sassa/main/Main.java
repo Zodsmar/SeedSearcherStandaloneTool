@@ -1,25 +1,18 @@
 package sassa.main;
 
+import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
+import amidst.parsing.FormatException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
-import sassa.gui.GenerateGUI;
 import sassa.gui.fxmlController;
-import sassa.util.Util;
 import sassa.util.Version;
-import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
-import amidst.parsing.FormatException;
-import sassa.gui.GUI;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
 

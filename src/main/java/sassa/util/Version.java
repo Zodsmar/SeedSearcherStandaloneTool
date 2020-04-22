@@ -3,10 +3,11 @@ package sassa.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import sassa.gui.GUI;
 
 public class Version {
-	
+
+	static String minecraftVersion = Singleton.getInstance().getMinecraftVersion();
+
 	public static final String V9_99_99 = "9.99.9"; // Used to block out unsupported biomes/structures
 	public static final String V1_15_2 = "1.15.2";
 	public static final String V1_15_1 = "1.15.1";
@@ -61,14 +62,14 @@ public class Version {
 	}
 	
 	public static boolean isOrNewerThanVersion(String version) {
-		int selected = versions.get(GUI.minecraftVersion);
+		int selected = versions.get(minecraftVersion);
 		int wanted = versions.get(version);
 		if (selected >= wanted) return true;
 		else return false;
 	}
 	
 	public static boolean isOrOlderThanVersion(String version) {
-		int selected = versions.get(GUI.minecraftVersion);
+		int selected = versions.get(minecraftVersion);
 		int wanted = versions.get(version);
 		if (selected <= wanted) return true;
 		else return false;

@@ -1,5 +1,12 @@
 package sassa.util;
 
+import javafx.scene.control.TextArea;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -11,20 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.JLabel;
-
-import javafx.scene.control.TextArea;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import sassa.gui.GUI;
-
 public class Util {
-	static TextArea console;
-	public Util(TextArea console){
-		this.console = console;
-	}
+
+	static TextArea console = Singleton.getInstance().getConsole();
+	static String mcVersion = Singleton.getInstance().getMinecraftVersion();
 	/**
 	 * elapsed time in hours/minutes/seconds
 	 * 
@@ -72,7 +69,7 @@ public class Util {
 		clipboard.setContents(stringSelection, null);
 		console.appendText(output + "\n");
 	}
-	public static void consoleNoLine(String output) {
+	public void consoleNoLine(String output) {
 		console.appendText(output);
 	}
 	
@@ -137,7 +134,7 @@ public class Util {
 
 	public ArrayList<String> generateSearchLists(JSONObject obj)  {
 		ArrayList<String> list = new ArrayList<String>();
-		String minecraftVersion = GUI.minecraftVersion;
+		String minecraftVersion = mcVersion;
 		Map<String, Integer> versions = Version.getVersions();
 		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();

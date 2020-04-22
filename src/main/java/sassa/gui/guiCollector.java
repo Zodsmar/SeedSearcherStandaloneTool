@@ -1,24 +1,13 @@
 package sassa.gui;
 
-import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.world.biome.Biome;
-import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
-import amidst.parsing.FormatException;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import sassa.main.StructureSearcher;
-import sassa.util.Util;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class guiCollector {
 
@@ -29,7 +18,7 @@ public class guiCollector {
      *
      * @return
      */
-    public List<String> comboBoxManager(GridPane pane, String inORex) {
+    private List<String> comboBoxManager(GridPane pane, String inORex) {
         //System.out.println("Row: " + pane.getRowCount() + " Column: " + pane.getColumnCount());
         List<String> checkedTexts = new ArrayList<String>();
         int k = 0;
@@ -52,16 +41,22 @@ public class guiCollector {
     }
 
     public Biome[] getBiomesFromArrayList(GridPane pane, String inORex){
-
         List<String> checkedTexts = comboBoxManager(pane, inORex);
-
         Biome[] biomes = new Biome[checkedTexts.size()];
         System.out.println(checkedTexts.size());
         for (int i = 0; i < checkedTexts.size(); i++) {
             biomes[i] = Biome.getByName(checkedTexts.get(i));
         }
-
         return biomes;
     }
 
+    public boolean checkIfBiomesSelected(Biome[] searchable, boolean check){
+            if (searchable.length == 0 && check) {
+                check = false;
+                System.out.println(check);
+            }
+        return check;
+    }
 }
+
+

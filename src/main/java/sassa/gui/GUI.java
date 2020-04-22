@@ -1,7 +1,5 @@
 package sassa.gui;
 
-import sassa.util.Util;
-import sassa.util.Version;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
@@ -10,11 +8,12 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
-
+import sassa.main.BiomeSearcher;
 import sassa.main.Main;
 import sassa.main.StructureSearcher;
 import sassa.main.StructureSearcher.Type;
-import sassa.main.BiomeSearcher;
+import sassa.util.Util;
+import sassa.util.Version;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GUI {
-	
+
 	private JFrame frmSeedTool = new JFrame();
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
@@ -43,7 +42,7 @@ public class GUI {
 	@SuppressWarnings("unused")
 	private static long startTime; // TODO use this in the future to tell user when they started
 	private static long elapsedTime;
-	
+
 	static JButton btnClear;
 	static JButton btnStart;
 	static JButton btnPause;
@@ -51,12 +50,12 @@ public class GUI {
 	static JButton btnDevCon;
 	static JLabel lblDonate;
 	static JButton btnDonate;
-	
+
 	public static JCheckBox findStructures;
 	public static JCheckBox randomSeedCheck;
-	
+
 	public static JPanel biomesPanel;
-	
+
 	public static JPanel structures;
 
 	public static String[] biomeSelected;
@@ -66,11 +65,11 @@ public class GUI {
 	public static JLabel seedCount;
 	public static JLabel totalSeedCount;
 	public static JLabel currentSeedChecking;
-	
+
 	public static JLabel lblMinecraftDirectory;
 	public static JTextField textBoxMinecraftDir;
 	private static JLabel lblMinecraftDirectoryInfo;
-	
+
 	public static JLabel timeElapsed;
 	public static JTextArea console;
 
@@ -82,8 +81,8 @@ public class GUI {
 	private static JTextField maxSeeds;
 	private static JTextField minSeed;
 	private static JTextField maxSeed;
-	
-	
+
+
 	private static int searchQuadrantWidth = 512;
 	private static int searchQuadrantHeight = 512;
 	private static int maximumMatchingWorldsCount = 10;
@@ -101,10 +100,10 @@ public class GUI {
 		/*1.8.x*/	Version.V1_8_9, Version.V1_8_3, Version.V1_8_1, Version.V1_8,
 		/*1.7.x*/	Version.V1_7_10};
 		///*1.6.x*/	Version.V1_6_4};
-	
+
 	DefaultComboBoxModel<String> versionModel = new DefaultComboBoxModel<String>(versions);
 	JComboBox<String> versionBox = new JComboBox<String>(versionModel);
-	
+
 	String[] include_exclude_txt = {"", "Include", "Exclude"};
 	//DefaultComboBoxModel<String> include_exclude_txt = new DefaultComboBoxModel<String>(include_exclude_txt_1);
 
@@ -130,7 +129,7 @@ public class GUI {
 	private void initTimer() {
 		Action updateLabelAction = new AbstractAction() {
 			private static final long serialVersionUID = 3920770968451095353L;
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateDisplay();
@@ -138,13 +137,13 @@ public class GUI {
 		};
 		timer = new Timer(DELAY, updateLabelAction);
 	}
-	
+
 	private static void updateDisplay() {
 		if (!paused) {
 			timeElapsed.setText("Time Elapsed: " + Util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
 		}
 	}
-	
+
 	private static void toggleRunning() throws InterruptedException, IOException, FormatException,
 				MinecraftInterfaceCreationException, UnknownBiomeIndexException {
 		allowThreadToSearch = true;
@@ -186,21 +185,21 @@ public class GUI {
 		timer.stop();
 		if (t != null) t.interrupt();
 	}
-	
+
 	private static void togglePause() {
 		if (!running) {
 			Util.console("Cannot pause when you aren't running!");
 		} else {
 			paused = !paused;
 			String text = (paused) ? "Click To Unpause" : "Click to Pause";
-			
+
 			if (paused) {
 				pausedTime = System.currentTimeMillis();
 				timer.stop();
 			} else {
 				elapsedTime += System.currentTimeMillis() - pausedTime;
 				timer.start();
-				
+
 				//startTime = timeAtPause;
 			}
 			btnPause.setText(text);
@@ -239,7 +238,7 @@ public class GUI {
 				}
 			}
 
-			
+
 			if (e.getSource() == chkboxDevMode) {
 				Main.DEV_MODE = !Main.DEV_MODE;
 				initialize();
@@ -867,13 +866,13 @@ public class GUI {
 		biomesPanel.add(_3_70_container, "3, 70");
 		/*
 		 FORMAT:
-		 
+
 		JCheckBox inb__ = new JCheckBox("");
 		includeCB.add(inb__, "2, ");
-		
+
 		JCheckBox inb__ = new JCheckBox("");
 		includeCB.add(inb__, "4, ");
-		
+
 		JCheckBox inb__ = new JCheckBox("");
 		includeCB.add(inb__, "6, ");
 		 */
@@ -1196,16 +1195,16 @@ public class GUI {
 								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 12
 								FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, // Row 14
 								FormSpecs.RELATED_GAP_ROWSPEC,}));
-			
+
 			/*
 			 FORMAT:
-			 
+
 			JCheckBox exb__ = new JCheckBox("");
 			excludeCB.add(exb__, "2, ");
-			
+
 			JCheckBox exb__ = new JCheckBox("");
 			excludeCB.add(exb__, "4, ");
-			
+
 			JCheckBox exb__ = new JCheckBox("");
 			excludeCB.add(exb__, "6, ");
 			 */
@@ -1270,8 +1269,8 @@ public class GUI {
 		JCheckBox cb_igloo = new JCheckBox("Igloo");
 		structures.add(cb_igloo, "8, 14");
 	}
-	
-	
+
+
 	/**
 	 * Some Biomes come back as null. No idea. The Names match each other so it
 	 * should work (Apparently it works like 1 in 10 times...)
@@ -1302,12 +1301,12 @@ public class GUI {
 				}
 			}
 		}
-		
+
 		Biome[] biomes = new Biome[checkedTexts.size()];
 		for (int i = 0; i < checkedTexts.size(); i++) {
 			biomes[i] = Biome.getByName(checkedTexts.get(i));
 		}
-		
+
 //		if (biomes.length == 0) {
 //			allowThreadToSearch = false;
 //			Util.console("\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
@@ -1315,7 +1314,7 @@ public class GUI {
 //		}
 		return biomes;
 	}
-	
+
 	public static Biome[] manageCheckedCheckboxesRejected() throws UnknownBiomeIndexException, InterruptedException,
 				IOException, FormatException, MinecraftInterfaceCreationException {
 		Component[] comps = biomesPanel.getComponents();
@@ -1335,12 +1334,12 @@ public class GUI {
 				}
 			}
 		}
-		
+
 		Biome[] biomes = new Biome[checkedTexts.size()];
 		for (int i = 0; i < checkedTexts.size(); i++) {
 			biomes[i] = Biome.getByName(checkedTexts.get(i));
 		}
-		
+
 //		if (biomes.length == 0) {
 //			Util.console("\nPlease select Rejected Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
 //			stop();
@@ -1375,7 +1374,7 @@ public class GUI {
 				String set = entry.getValue();
 				sets.put(biome, set);
 			}
-		
+
 
 		return sets;
 	}
@@ -1407,11 +1406,11 @@ public class GUI {
 			String set = entry.getValue();
 			sets.put(biome, set);
 		}
-	
+
 
 	return sets;
 }
-	
+
 	public static Type[] manageCheckedCheckboxesFindStructures() throws UnknownBiomeIndexException, InterruptedException,
 				IOException, FormatException, MinecraftInterfaceCreationException {
 		Component[] comps = structures.getComponents();
@@ -1427,12 +1426,12 @@ public class GUI {
 				}
 			}
 		}
-		
+
 		StructureSearcher.Type[] structures = new StructureSearcher.Type[checkedTexts.size()];
 		for (int i = 0; i < checkedTexts.size(); i++) {
 			structures[i] = StructureSearcher.Type.valueOf(checkedTexts.get(i).replaceAll(" ", "_").toUpperCase());
 		}
-		
+
 		if (structures.length == 0) {
 			Util.console("\nPlease select Structures!\nSearch has cancelled.\nRecommend you clear console!\n");
 			stop();

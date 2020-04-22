@@ -4,7 +4,6 @@ import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.parsing.FormatException;
 import javafx.collections.FXCollections;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,12 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.json.simple.parser.ParseException;
 import sassa.main.BiomeSearcher;
-import sassa.main.Main;
+import sassa.util.Singleton;
 import sassa.util.Util;
 import sassa.util.Version;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -124,6 +121,10 @@ public class fxmlController implements Initializable {
     @FXML
     private Tab structuresTab;
 
+    @FXML
+
+    private Text sequencedSeed;
+
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
     private GridPane biomesGrid;
@@ -137,7 +138,17 @@ public class fxmlController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        util = new Util(console);
+        Singleton.getInstance().setBiomesGridPane(biomesGrid);
+        Singleton.getInstance().setConsole(console);
+        Singleton.getInstance().setMinecraftVersion(minecraftVersion);
+        Singleton.getInstance().setMCPath(mcPath);
+        Singleton.getInstance().setCRejSeed(cRejSeedCount);
+        Singleton.getInstance().setTRejSeed(tRejSeedCount);
+        Singleton.getInstance().setSeedCount(seedsToFind);
+        Singleton.getInstance().setSequenceSeed(sequencedSeed);
+        Singleton.getInstance().setController(this);
+
+        util = new Util();
         guiCollector = new guiCollector();
         startBtn.setOnAction(buttonHandler);
         pauseBtn.setOnAction(buttonHandler);
@@ -208,7 +219,6 @@ public class fxmlController implements Initializable {
                 }
                 RANDOM_SEEDS = !RANDOM_SEEDS;
                 System.out.println(RANDOM_SEEDS);
-               // initialize();
             } else if (e.getSource() == startBtn) {
                 try {
                     toggleRunning();
@@ -228,6 +238,7 @@ public class fxmlController implements Initializable {
             } else if (e.getSource() == mcVersions) {
                 String selected = mcVersions.getSelectionModel().getSelectedItem();
                 minecraftVersion = selected;
+                Singleton.getInstance().setMinecraftVersion(minecraftVersion);
                 System.out.println("Version: "+minecraftVersion+":"+mcVersions.getSelectionModel().getSelectedIndex());
                 //initialize();
             }
@@ -244,7 +255,6 @@ public class fxmlController implements Initializable {
                 Long.parseLong(minSeed.getText()),
                 Long.parseLong(maxSeed.getText()),
                 RANDOM_SEEDS);
-        // t = new Thread(r);
         return r;
     }
 
@@ -282,7 +292,6 @@ public class fxmlController implements Initializable {
             System.out.println("Shutting Down...");
             stop();
         } else {
-            //manageCheckedCheckboxes();
             if (allowThreadToSearch) {
                 start();
             } else {
@@ -290,6 +299,10 @@ public class fxmlController implements Initializable {
             }
         }
 
+    }
+
+    public boolean isRunning(){
+        return running;
     }
 
     private void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
@@ -301,10 +314,8 @@ public class fxmlController implements Initializable {
         elapsedTime = System.currentTimeMillis();
         running = true;
         initTimer();
-        guiCollector.getBiomesFromArrayList(biomesGrid, "Include");
-       // BiomeSearcher.totalRejectedSeedCount = 0;
-//        t = new Thread(createNewThread());
-//        t.start();
+        t = new Thread(createNewThread());
+        t.start();
     }
 
     public void stop() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException {
@@ -317,7 +328,7 @@ public class fxmlController implements Initializable {
         notificationLabel.setText("Stopped");
         if(timer != null)
         timer.cancel();
-       // if (t != null) t.interrupt();
+        if (t != null) t.interrupt();
     }
 
     private void togglePause() {
@@ -341,6 +352,10 @@ public class fxmlController implements Initializable {
         }
     }
 
+    public boolean isPaused(){
+        System.out.println("Paused: " + paused);
+        return paused;
+    }
     private void reset() throws InterruptedException, IOException, FormatException,
             MinecraftInterfaceCreationException, UnknownBiomeIndexException {
         if (paused) {
@@ -355,8 +370,6 @@ public class fxmlController implements Initializable {
         cRejSeedCount.setText("0");
         tRejSeedCount.setText("0");
         notificationLabel.setText("Offline");
-        //currentSeedChecking.setText("Current Sequenced Seed being Checked: 0");
-       // BiomeSearcher.totalRejectedSeedCount = 0;
 
         updateDisplay();
     }

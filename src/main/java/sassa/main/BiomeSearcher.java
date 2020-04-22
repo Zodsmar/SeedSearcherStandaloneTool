@@ -1,6 +1,5 @@
 package sassa.main;
 
-import sassa.util.Util;
 import amidst.logging.AmidstLogger;
 import amidst.mojangapi.file.LauncherProfile;
 import amidst.mojangapi.file.MinecraftInstallation;
@@ -14,7 +13,9 @@ import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
-import sassa.gui.GUI;
+import sassa.gui.guiCollector;
+import sassa.util.Singleton;
+import sassa.util.Util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -64,13 +65,17 @@ public class BiomeSearcher implements Runnable {
 
 	public static long currentSeedCheck = 0L;
 
+    guiCollector guiCollector = new guiCollector();
+    static Util util = new Util();
+    static Singleton singleton = Singleton.getInstance();
+
 	public BiomeSearcher(String minecraftVersion,
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 		MinecraftInstallation minecraftInstallation;
 
-		String pathToDirectory = GUI.textBoxMinecraftDir.getText();
+		String pathToDirectory = singleton.getMCPath().getText();
 		if (pathToDirectory == null ||
 			pathToDirectory.trim().equals(""))
 		{
@@ -110,7 +115,7 @@ public class BiomeSearcher implements Runnable {
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		}
 	}
-	
+
 	int[] getBiomeCodes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException {
 		return this.mMinecraftInterface.getBiomeData(
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerX)),
@@ -120,7 +125,7 @@ public class BiomeSearcher implements Runnable {
 				true // useQuarterResolution
 		);
 	}
-	
+
 	/**
 	 * Determines whether to accept a world.
 	 *
@@ -149,7 +154,7 @@ public class BiomeSearcher implements Runnable {
 		// searchCenter.getXRelativeToFragment();
 		// searchCenter.getYRelativeToFragment();
 
-		
+
 		// ! This returns [0, 0] everytime
 		//CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
@@ -171,79 +176,69 @@ public class BiomeSearcher implements Runnable {
 		System.out.println(searchCenterX);
 		System.out.println(searchCenterY);
 		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0) {
-			Util.console("Creating Selected Biomes from list...");
-			Util.console("Creating Rejected Biomes from list...");
-		}
-		
-		if (biomes.length == 0 && searchBiomes) {
-			biomes = GUI.manageCheckedCheckboxes();
-			if (biomes.length == 0 && searchBiomes) {
-				searchBiomes = false;
-				System.out.println(searchBiomes);
-			}
-		}
-		
-		if (rejectedBiomes.length == 0 && searchRejectedBiomes) {
-			rejectedBiomes = GUI.manageCheckedCheckboxesRejected();
-			if (rejectedBiomes.length == 0 && searchRejectedBiomes) {
-				searchRejectedBiomes = false;
-				System.out.println(searchRejectedBiomes);
-			}
+            util.console("Creating Selected Biomes from list...");
+            util.console("Creating Rejected Biomes from list...");
 		}
 
-		if (biomeSets.size() == 0 && searchBiomeSets) {
-			biomeSets = GUI.manageCheckedCheckboxesSets();
-			if (biomeSets.size() == 0 && searchBiomeSets) {
-				searchBiomeSets = false;
-				System.out.println(searchBiomeSets);
-			}
-		}
+		biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
+		rejectedBiomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Exclude");
+		searchBiomes = guiCollector.checkIfBiomesSelected(biomes, searchBiomes);
+        searchRejectedBiomes = guiCollector.checkIfBiomesSelected(rejectedBiomes, searchRejectedBiomes);
 
-		if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
-			rejectedBiomeSets = GUI.manageCheckedCheckboxesSetsRejected();
-			if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
-				searchRejectedBiomesSets = false;
-				System.out.println(rejectedBiomeSets);
-			}
-		}
 
-		boolean hasRequiredStructures = false;
+//		if (biomeSets.size() == 0 && searchBiomeSets) {
+//			biomeSets = GUI.manageCheckedCheckboxesSets();
+//			if (biomeSets.size() == 0 && searchBiomeSets) {
+//				searchBiomeSets = false;
+//				System.out.println(searchBiomeSets);
+//			}
+//		}
+//
+//		if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
+//			rejectedBiomeSets = GUI.manageCheckedCheckboxesSetsRejected();
+//			if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
+//				searchRejectedBiomesSets = false;
+//				System.out.println(rejectedBiomeSets);
+//			}
+//		}
+//
+//		boolean hasRequiredStructures = false;
+//
+//		if (structures.length == 0 && GUI.findStructures.isSelected()) {
+//			Util.console("Creating Structures from list...");
+//			structures = GUI.manageCheckedCheckboxesFindStructures();
+//		}
+//
+//		if(structures.length == 0){
+//			searchStructures = false;
+//		}
 
-		if (structures.length == 0 && GUI.findStructures.isSelected()) {
-			Util.console("Creating Structures from list...");
-			structures = GUI.manageCheckedCheckboxesFindStructures();
-		}
-
-		if(structures.length == 0){
-			searchStructures = false;
-		}
-		
 		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures) {
-			Util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
-			GUI.stop();
+			util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
+            singleton.getController().stop();
 			return false;
 		}
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
-		//System.out.println(undiscoveredStructures);
-		//System.out.println(undiscoveredStructures.size());
-		for(int i =0; i <= undiscoveredStructures.size(); i++){
-			StructureSearcher.Type struct = StructureSearcher.hasStructures(
-					undiscoveredStructures,
-					world,
-					searchCenterX - this.mSearchQuadrantHeight,
-					searchCenterY -  this.mSearchQuadrantWidth,
-					this.mSearchQuadrantHeight * 2,
-					this.mSearchQuadrantWidth * 2);
-
-			if(undiscoveredStructures.contains(struct)){
-				undiscoveredStructures.remove(struct);
-			}
-
-			/*else {
-				return false;
-			}*/
-
-		}
+//		//System.out.println(undiscoveredStructures);
+//		//System.out.println(undiscoveredStructures.size());
+//		for(int i =0; i <= undiscoveredStructures.size(); i++){
+//			StructureSearcher.Type struct = StructureSearcher.hasStructures(
+//					undiscoveredStructures,
+//					world,
+//					searchCenterX - this.mSearchQuadrantHeight,
+//					searchCenterY -  this.mSearchQuadrantWidth,
+//					this.mSearchQuadrantHeight * 2,
+//					this.mSearchQuadrantWidth * 2);
+//
+//			if(undiscoveredStructures.contains(struct)){
+//				undiscoveredStructures.remove(struct);
+//			}
+//
+//			/*else {
+//				return false;
+//			}*/
+//
+//		}
 
 		/*
 		if (structures.length > 0 && searchStructures) {
@@ -255,12 +250,12 @@ public class BiomeSearcher implements Runnable {
 					this.mSearchQuadrantHeight * 2,
 					this.mSearchQuadrantWidth * 2
 					);
-			
+
 			// Could meet structure requirements, move to next seed.
 			if (!hasRequiredStructures) return false;
 		}
 		*/
-		
+
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
@@ -272,7 +267,7 @@ public class BiomeSearcher implements Runnable {
 				// A new biome has been found.
 				// Determine whether this was the last biome to find.
 			}
-			
+
 			// In theory this should return false if the world contains a specific biome
 			if(undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				//Works except for ocean. No idea why
@@ -308,13 +303,13 @@ public class BiomeSearcher implements Runnable {
 	 * @param rejectedWorldsCount the number of worlds that have been rejected
 	 *            since the last world was accepted
 	 */
-	
-	
+
+
 
 	static void updateRejectedWorldsProgress(int rejectedWorldsCount) {
-		GUI.seedCount.setText("Current Rejected Seed Count: " + rejectedWorldsCount);
-		GUI.totalSeedCount.setText("Total Rejected Seed Count: " + totalRejectedSeedCount);
-		GUI.currentSeedChecking.setText("Current Sequenced Seed being Checked: " + currentSeedCheck);
+        singleton.getCRejSeed().setText(""+rejectedWorldsCount);
+		singleton.getTRejSeed().setText(""+totalRejectedSeedCount);
+		singleton.getSequenceSeed().setText("" + currentSeedCheck);
 	}
 
 	/**
@@ -334,11 +329,11 @@ public class BiomeSearcher implements Runnable {
 			// An incomplete line of dots was printed.
 			Util.console("");
 		}
-		Util.console(
+		util.console(
 				acceptedWorldsCount + ": " + acceptedWorld.getWorldSeed().getLong() + " (rejected "
 						+ rejectedWorldsCount + ")");
 	}
-	
+
 	/**
 	 * Searches for matching worlds, and prints the seed of each matching world
 	 * to the given output stream.
@@ -352,9 +347,10 @@ public class BiomeSearcher implements Runnable {
 	void search() throws InterruptedException,IOException, FormatException, MinecraftInterfaceCreationException {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
-
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && GUI.running && this.currentSeedCheck < this.mMaxSeed) {
-			if (!GUI.paused) {
+        totalRejectedSeedCount = 0;
+        singleton.getSequenceSeed().setText("" + 0);
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck < this.mMaxSeed) {
+			if (!singleton.getController().isPaused()) {
 				World world;
 				try {
 					world = createWorld();
@@ -388,13 +384,13 @@ public class BiomeSearcher implements Runnable {
 				updateAcceptedWorldsProgress(rejectedWorldsCount, acceptedWorldsCount, world);
 				rejectedWorldsCount = 0;
 			}
-			
+
 			//Literally without pause doesn't work....
 			System.out.print("");
 		}
-		
-//		Util.console("Finished Search!");
-		GUI.stop();
+
+		util.console("Finished Search!");
+        singleton.getController().stop();
 	}
 
 	/**
@@ -410,7 +406,7 @@ public class BiomeSearcher implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static {
 		// By default, AMIDST logs to the standard output stream and to an
 		// in-memory buffer.
