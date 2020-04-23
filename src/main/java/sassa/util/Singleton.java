@@ -13,7 +13,7 @@ public class Singleton {
         return instance;
     }
 
-    private GridPane biomesPane;
+    private GridPane biomesPane, structurePane;
     private TextArea console;
     private String minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed;
@@ -33,6 +33,14 @@ public class Singleton {
 
     public void setBiomesGridPane(GridPane pane){
         this.biomesPane = pane;
+    }
+
+    public GridPane getStructureGridPane(){
+        return structurePane;
+    }
+
+    public void setStructureGridPane(GridPane pane){
+        this.structurePane = pane;
     }
 
     public TextArea getConsole(){

@@ -2,6 +2,9 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
@@ -50,6 +53,19 @@
                            <GridPane.margin>
                               <Insets left="25.0" />
                            </GridPane.margin>
+                        </Text>
+                        <ImageView fx:id="paypalDonate" fitHeight="68.0" fitWidth="121.0" onMouseClicked="#donate" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                           <image>
+                              <Image url="@../button-PayPal-donate.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Like the tool?" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
                         </Text>
                      </children>
                   </GridPane>
@@ -123,6 +139,11 @@
                               </Text>
                            </children>
                         </Pane>
+                        <Text fx:id="bedrockWarning" layoutX="127.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Warning: With how searching works BEDROCK mode is not 100% accurate)" visible="false" wrappingWidth="216.13671875">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
                      </children>
                   </Pane>
                </content></Tab>
@@ -141,7 +162,38 @@
                      </content>
                   </ScrollPane>
                </content></Tab>
-            <Tab fx:id="structuresTab" disable="true" text="Structures" />
+            <Tab fx:id="biomeSetTab" text="Biome Sets">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <GridPane fx:id="biomeSetsGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab fx:id="structuresTab" disable="true" text="Structures">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <GridPane fx:id="structuresGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
    </center>

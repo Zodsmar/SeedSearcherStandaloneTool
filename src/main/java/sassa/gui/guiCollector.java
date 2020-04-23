@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import sassa.main.StructureSearcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,41 @@ public class guiCollector {
     public Biome[] getBiomesFromArrayList(GridPane pane, String inORex){
         List<String> checkedTexts = comboBoxManager(pane, inORex);
         Biome[] biomes = new Biome[checkedTexts.size()];
-        System.out.println(checkedTexts.size());
         for (int i = 0; i < checkedTexts.size(); i++) {
             biomes[i] = Biome.getByName(checkedTexts.get(i));
         }
         return biomes;
     }
 
+    public Biome[] getBiomesSetsFromArrayList(GridPane pane, String inORex){
+        List<String> checkedTexts = comboBoxManager(pane, inORex);
+        Biome[] biomes = new Biome[checkedTexts.size()];
+        for (int i = 0; i < checkedTexts.size(); i++) {
+            biomes[i] = Biome.getByName(checkedTexts.get(i));
+        }
+        return biomes;
+    }
+
+    public StructureSearcher.Type[] getStructuresFromArrayList(GridPane pane, String inORex){
+        List<String> checkedTexts = comboBoxManager(pane, inORex);
+        StructureSearcher.Type[] structures = new StructureSearcher.Type[checkedTexts.size()];
+        for (int i = 0; i < checkedTexts.size(); i++) {
+            structures[i] = StructureSearcher.Type.valueOf(checkedTexts.get(i).replaceAll(" ", "_").toUpperCase());
+        }
+        return structures;
+    }
+
     public boolean checkIfBiomesSelected(Biome[] searchable, boolean check){
-            if (searchable.length == 0 && check) {
-                check = false;
-                System.out.println(check);
-            }
+        if (searchable.length == 0 && check) {
+            check = false;
+        }
+        return check;
+    }
+
+    public boolean checkIfStructuresSelected(StructureSearcher.Type[] searchable, boolean check){
+        if (searchable.length == 0 && check) {
+            check = false;
+        }
         return check;
     }
 }

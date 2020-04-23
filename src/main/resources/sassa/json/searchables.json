@@ -108,9 +108,88 @@
     }
   },
   "Biome Sets": {
-    "Forest Set": [
-
-    ]
+    "0": {
+      "Desert Set": [
+        "Desert",
+        "Desert Hills",
+        "Desert M"
+      ],
+      "Savanna Set": [
+        "Savanna",
+        "Savanna Plateau",
+        "Savanna M",
+        "Savanna Plateau M"
+      ],
+      "Mesa Set": [
+        "Mesa",
+        "Mesa Plateau F",
+        "Mesa Plateau",
+        "Mesa (Bryce)",
+        "Mesa Plateau F M",
+        "Mesa Plateau F M"
+      ],
+      "Forest Set": [
+        "Forest",
+        "Forest Hills"
+      ],
+      "Birch Forest Set": [
+        "Birch Forest",
+        "Birch Forest Hills",
+        "Birch Forest M",
+        "Birch Forest Hills M"
+      ],
+      "Roofed Forest Set": [
+        "Roofed Forest",
+        "Roofed Forest M"
+      ],
+      "Swapland Set": [
+        "Swampland",
+        "Swampland M"
+      ],
+      "Jungle Set": [
+        "Jungle",
+        "Jungle Hills",
+        "Jungle Edge",
+        "Jungle M",
+        "Jungle Edge M"
+      ],
+      "Extreme Hills Set": [
+        "Extreme Hills",
+        "Extreme Hills+",
+        "Extreme Hills M",
+        "Extreme Hills+ M"
+      ],
+      "Taiga Set": [
+        "Taiga",
+        "Taiga Hills",
+        "Taiga M"
+      ],
+      "Mega Taiga Set": [
+        "Mega Taiga",
+        "Mega Taiga Hills",
+        "Mega Spruce Taiga",
+        "Mega Spruce Taiga (Hills)"
+      ],
+      "Cold Taiga Set": [
+        "Cold Taiga",
+        "Cold Taiga Hills",
+        "Cold Taiga M"
+      ],
+      "Mushroom Island Set": [
+        "Mushroom Island",
+        "Mushroom Island Shore"
+      ],
+      "Frozen Ocean Set" : [
+        "Frozen Ocean",
+        "Frozen Deep Ocean"
+      ]
+    },
+    "1400": {
+      "Bamboo Jungle Set": [
+        "Bamboo Jungle",
+        "Bamboo Jungle Hills"
+      ]
+    }
   },
   "Structures": {
     "0": {

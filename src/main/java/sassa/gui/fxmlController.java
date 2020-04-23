@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -98,6 +99,9 @@ public class fxmlController implements Initializable {
     private CheckBox bedrockMode;
 
     @FXML
+    private Text bedrockWarning;
+
+    @FXML
     private CheckBox randomSeed;
 
     @FXML
@@ -122,31 +126,44 @@ public class fxmlController implements Initializable {
     private Tab structuresTab;
 
     @FXML
-
     private Text sequencedSeed;
+
+    @FXML
+    private ImageView paypalDonate;
 
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
     private GridPane biomesGrid;
 
+    @FXML
+    private GridPane structuresGrid;
+
+    @FXML
+    private GridPane biomeSetsGrid;
+
+
     String[] include_exclude_txt = {"", "Include", "Exclude"};
 
     Util util;
     guiCollector guiCollector;
+    Singleton singleton = Singleton.getInstance();
 
     public static boolean RANDOM_SEEDS = true;
+    public static boolean BEDROCK = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Singleton.getInstance().setBiomesGridPane(biomesGrid);
-        Singleton.getInstance().setConsole(console);
-        Singleton.getInstance().setMinecraftVersion(minecraftVersion);
-        Singleton.getInstance().setMCPath(mcPath);
-        Singleton.getInstance().setCRejSeed(cRejSeedCount);
-        Singleton.getInstance().setTRejSeed(tRejSeedCount);
-        Singleton.getInstance().setSeedCount(seedsToFind);
-        Singleton.getInstance().setSequenceSeed(sequencedSeed);
-        Singleton.getInstance().setController(this);
+        singleton.setBiomesGridPane(biomesGrid);
+        singleton.setConsole(console);
+        singleton.setMinecraftVersion(minecraftVersion);
+        singleton.setMCPath(mcPath);
+        singleton.setCRejSeed(cRejSeedCount);
+        singleton.setTRejSeed(tRejSeedCount);
+        singleton.setSeedCount(seedsToFind);
+        singleton.setSequenceSeed(sequencedSeed);
+        singleton.setStructureGridPane(structuresGrid);
+        singleton.setController(this);
+
 
         util = new Util();
         guiCollector = new guiCollector();
@@ -163,38 +180,9 @@ public class fxmlController implements Initializable {
                 .observableArrayList(versions));
         mcVersions.setValue(minecraftVersion);
 
-        ArrayList<String> searchingList = null;
-        try {
-            searchingList = util.createSearchLists("Biomes");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        int k = 0;
-        for (int i = 0; i < (searchingList.size() / 3) + 1; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (k < searchingList.size()) {
-                    VBox tempGrid = new VBox();
-                    GridPane.setHgrow(tempGrid, Priority.ALWAYS);
-                    GridPane.setVgrow(tempGrid, Priority.ALWAYS);
-                    tempGrid.setAlignment(Pos.CENTER);
-                    biomesGrid.add(tempGrid, j, i + 1);
-
-                    Text tempText = new Text(searchingList.get(k));
-                    ComboBox<String> temp = new ComboBox<String>(FXCollections
-                            .observableArrayList(include_exclude_txt));
-                    tempGrid.getChildren().add(tempText);
-                    tempGrid.getChildren().add(temp);
-
-                    k++;
-                } else {
-                    Pane empty = new Pane();
-                    empty.setVisible(false);
-                    biomesGrid.add(empty, j, i + 1);
-                }
-            }
-        }
+        buildGridPane(biomesGrid, "Biomes");
+        buildGridPane(structuresGrid, "Structures");
+        buildGridPane(biomeSetsGrid, "Biome Sets");
     }
 
     EventHandler<javafx.event.ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
@@ -218,7 +206,18 @@ public class fxmlController implements Initializable {
                     randomSeedPane.setVisible(true);
                 }
                 RANDOM_SEEDS = !RANDOM_SEEDS;
-                System.out.println(RANDOM_SEEDS);
+            } else if (e.getSource() == bedrockMode){
+                if(bedrockMode.isSelected()){
+                    BEDROCK = true;
+                    bedrockWarning.setVisible(true);
+                    structuresTab.setDisable(true);
+                    findStructures.setDisable(true);
+                } else {
+                    BEDROCK = false;
+                    bedrockWarning.setVisible(false);
+                    findStructures.setDisable(false);
+                    structuresTab.setDisable(false);
+                }
             } else if (e.getSource() == startBtn) {
                 try {
                     toggleRunning();
@@ -240,6 +239,13 @@ public class fxmlController implements Initializable {
                 minecraftVersion = selected;
                 Singleton.getInstance().setMinecraftVersion(minecraftVersion);
                 System.out.println("Version: "+minecraftVersion+":"+mcVersions.getSelectionModel().getSelectedIndex());
+                clearGridPane(biomesGrid);
+                clearGridPane(structuresGrid);
+                clearGridPane(biomeSetsGrid);
+                buildGridPane(biomesGrid, "Biomes");
+                buildGridPane(structuresGrid, "Structures");
+                buildGridPane(biomeSetsGrid, "Biome Sets");
+
                 //initialize();
             }
         }
@@ -254,8 +260,13 @@ public class fxmlController implements Initializable {
                 Integer.parseInt(seedsToFind.getText()),
                 Long.parseLong(minSeed.getText()),
                 Long.parseLong(maxSeed.getText()),
-                RANDOM_SEEDS);
+                RANDOM_SEEDS,
+                BEDROCK);
         return r;
+    }
+
+    public void donate(){
+        util.openWebPage("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url");
     }
 
     public void startSeedSearcher() throws IOException, FormatException, MinecraftInterfaceCreationException {
@@ -305,6 +316,10 @@ public class fxmlController implements Initializable {
         return running;
     }
 
+    public boolean isStructureSearching(){
+        return findStructures.isSelected();
+    }
+
     private void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
         startBtn.setText("Stop");
         searchX.setEditable(false);
@@ -326,6 +341,7 @@ public class fxmlController implements Initializable {
         pauseBtn.setText("Pause");
         running = false;
         notificationLabel.setText("Stopped");
+        sequencedSeed.setText("0");
         if(timer != null)
         timer.cancel();
         if (t != null) t.interrupt();
@@ -353,7 +369,6 @@ public class fxmlController implements Initializable {
     }
 
     public boolean isPaused(){
-        System.out.println("Paused: " + paused);
         return paused;
     }
     private void reset() throws InterruptedException, IOException, FormatException,
@@ -372,6 +387,47 @@ public class fxmlController implements Initializable {
         notificationLabel.setText("Offline");
 
         updateDisplay();
+    }
+
+    private void buildGridPane(GridPane grid, String searchName){
+        ArrayList<String> searchingList = null;
+        try {
+            searchingList = util.createSearchLists(searchName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int k = 0;
+        for (int i = 0; i < (searchingList.size() / 3) + 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (k < searchingList.size()) {
+                    VBox tempGrid = new VBox();
+                    GridPane.setHgrow(tempGrid, Priority.ALWAYS);
+                    GridPane.setVgrow(tempGrid, Priority.ALWAYS);
+                    tempGrid.setAlignment(Pos.CENTER);
+                    grid.add(tempGrid, j, i + 1);
+
+                    Text tempText = new Text(searchingList.get(k));
+                    ComboBox<String> temp = new ComboBox<String>(FXCollections
+                            .observableArrayList(include_exclude_txt));
+                    tempGrid.getChildren().add(tempText);
+                    tempGrid.getChildren().add(temp);
+
+                    k++;
+                } else {
+                    Pane empty = new Pane();
+                    empty.setVisible(false);
+                    grid.add(empty, j, i + 1);
+                }
+            }
+        }
+    }
+
+    private void clearGridPane(GridPane pane){
+        pane.getChildren().clear();
+        pane.getColumnConstraints().clear();
+        pane.getRowConstraints().clear();
     }
 
 

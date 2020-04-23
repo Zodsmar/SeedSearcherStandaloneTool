@@ -21,7 +21,6 @@ import java.util.Map;
 public class Util {
 
 	static TextArea console = Singleton.getInstance().getConsole();
-	static String mcVersion = Singleton.getInstance().getMinecraftVersion();
 	/**
 	 * elapsed time in hours/minutes/seconds
 	 * 
@@ -132,20 +131,24 @@ public class Util {
 	 */
 
 
-	public ArrayList<String> generateSearchLists(JSONObject obj)  {
+	public ArrayList<String> generateSearchLists(JSONObject obj, String searchName)  {
 		ArrayList<String> list = new ArrayList<String>();
-		String minecraftVersion = mcVersion;
+		String minecraftVersion = Singleton.getInstance().getMinecraftVersion();
 		Map<String, Integer> versions = Version.getVersions();
 		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();
+			//System.out.println(Integer.valueOf(versions.get(minecraftVersion)));
 			if(Integer.valueOf(key) <= Integer.valueOf(versions.get(minecraftVersion))){
 				JSONObject subGroup = (JSONObject) obj.get(key);
 				for(Iterator iterator1 = subGroup.keySet().iterator(); iterator1.hasNext();){
-
 					String key1 = (String) iterator1.next();
 					JSONArray subGArray = (JSONArray)subGroup.get(key1);
-					for(int i = 0; i < subGArray.size(); i++){
-						list.add((String)subGArray.get(i));
+					if(searchName == "Biome Sets"){
+						list.add(key1);
+					} else {
+						for(int i = 0; i < subGArray.size(); i++){
+							list.add((String)subGArray.get(i));
+						}
 					}
 				}
 			}
@@ -157,10 +160,15 @@ public class Util {
 
 		JSONObject jo = jsonParser("searchables.json");
 
-		JSONObject jObj = (JSONObject) jo.get(searchName);
-		ArrayList<String> jObjList;
 
-		jObjList = generateSearchLists(jObj);
+		ArrayList<String> jObjList;
+		if(searchName == "getBiomeSets"){
+			JSONObject jObj = (JSONObject) jo.get("Biomes Sets");
+			jObjList = generateSearchLists(jObj, searchName);
+		} else {
+			JSONObject jObj = (JSONObject) jo.get(searchName);
+			jObjList = generateSearchLists(jObj, searchName);
+		}
 
 		return jObjList;
 	}
