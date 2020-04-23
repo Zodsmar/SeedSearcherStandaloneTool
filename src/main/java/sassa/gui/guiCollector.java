@@ -20,7 +20,6 @@ public class guiCollector {
      * @return
      */
     private List<String> comboBoxManager(GridPane pane, String inORex) {
-        //System.out.println("Row: " + pane.getRowCount() + " Column: " + pane.getColumnCount());
         List<String> checkedTexts = new ArrayList<String>();
         int k = 0;
         for(int i = 0; i < pane.getRowCount(); i++) {

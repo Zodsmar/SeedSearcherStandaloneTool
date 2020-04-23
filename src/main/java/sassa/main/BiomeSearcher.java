@@ -87,7 +87,7 @@ public class BiomeSearcher implements Runnable {
 		try{
 			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
 		} catch (FileNotFoundException e) {
-			Util.console("No install directory found for Minecraft version " + minecraftVersion + "!");
+			util.console("No install directory found for Minecraft version " + minecraftVersion + "!");
 			throw e;
 		}
 		this.mMinecraftInterface = MinecraftInterfaces.fromLocalProfile(launcherProfile);
@@ -211,7 +211,6 @@ public class BiomeSearcher implements Runnable {
 //			}
 //		}
 //
-
 
 		if (!searchBiomes && !searchRejectedBiomes && !searchStructures) {// && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures) {
 			util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
