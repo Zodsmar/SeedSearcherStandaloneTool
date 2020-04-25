@@ -14,6 +14,7 @@ import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
 import javafx.application.Platform;
+import org.json.simple.parser.ParseException;
 import sassa.gui.guiCollector;
 import sassa.util.Singleton;
 import sassa.util.Util;
@@ -73,6 +74,7 @@ public class BiomeSearcher implements Runnable {
 			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed, boolean bedrock)
 			throws IOException, FormatException, MinecraftInterfaceCreationException {
 		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
+
 		MinecraftInstallation minecraftInstallation;
 
 		String pathToDirectory = singleton.getMCPath().getText();
@@ -146,13 +148,14 @@ public class BiomeSearcher implements Runnable {
 
 	Biome[] biomes = {}; boolean searchBiomes = true;
 	Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
-	HashMap<Biome, String> biomeSets = new HashMap<Biome, String>(); boolean searchBiomeSets = true;
-	HashMap<Biome, String> rejectedBiomeSets = new HashMap<Biome, String>(); boolean searchRejectedBiomesSets = true;
+	HashMap<Biome, String> biomeSets = new HashMap<>(); boolean searchBiomeSets = true;
+	HashMap<Biome, String> rejectedBiomeSets = new HashMap<>(); boolean searchRejectedBiomesSets = true;
 	StructureSearcher.Type[] structures = {}; boolean searchStructures = true;
+	StructureSearcher.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
 	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
-			IOException, FormatException, MinecraftInterfaceCreationException {
+			IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
 		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
 		//! this is incorrect and amidst is... no idea why...
@@ -184,7 +187,7 @@ public class BiomeSearcher implements Runnable {
 		//System.out.println(biomeCodesCount);
 //		System.out.println(searchCenterX);
 //		System.out.println(searchCenterY);
-		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0) {
+		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0 && rejectedStructures.length == 0) {
             util.console("Creating search lists...");
 		}
 
@@ -194,29 +197,19 @@ public class BiomeSearcher implements Runnable {
         searchRejectedBiomes = guiCollector.checkIfBiomesSelected(rejectedBiomes, searchRejectedBiomes);
 		structures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Include");
 		searchStructures = guiCollector.checkIfStructuresSelected(structures, searchStructures);
+		rejectedStructures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Exclude");
+		searchRejectedStructures = guiCollector.checkIfStructuresSelected(rejectedStructures, searchRejectedStructures);
+		biomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
+		searchBiomeSets = guiCollector.checkIfBiomeSetsSelected(biomeSets, searchBiomeSets);
+		rejectedBiomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
+		searchRejectedBiomesSets = guiCollector.checkIfBiomeSetsSelected(rejectedBiomeSets, searchRejectedBiomesSets);
 
-//		if (biomeSets.size() == 0 && searchBiomeSets) {
-//			biomeSets = GUI.manageCheckedCheckboxesSets();
-//			if (biomeSets.size() == 0 && searchBiomeSets) {
-//				searchBiomeSets = false;
-//				System.out.println(searchBiomeSets);
-//			}
-//		}
-//
-//		if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
-//			rejectedBiomeSets = GUI.manageCheckedCheckboxesSetsRejected();
-//			if (rejectedBiomeSets.size() == 0 && searchRejectedBiomesSets) {
-//				searchRejectedBiomesSets = false;
-//				System.out.println(rejectedBiomeSets);
-//			}
-//		}
-//
-
-		if (!searchBiomes && !searchRejectedBiomes && !searchStructures) {// && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures) {
+		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures && !searchRejectedStructures) {
 			util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
 			quitImmediate = true;
 			return false;
 		}
+
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		for(int i =0; i <= undiscoveredStructures.size(); i++){
 			StructureSearcher.Type struct = StructureSearcher.hasStructures(
@@ -229,16 +222,28 @@ public class BiomeSearcher implements Runnable {
 			if(undiscoveredStructures.contains(struct)){
 				undiscoveredStructures.remove(struct);
 			}
-
 		}
 
+		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
+		for(int i =0; i <= undiscoveredRejectedStructures.size(); i++){
+			StructureSearcher.Type struct = StructureSearcher.hasStructures(
+					undiscoveredRejectedStructures,
+					world,
+					searchCenterX - this.mSearchQuadrantHeight,
+					searchCenterY -  this.mSearchQuadrantWidth,
+					this.mSearchQuadrantHeight * 2,
+					this.mSearchQuadrantWidth * 2);
+			if(undiscoveredRejectedStructures.contains(struct)){
+				return false;
+			}
+		}
 
 		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
 		HashMap<Biome, String> undiscoveredBiomeSets = new HashMap<>(biomeSets);
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
-		//System.out.println(undiscoveredBiomes);
+		System.out.println(undiscoveredBiomeSets);
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				// A new biome has been found.
@@ -341,7 +346,7 @@ public class BiomeSearcher implements Runnable {
 				boolean isWorldAccepted;
 				try {
 					isWorldAccepted = accept(world);
-				} catch (MinecraftInterfaceException | UnknownBiomeIndexException e) {
+				} catch (MinecraftInterfaceException | UnknownBiomeIndexException | ParseException e) {
 					// Biome data for the world could not be obtained.
 					// Biome data included an unknown biome code.
 					// TODO log

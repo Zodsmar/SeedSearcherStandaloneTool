@@ -49,7 +49,7 @@
                               <Insets left="25.0" />
                            </GridPane.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left!" GridPane.rowIndex="5">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left.!" GridPane.rowIndex="5">
                            <GridPane.margin>
                               <Insets left="25.0" />
                            </GridPane.margin>
@@ -66,6 +66,11 @@
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like more information on specific features hover over them for a better description" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets left="25.0" />
+                           </GridPane.margin>
                         </Text>
                      </children>
                   </GridPane>
@@ -94,9 +99,6 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Button fx:id="startBtn" layoutX="14.0" layoutY="508.0" mnemonicParsing="false" prefWidth="41.0" text="Start" />
-                        <Button fx:id="pauseBtn" layoutX="64.0" layoutY="508.0" mnemonicParsing="false" text="Pause" />
-                        <Button fx:id="clearBtn" layoutX="127.0" layoutY="508.0" mnemonicParsing="false" text="Clear" />
                         <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Elapsed:" wrappingWidth="90.13671875">
                            <font>
                               <Font name="System Bold" size="12.0" />
@@ -107,20 +109,29 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="mcVersions" layoutX="179.0" layoutY="508.0" prefHeight="25.0" prefWidth="91.0" />
-                        <Text layoutX="175.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
-                        <TextField fx:id="mcPath" layoutX="282.0" layoutY="508.0" prefHeight="25.0" prefWidth="359.0" />
-                        <Text layoutX="282.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path to .minecraft directory (OPTIONAL, if blank default is used)" wrappingWidth="354.13671875" />
+                        <ComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
+                        <TextField fx:id="mcPath" layoutX="282.0" layoutY="491.0" prefHeight="25.0" prefWidth="359.0">
+                           <tooltip>
+                              <Tooltip text="This requires absolute path" />
+                           </tooltip></TextField>
+                        <Text layoutX="284.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path to .minecraft directory (OPTIONAL, if blank default is used)" wrappingWidth="354.13671875" />
                         <TextField fx:id="seedsToFind" layoutX="106.0" layoutY="163.0" prefHeight="25.0" prefWidth="70.0" text="10" />
                         <TextField fx:id="searchX" layoutX="106.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" text="512" />
                         <TextField fx:id="searchZ" layoutX="106.0" layoutY="229.0" prefHeight="25.0" prefWidth="70.0" text="512" />
                         <Text layoutX="14.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
                         <Text layoutX="14.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (X)" />
                         <Text layoutX="15.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (Z)" />
-                        <CheckBox fx:id="findStructures" layoutX="13.0" layoutY="265.0" mnemonicParsing="false" text="Find Structures" />
+                        <CheckBox fx:id="findStructures" layoutX="13.0" layoutY="265.0" mnemonicParsing="false" text="Find Structures">
+                           <tooltip>
+                              <Tooltip text="If you want to look for structures enable this and select the structure you would like. This does not work in bedrock mode. Also structure searching isn't 100% perfect." />
+                           </tooltip></CheckBox>
                         <CheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false" text="Bedrock Mode" />
-                        <CheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds" />
-                        <CheckBox fx:id="devMode" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
+                        <CheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds">
+                           <tooltip>
+                              <Tooltip text="If you are just searching keep this on. If you have a specific seed range you would like to search through incrementally by 1 each time then turn this off and put in your seeds" />
+                           </tooltip></CheckBox>
+                        <CheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
                         <Pane fx:id="randomSeedPane" layoutX="9.0" layoutY="339.0" prefHeight="71.0" prefWidth="411.0" visible="false">
                            <children>
                               <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimum Seed" wrappingWidth="80.12109375" />
@@ -198,39 +209,71 @@
       </TabPane>
    </center>
    <left>
-      <BorderPane prefHeight="576.0" prefWidth="343.0" BorderPane.alignment="CENTER">
+      <BorderPane prefHeight="528.0" prefWidth="344.0" BorderPane.alignment="CENTER">
          <top>
-            <Pane prefHeight="29.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="29.0" prefWidth="344.0" BorderPane.alignment="CENTER">
                <children>
                   <Text layoutX="130.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console Output" />
                </children>
             </Pane>
          </top>
          <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="492.0" prefWidth="344.0" BorderPane.alignment="CENTER">
                <content>
-                  <TextArea fx:id="console" editable="false" prefHeight="345.0" prefWidth="222.0" />
+                  <TextArea fx:id="console" editable="false" prefHeight="528.0" prefWidth="341.0" />
                </content>
             </ScrollPane>
          </center>
       </BorderPane>
    </left>
    <bottom>
-      <BorderPane prefHeight="24.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <left>
-            <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets left="20.0" />
-               </BorderPane.margin>
-            </Text>
-         </left>
+      <BorderPane prefHeight="34.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <right>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER">
+            <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="20.0" />
                </BorderPane.margin>
             </Text>
          </right>
+         <left>
+            <Pane prefHeight="24.0" prefWidth="343.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false" text="Save Output">
+                     <tooltip>
+                        <Tooltip text="Manually save the entire console to a file" />
+                     </tooltip></Button>
+                  <CheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false" text="Auto Save">
+                     <tooltip>
+                        <Tooltip text="This will automatically save any new text in the console" />
+                     </tooltip></CheckBox>
+                  <Button fx:id="directoryBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fitHeight="18.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../folder.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)" />
+                     </tooltip>
+                  </Button>
+                  <Label fx:id="outputFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="202.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="sassa_output.txt" textAlignment="RIGHT" />
+               </children>
+            </Pane>
+         </left>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="startBtn" layoutX="118.0" layoutY="2.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
+                     <tooltip>
+                        <Tooltip text="Start and Stop the seed searcher" />
+                     </tooltip></Button>
+                  <Button fx:id="pauseBtn" layoutX="175.0" layoutY="2.0" mnemonicParsing="false" text="Pause" />
+                  <Button fx:id="clearBtn" layoutX="242.0" layoutY="2.0" mnemonicParsing="false" text="Clear" />
+               </children>
+            </Pane>
+         </center>
       </BorderPane>
    </bottom>
 </BorderPane>

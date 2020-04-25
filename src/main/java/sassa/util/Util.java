@@ -1,6 +1,9 @@
 package sassa.util;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,7 +14,9 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +72,10 @@ public class Util {
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
 		console.appendText(output + "\n");
+
+		if(Singleton.getInstance().getAutoSave().isSelected()){
+            appendToFile(Singleton.getInstance().getOutputFile(), output);
+        }
 	}
 	public void consoleNoLine(String output) {
 		console.appendText(output);
@@ -131,8 +140,9 @@ public class Util {
 	 */
 
 
-	public ArrayList<String> generateSearchLists(JSONObject obj, String searchName)  {
+	public Object generateSearchLists(JSONObject obj, String searchName)  {
 		ArrayList<String> list = new ArrayList<String>();
+		HashMap<String, String> hashList = new HashMap<String, String>();
 		String minecraftVersion = Singleton.getInstance().getMinecraftVersion();
 		Map<String, Integer> versions = Version.getVersions();
 		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
@@ -147,29 +157,84 @@ public class Util {
 						list.add(key1);
 					} else {
 						for(int i = 0; i < subGArray.size(); i++){
-							list.add((String)subGArray.get(i));
+                            if(searchName == "getBiomeSets") {
+                                hashList.put((String)subGArray.get(i), key1);
+
+                            } else {
+                                list.add((String)subGArray.get(i));
+                            }
 						}
 					}
 				}
 			}
 		}
-		return list;
+        if(searchName == "getBiomeSets") {
+            return hashList;
+        } else {
+            return list;
+        }
 	}
 
-	public ArrayList<String> createSearchLists(String searchName) throws IOException, ParseException{
+	public Object createSearchLists(String searchName) throws IOException, ParseException{
 
 		JSONObject jo = jsonParser("searchables.json");
 
-
 		ArrayList<String> jObjList;
-		if(searchName == "getBiomeSets"){
-			JSONObject jObj = (JSONObject) jo.get("Biomes Sets");
-			jObjList = generateSearchLists(jObj, searchName);
-		} else {
-			JSONObject jObj = (JSONObject) jo.get(searchName);
-			jObjList = generateSearchLists(jObj, searchName);
-		}
+		HashMap<String, String> jObjMap;
 
-		return jObjList;
+
+        if(searchName == "getBiomeSets"){
+            JSONObject jObj = (JSONObject) jo.get("Biome Sets");
+            jObjMap = (HashMap) generateSearchLists(jObj, searchName);
+            return jObjMap;
+        } else {
+            JSONObject jObj = (JSONObject) jo.get(searchName);
+            jObjList = (ArrayList) generateSearchLists(jObj, searchName);
+            return jObjList;
+        }
+
 	}
+
+	public void chooseDirectory(Label display){
+        Stage stage = new Stage();
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null){
+			display.setText(file.getName());
+			Singleton.getInstance().setOutputFile(file);
+		}
+    }
+
+    private static File createDefaultOutputFile(){
+        File outputFile = new File("sassa_output.txt");
+        try {
+            outputFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Singleton.getInstance().setOutputFile(outputFile);
+        return outputFile;
+    }
+
+    public static void appendToFile(File file, String text){
+		System.out.println(file);
+        FileWriter fr = null;
+        try {
+            // Below constructor argument decides whether to append or override
+            if(file == null){
+                file = createDefaultOutputFile();
+            }
+            fr = new FileWriter(file, true);
+            fr.write(text + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

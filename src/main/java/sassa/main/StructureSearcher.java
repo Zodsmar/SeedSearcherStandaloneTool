@@ -16,6 +16,7 @@ public class StructureSearcher {
 		MINESHAFT, OCEAN_RUINS, OCEAN_FEATURES, VILLAGE, STRONGHOLD, MANSION, OCEAN_MONUMENT, SLIME_CHUNK, BIOME_DATA, PILLAGER_OUTPOST, DESERT_TEMPLE, JUNGLE_TEMPLE,
 		BURIED_TREASURE, SHIPWRECK, WITCH_HUT, IGLOO
 	}
+
 	public static List<WorldIcon> findVillageFeatures(World world, CoordinatesInWorld coords) {
 		return world.getVillageProducer().getAt(coords, null);
 	}

@@ -1,10 +1,13 @@
 package sassa.util;
 
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import sassa.gui.fxmlController;
+
+import java.io.File;
 
 public class Singleton {
     private static Singleton instance = new Singleton();
@@ -13,12 +16,14 @@ public class Singleton {
         return instance;
     }
 
-    private GridPane biomesPane, structurePane;
+    private GridPane biomesPane, structurePane, biomeSetsPane;
     private TextArea console;
     private String minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed;
     private TextField seedCount, mcPath;
     private fxmlController controller;
+    private CheckBox autoSave;
+    private File outputFile;
 
     public void setController(fxmlController controller){
         this.controller = controller;
@@ -33,6 +38,14 @@ public class Singleton {
 
     public void setBiomesGridPane(GridPane pane){
         this.biomesPane = pane;
+    }
+
+    public GridPane getBiomeSetsGridPane(){
+        return biomeSetsPane;
+    }
+
+    public void setBiomeSetsGridPane(GridPane pane){
+        this.biomeSetsPane = pane;
     }
 
     public GridPane getStructureGridPane(){
@@ -96,5 +109,21 @@ public class Singleton {
 
     public void setSequenceSeed(Text sequencedSeed){
         this.sequencedSeed = sequencedSeed;
+    }
+
+    public CheckBox getAutoSave() {
+        return autoSave;
+    }
+
+    public void setAutoSave(CheckBox autoSave) {
+        this.autoSave = autoSave;
+    }
+
+    public File getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
     }
 }

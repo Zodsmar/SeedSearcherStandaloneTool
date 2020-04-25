@@ -5,14 +5,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.json.simple.parser.ParseException;
 import sassa.main.StructureSearcher;
+import sassa.util.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class guiCollector {
 
-
+    Util util = new Util();
     /**
      * Some Biomes come back as null. No idea. The Names match each other so it
      * should work (Apparently it works like 1 in 10 times...)
@@ -49,13 +53,20 @@ public class guiCollector {
         return biomes;
     }
 
-    public Biome[] getBiomesSetsFromArrayList(GridPane pane, String inORex){
+    public HashMap<Biome, String> getBiomesSetsFromHashMap(GridPane pane, String inORex) throws IOException, ParseException {
         List<String> checkedTexts = comboBoxManager(pane, inORex);
-        Biome[] biomes = new Biome[checkedTexts.size()];
-        for (int i = 0; i < checkedTexts.size(); i++) {
-            biomes[i] = Biome.getByName(checkedTexts.get(i));
+        HashMap<Biome, String> completeBiomesList = new HashMap<>();
+        HashMap<String, String> sets = (HashMap) util.createSearchLists("getBiomeSets");
+        for( HashMap.Entry<String,String> e: sets.entrySet() ){
+            if(checkedTexts.contains(e.getValue())){
+                //System.out.println(e.getValue());
+                Biome biome = Biome.getByName(e.getKey());
+                String set = e.getValue();
+                completeBiomesList.put(biome, set);
+            }
         }
-        return biomes;
+
+        return completeBiomesList;
     }
 
     public StructureSearcher.Type[] getStructuresFromArrayList(GridPane pane, String inORex){
@@ -69,6 +80,12 @@ public class guiCollector {
 
     public boolean checkIfBiomesSelected(Biome[] searchable, boolean check){
         if (searchable.length == 0 && check) {
+            check = false;
+        }
+        return check;
+    }
+    public boolean checkIfBiomeSetsSelected(HashMap<Biome, String> searchable, boolean check){
+        if (searchable.size() == 0 && check) {
             check = false;
         }
         return check;

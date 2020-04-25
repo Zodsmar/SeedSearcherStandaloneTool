@@ -131,6 +131,18 @@ public class fxmlController implements Initializable {
     @FXML
     private ImageView paypalDonate;
 
+    @FXML
+    private Button saveConsole;
+
+    @FXML
+    private CheckBox autoSaveConsole;
+
+    @FXML
+    private Button directoryBrowser;
+
+    @FXML
+    private Label outputFileText;
+
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
     private GridPane biomesGrid;
@@ -153,6 +165,7 @@ public class fxmlController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         singleton.setBiomesGridPane(biomesGrid);
         singleton.setConsole(console);
         singleton.setMinecraftVersion(minecraftVersion);
@@ -162,6 +175,8 @@ public class fxmlController implements Initializable {
         singleton.setSeedCount(seedsToFind);
         singleton.setSequenceSeed(sequencedSeed);
         singleton.setStructureGridPane(structuresGrid);
+        singleton.setBiomeSetsGridPane(biomeSetsGrid);
+        singleton.setAutoSave(autoSaveConsole);
         singleton.setController(this);
 
 
@@ -175,6 +190,8 @@ public class fxmlController implements Initializable {
         randomSeed.setOnAction(buttonHandler);
         devMode.setOnAction(buttonHandler);
         mcVersions.setOnAction(buttonHandler);
+        directoryBrowser.setOnAction(buttonHandler);
+        saveConsole.setOnAction(buttonHandler);
 
         mcVersions.setItems(FXCollections
                 .observableArrayList(versions));
@@ -247,6 +264,10 @@ public class fxmlController implements Initializable {
                 buildGridPane(biomeSetsGrid, "Biome Sets");
 
                 //initialize();
+            } else if(e.getSource() == directoryBrowser){
+                util.chooseDirectory(outputFileText);
+            } else if(e.getSource() == saveConsole){
+                util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
             }
         }
 
@@ -392,7 +413,7 @@ public class fxmlController implements Initializable {
     private void buildGridPane(GridPane grid, String searchName){
         ArrayList<String> searchingList = null;
         try {
-            searchingList = util.createSearchLists(searchName);
+            searchingList = (ArrayList) util.createSearchLists(searchName);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
