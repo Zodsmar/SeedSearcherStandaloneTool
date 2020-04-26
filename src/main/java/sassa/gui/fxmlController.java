@@ -56,6 +56,10 @@ public class fxmlController implements Initializable {
             /*1.7.x*/	Version.V1_7_10};
     ///*1.6.x*/	Version.V1_6_4};
 
+    String[] worldTypes = {
+            "DEFAULT", "AMPLIFIED", "LARGE BIOMES"
+    };
+
     @FXML
     private Text cRejSeedCount;
 
@@ -108,6 +112,9 @@ public class fxmlController implements Initializable {
     private Pane randomSeedPane;
 
     @FXML
+    private Pane worldTypePane;
+
+    @FXML
     private TextField minSeed;
 
     @FXML
@@ -142,6 +149,9 @@ public class fxmlController implements Initializable {
 
     @FXML
     private Label outputFileText;
+
+    @FXML
+    private ComboBox<String> worldType;
 
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
@@ -178,6 +188,7 @@ public class fxmlController implements Initializable {
         singleton.setBiomeSetsGridPane(biomeSetsGrid);
         singleton.setAutoSave(autoSaveConsole);
         singleton.setController(this);
+        singleton.setWorldType(worldType);
 
 
         util = new Util();
@@ -196,6 +207,9 @@ public class fxmlController implements Initializable {
         mcVersions.setItems(FXCollections
                 .observableArrayList(versions));
         mcVersions.setValue(minecraftVersion);
+
+        worldType.setItems(FXCollections.observableArrayList(worldTypes));
+        singleton.getWorldType().setValue("DEFAULT");
 
         buildGridPane(biomesGrid, "Biomes");
         buildGridPane(structuresGrid, "Structures");
@@ -229,11 +243,14 @@ public class fxmlController implements Initializable {
                     bedrockWarning.setVisible(true);
                     structuresTab.setDisable(true);
                     findStructures.setDisable(true);
+                    singleton.getWorldType().setValue("DEFAULT");
+                    worldTypePane.setDisable(true);
                 } else {
                     BEDROCK = false;
                     bedrockWarning.setVisible(false);
                     findStructures.setDisable(false);
                     structuresTab.setDisable(false);
+                    worldTypePane.setDisable(false);
                 }
             } else if (e.getSource() == startBtn) {
                 try {

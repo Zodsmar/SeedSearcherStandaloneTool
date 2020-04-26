@@ -155,6 +155,17 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
+                        <Pane fx:id="worldTypePane" layoutX="134.0" layoutY="464.0" prefHeight="54.0" prefWidth="135.0">
+                           <children>
+                              <ComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0" prefWidth="113.0" />
+                              <Text layoutX="37.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World Type" />
+                           </children>
+                        </Pane>
+                        <Text fill="#d30000" layoutX="284.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If it doesn't work try using \'s" wrappingWidth="124.13671875">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
                      </children>
                   </Pane>
                </content></Tab>

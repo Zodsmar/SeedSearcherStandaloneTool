@@ -7,7 +7,10 @@ import amidst.mojangapi.minecraftinterface.MinecraftInterface;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceException;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaces;
-import amidst.mojangapi.world.*;
+import amidst.mojangapi.world.World;
+import amidst.mojangapi.world.WorldBuilder;
+import amidst.mojangapi.world.WorldOptions;
+import amidst.mojangapi.world.WorldSeed;
 import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
@@ -118,10 +121,11 @@ public class BiomeSearcher implements Runnable {
 		}
 		//System.out.println(seedNum);
 		if (RANDOM_SEEDS) {
-			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + seedNum), WorldType.DEFAULT);
+			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + seedNum), util.getWorldType(singleton.getWorldType().getValue().toString()));
+			System.out.println("Searching on: " + util.getWorldType(singleton.getWorldType().getValue().toString()));
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		} else {
-			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), WorldType.DEFAULT);
+			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), util.getWorldType(singleton.getWorldType().getValue().toString()));
 			this.currentSeedCheck++;
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		}

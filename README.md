@@ -20,7 +20,7 @@ I am working on also future plans and ideas. (Nothing is set in stone but there 
 
 Also if you are going to make a video or content in anyway, I am always looking for developers who
 are interested in helping or people who might know different methods of doing the searching and can help
-improve things like stability, reliability, etc. So any form of shout out kinda like a reminder that anyone
+improve things like stability, reliability, etc. So any form of shoutout, kinda of like a reminder to anyone
 who is technically inclined would be a great help!
 
 ## Credit

@@ -1,6 +1,7 @@
 package sassa.util;
 
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -24,6 +25,7 @@ public class Singleton {
     private fxmlController controller;
     private CheckBox autoSave;
     private File outputFile;
+    private ComboBox worldType;
 
     public void setController(fxmlController controller){
         this.controller = controller;
@@ -125,5 +127,13 @@ public class Singleton {
 
     public void setOutputFile(File outputFile) {
         this.outputFile = outputFile;
+    }
+
+    public ComboBox getWorldType() {
+        return worldType;
+    }
+
+    public void setWorldType(ComboBox worldType) {
+        this.worldType = worldType;
     }
 }

@@ -1,5 +1,6 @@
 package sassa.util;
 
+import amidst.mojangapi.world.WorldType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -11,8 +12,6 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.io.FileReader;
@@ -68,9 +67,9 @@ public class Util {
 */
 	public static void console(String output) {
 
-		StringSelection stringSelection = new StringSelection(output);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(stringSelection, null);
+//		StringSelection stringSelection = new StringSelection(output);
+//		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+//		clipboard.setContents(stringSelection, null);
 		console.appendText(output + "\n");
 
 		if(Singleton.getInstance().getAutoSave().isSelected()){
@@ -237,4 +236,14 @@ public class Util {
             }
         }
     }
+
+    public WorldType getWorldType(String worldTypeString){
+		if(worldTypeString == "AMPLIFIED"){
+			return WorldType.AMPLIFIED;
+		} else if ( worldTypeString == "LARGE BIOMES"){
+			return WorldType.LARGE_BIOMES;
+		} else {
+			return WorldType.DEFAULT;
+		}
+	}
 }
