@@ -16,15 +16,15 @@ also hover over UI elements to get more information.
 > - Randomized Seeds (Or search from a seed range)
 
 
-![SeedTool Image 1](https://imgur.com/a/O1NrAxF.png)
+![SeedTool Image 1](https://imgur.com/a/O1NrAxF)
 
-![SeedTool Image 2](https://imgur.com/a/kYzIveX.png)
+![SeedTool Image 2](https://imgur.com/a/kYzIveX)
 
-![SeedTool Image 3](https://imgur.com/a/hmI5Hgz.png)
+![SeedTool Image 3](https://imgur.com/a/hmI5Hgz)
 
-![SeedTool Image 4](https://imgur.com/a/W6NNLYi.png)
+![SeedTool Image 4](https://imgur.com/a/W6NNLYi)
 
-![SeedTool Image 5](https://imgur.com/a/MXpEFJa.png)
+![SeedTool Image 5](https://imgur.com/a/MXpEFJa)
 
 ### Developers
 
