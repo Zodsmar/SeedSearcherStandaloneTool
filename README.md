@@ -34,6 +34,8 @@ also hover over UI elements to get more information.
 builds everything from .JAR, .EXE, .ZIP, and .TAR
 - If you have a feature to add create a pull request! Help is always nice.
 
+> Apparently on v0.5.0 using OpenJDK on Linux the .jar will not run. User A4D4R posted about it and I have attached a wiki page for anyone wanting to know how he did it: https://github.com/Zodsmar/SeedSearcherStandaloneTool/wiki/Building-SASSA-for-Linux-(OpenJDK)---v0.5.0
+
 ### Content Creators
 
 If you are a content creator and would like to make a video and showcase the tool please feel free. 
