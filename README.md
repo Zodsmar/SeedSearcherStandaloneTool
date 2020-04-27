@@ -1,13 +1,40 @@
-# SeedSearcherStandaloneTool
-This tool is built to be standalone but has some dependencies which are automatically managed by Maven. The tool is open source so anyone is able to help, learn, adapt etc. 
+# SASSA 
 
-![SeedTool Image 1](https://imgur.com/j6Hi6be.png)
+> Stands for: StandAlone Seed Searcher Application
 
-![SeedTool Image 2](https://imgur.com/8b6Rspy.png)
+This tool is built to be standalone but has some dependencies which are automatically managed by Gradle. The tool is open source so anyone is able to help, learn, adapt etc.
+Getting started with the tool is very easy and there is a simple set of instructions on the info tab (your starting tab). You can
+also hover over UI elements to get more information.
 
-![SeedTool Image 3](https://i.imgur.com/fCgzNpv.png)
+## Features
 
-## Content Creators
+> - **Bedrock Mode**
+> - Search based on minecraft version (1.15.2 - 1.7.10)
+> - Search in specific radius from spawn
+> - World Type (Default, Amplified, Large Biomes)
+> - Biomes, Biome Sets (OR function), and Structures
+> - Randomized Seeds (Or search from a seed range)
+
+
+![SeedTool Image 1](https://imgur.com/a/O1NrAxF)
+
+![SeedTool Image 2](https://imgur.com/a/kYzIveX)
+
+![SeedTool Image 3](https://imgur.com/a/hmI5Hgz)
+
+![SeedTool Image 4](https://imgur.com/a/W6NNLYi)
+
+![SeedTool Image 5](https://imgur.com/a/MXpEFJa)
+
+### Developers
+
+- Built using Intellij and Java 11
+- Runs on Java 8 (1.8)
+- Using Gradle to build the project. I created a custom task called buildAll which 
+builds everything from .JAR, .EXE, .ZIP, and .TAR
+- If you have a feature to add create a pull request! Help is always nice.
+
+### Content Creators
 
 If you are a content creator and would like to make a video and showcase the tool please feel free. 
 Just some information regarding about myself and the plans of the tool.
@@ -25,12 +52,11 @@ who is technically inclined would be a great help!
 
 ## Credit
 
-#### Dependency
+#### Dependencies
 https://github.com/toolbox4minecraft/amidst
+https://code.google.com/archive/p/json-simple/
 
-http://www.java2s.com/Code/Jar/j/jgoodies.htm
-
-#### User Credit
+#### User Credits
 scudobuio - for the initial search function
 
 fraffugooby - Updating dependencies
