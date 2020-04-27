@@ -27,3 +27,8 @@ target/
 /dependency-reduced-pom.xml
 devtools.properties
 tests
+
+.gradle
+**/build/
+!src/**/build/
+/gradle
