@@ -229,7 +229,7 @@ public class fxmlController implements Initializable {
 
             if (e.getSource() == devMode) {
 //                Main.DEV_MODE = !Main.DEV_MODE;
-//                initialize();
+
             } else if (e.getSource() == randomSeed) {
                 if(randomSeed.isSelected()){
                     randomSeedPane.setVisible(false);
@@ -280,7 +280,6 @@ public class fxmlController implements Initializable {
                 buildGridPane(structuresGrid, "Structures");
                 buildGridPane(biomeSetsGrid, "Biome Sets");
 
-                //initialize();
             } else if(e.getSource() == directoryBrowser){
                 util.chooseDirectory(outputFileText);
             } else if(e.getSource() == saveConsole){

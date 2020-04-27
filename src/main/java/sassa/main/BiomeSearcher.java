@@ -119,10 +119,8 @@ public class BiomeSearcher implements Runnable {
 				seedNum += 4294967296L;
 			}
 		}
-		//System.out.println(seedNum);
 		if (RANDOM_SEEDS) {
 			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + seedNum), util.getWorldType(singleton.getWorldType().getValue().toString()));
-			System.out.println("Searching on: " + util.getWorldType(singleton.getWorldType().getValue().toString()));
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		} else {
 			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), util.getWorldType(singleton.getWorldType().getValue().toString()));
@@ -188,9 +186,7 @@ public class BiomeSearcher implements Runnable {
 			2 * this.mSearchQuadrantWidth,
 			2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
-		//System.out.println(biomeCodesCount);
-//		System.out.println(searchCenterX);
-//		System.out.println(searchCenterY);
+
 		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0 && rejectedStructures.length == 0) {
             util.console("Creating search lists...");
 		}
@@ -247,7 +243,6 @@ public class BiomeSearcher implements Runnable {
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
 		HashMap<Biome, String> undiscoveredBiomeSets = new HashMap<>(biomeSets);
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
-		System.out.println(undiscoveredBiomeSets);
 		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
 			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
 				// A new biome has been found.
@@ -412,18 +407,4 @@ public class BiomeSearcher implements Runnable {
 		AmidstLogger.removeListener("master");
 		// TODO add file logging?
 	}
-	/*
-	 * public static void main(String ... args) throws IOException,
-	 * FormatException, MinecraftInterfaceCreationException { // Execution
-	 * options. // Hard-coded for now, but they could be specified as
-	 * command-line arguments. MainGUI gui = new MainGUI(); String
-	 * minecraftVersionId = "1.13"; SearchCenterKind searchCenterKind =
-	 * SearchCenterKind.ORIGIN; int searchQuadrantWidth = 2048; int
-	 * searchQuadrantHeight = 2048; int maximumMatchingWorldsCount = 10; //
-	 * Execute. new BiomeSearcher(minecraftVersionId, searchCenterKind,
-	 * searchQuadrantWidth, searchQuadrantHeight,
-	 * maximumMatchingWorldsCount).run();
-	 *
-	 * }
-	 */
 }

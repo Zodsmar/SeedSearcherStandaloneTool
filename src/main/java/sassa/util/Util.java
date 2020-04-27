@@ -10,9 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,37 +33,8 @@ public class Util {
 		String time = hours + ":" + minutes + ":" + seconds;
 		return time;
 	}
-/* Might use again later
-	public static void printingSetup() {
-		OutputStream out = new OutputStream() {
-			@Override
-			public void write(int b) throws IOException {
-			}
-		};
 
-		class JTextFieldPrintStream extends PrintStream {
-			public JTextFieldPrintStream(OutputStream out) {
-				super(out);
-			}
-
-			@Override
-			public void println(String x) {
-				GUI.console.append(x + "\n");
-				// seedCount.setText("Seed Count: " +
-				// BiomeSearcher.getRejectedSeedCount());
-			}
-		}
-
-		JTextFieldPrintStream print = new JTextFieldPrintStream(out);
-		System.setOut(print);
-
-	}
-*/
 	public static void console(String output) {
-
-//		StringSelection stringSelection = new StringSelection(output);
-//		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-//		clipboard.setContents(stringSelection, null);
 		console.appendText(output + "\n");
 
 		if(Singleton.getInstance().getAutoSave().isSelected()){
@@ -79,20 +47,6 @@ public class Util {
 	
 	public static void consoleWipe() {
 		console.setText("");
-	}
-	
-	public static void setFontSize(JLabel hotBiomesTxt, int size) {
-		Font font = hotBiomesTxt.getFont();
-		Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
-		attributes.put(TextAttribute.SIZE, size);
-		hotBiomesTxt.setFont(font.deriveFont(attributes));
-	}
-	
-	public static void Underline(JLabel hotBiomesTxt) {
-		Font font = hotBiomesTxt.getFont();
-		Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		hotBiomesTxt.setFont(font.deriveFont(attributes));
 	}
 
 	/**
@@ -137,7 +91,6 @@ public class Util {
       ]
     }
 	 */
-
 
 	public Object generateSearchLists(JSONObject obj, String searchName)  {
 		ArrayList<String> list = new ArrayList<String>();

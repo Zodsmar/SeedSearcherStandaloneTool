@@ -10,6 +10,8 @@ import sassa.gui.fxmlController;
 
 import java.io.File;
 
+//Might rename this to Global Config in the next version (That's basically what it is)
+
 public class Singleton {
     private static Singleton instance = new Singleton();
 

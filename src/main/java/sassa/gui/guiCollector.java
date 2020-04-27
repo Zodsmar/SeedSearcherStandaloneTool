@@ -59,7 +59,6 @@ public class guiCollector {
         HashMap<String, String> sets = (HashMap) util.createSearchLists("getBiomeSets");
         for( HashMap.Entry<String,String> e: sets.entrySet() ){
             if(checkedTexts.contains(e.getValue())){
-                //System.out.println(e.getValue());
                 Biome biome = Biome.getByName(e.getKey());
                 String set = e.getValue();
                 completeBiomesList.put(biome, set);
