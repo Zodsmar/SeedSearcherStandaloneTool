@@ -16,7 +16,7 @@ also hover over UI elements to get more information.
 > - Randomized Seeds (Or search from a seed range)
 
 
-![SeedTool Image 1](https://imgur.com/a/O1NrAxF)
+![SeedTool Image 1](https://imgur.com/WyPWotg)
 
 ![SeedTool Image 2](https://imgur.com/a/kYzIveX)
 
