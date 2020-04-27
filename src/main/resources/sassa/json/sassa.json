@@ -1,0 +1,44 @@
+{
+  "width": 100,
+  "height": 100,
+  "maxSeeds": 10,
+  "search": {
+    "include": {
+      "biomes": [
+        {
+          "name": "Forest",
+          "modifiers": {
+            "size": 10
+          }
+        }
+      ],
+      "biomeSets": [
+        {
+          "name": "Desert Set",
+          "modifiers": {
+            "size": 10
+          }
+        }
+      ],
+      "structures": [
+        {
+          "name": "Mansion",
+          "modifiers": {
+            "amount": 2
+          }
+        }
+      ]
+    },
+    "exclude": {
+      "biomes": [
+
+      ],
+      "biomeSets": [
+
+      ],
+      "structures": [
+
+      ]
+    }
+  }
+}
