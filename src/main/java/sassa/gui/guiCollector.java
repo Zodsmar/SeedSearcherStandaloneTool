@@ -26,8 +26,8 @@ public class guiCollector {
     private List<String> comboBoxManager(GridPane pane, String inORex) {
         List<String> checkedTexts = new ArrayList<String>();
         int k = 0;
-        for(int i = 0; i < pane.getRowCount(); i++) {
-            for(int j =0; j < pane.getColumnCount(); j++) {
+        for(int i = 0; i < (pane.getChildren().size() / 3) + 1; i++) {
+            for(int j =0; j < 3; j++) {
                 //Adding an empty pane to the grid to fill in blanks check based on visiblity because its the only object going to be invisible
                 if(pane.getChildren().get(k).isVisible()){
                     VBox tempVbox = (VBox) pane.getChildren().get(k);
