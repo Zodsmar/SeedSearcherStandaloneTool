@@ -431,11 +431,7 @@ public class fxmlController implements Initializable {
         ArrayList<String> searchingList = null;
         try {
             searchingList = (ArrayList) util.createSearchLists(searchName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
         int k = 0;
         for (int i = 0; i < (searchingList.size() / 3) + 1; i++) {
             for (int j = 0; j < 3; j++) {
@@ -444,7 +440,7 @@ public class fxmlController implements Initializable {
                     GridPane.setHgrow(tempGrid, Priority.ALWAYS);
                     GridPane.setVgrow(tempGrid, Priority.ALWAYS);
                     tempGrid.setAlignment(Pos.CENTER);
-                    grid.add(tempGrid, j, i + 1);
+                    grid.add(tempGrid, j, i);
 
                     Text tempText = new Text(searchingList.get(k));
                     ComboBox<String> temp = new ComboBox<String>(FXCollections
@@ -459,6 +455,11 @@ public class fxmlController implements Initializable {
                     grid.add(empty, j, i + 1);
                 }
             }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 

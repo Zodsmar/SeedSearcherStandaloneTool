@@ -13,10 +13,7 @@ import org.json.simple.parser.ParseException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -122,9 +119,12 @@ public class Util {
 
 		// TODO: Deep dive into parsing and figure out best way to parse everything and setup new GUI with JSON structures
 		String file = "sassa/json/" + fileName;
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+		ClassLoader classLoader = getClass().getClassLoader();
 
-		Object obj = new JSONParser().parse(new FileReader(classLoader.getResource(file).getFile().replaceAll("%20", " ")));
+		InputStream input = classLoader.getResourceAsStream(file);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+		Object obj = new JSONParser().parse(reader);
 		JSONObject jo = (JSONObject) obj;
 
 		return jo;

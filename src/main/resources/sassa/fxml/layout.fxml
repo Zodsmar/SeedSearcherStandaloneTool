@@ -171,15 +171,18 @@
                </content></Tab>
             <Tab fx:id="biomesTab" text="Biomes">
                <content>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="488.0" prefWidth="656.0">
                      <content>
-                        <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
+                        <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
+                           <padding>
+                              <Insets top="25.0" />
+                           </padding>
                         </GridPane>
                      </content>
                   </ScrollPane>

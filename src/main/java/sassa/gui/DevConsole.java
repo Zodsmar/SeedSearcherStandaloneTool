@@ -1,16 +1,8 @@
 package sassa.gui;
 
-import java.io.*;
-import javax.swing.*;
-import java.awt.*;
-
-import sassa.util.CustomOutputStream;
-
 public class DevConsole{
+/*
 
-    /**
-     * @wbp.parser.entryPoint
-     */
     public static void showDevConsole() {
         JFrame devConsole = new JFrame("Developer Console");
 
@@ -46,5 +38,5 @@ public class DevConsole{
         devConsole.setVisible(true);
 		
 	}
-
+*/
 }
