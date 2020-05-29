@@ -167,29 +167,66 @@ public class BiomeSearcher implements Runnable {
 
 	boolean accept(World world) throws MinecraftInterfaceException, InterruptedException,
 			IOException, FormatException, MinecraftInterfaceCreationException, ParseException, UnknownBiomeIndexException {
-		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
-		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
-		//! this is incorrect and amidst is... no idea why...
-		// TODO: Look into this (probably will fix the structures being off too...)
-		CoordinatesInWorld searchCenter = world.getSpawnWorldIcon().getCoordinates();
-
-		//? Trying to figure out the spawn locations I think there is another step required to actually get it this gets closer ish...
-		// searchCenter.getXRelativeToFragment();
-		// searchCenter.getYRelativeToFragment();
-
-
-		// ! This returns [0, 0] everytime
-		//CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
-
-		if (searchCenter == null) {
-			// The world spawn could not be determined.
-			return false;
-		}
+		// Start searching for structures around 0,0 for speed
+		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
 		long searchCenterX = searchCenter.getX();
 		long searchCenterY = searchCenter.getY();
 
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
+		// Only search if list not empty
+		if (!undiscoveredStructures.isEmpty()) {
+			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
+					undiscoveredStructures,
+					world,
+					searchCenterX - (this.mSearchQuadrantHeight + 256),
+					searchCenterY - (this.mSearchQuadrantWidth + 256),
+					(this.mSearchQuadrantHeight * 2) + 512,
+					(this.mSearchQuadrantWidth * 2) + 512);
+			for (StructureSearcher.Type struct : foundStructures) {
+				undiscoveredStructures.remove(struct);
+			}
+
+			// Check if any included structures have not been found, if so seed is rejected
+			if (!undiscoveredStructures.isEmpty()) {
+				return false;
+			}
+		}
+
+		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
+		// Only search if list not empty
+		if (!undiscoveredRejectedStructures.isEmpty()) {
+			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
+					undiscoveredRejectedStructures,
+					world,
+					searchCenterX - (this.mSearchQuadrantHeight + 256),
+					searchCenterY - (this.mSearchQuadrantWidth + 256),
+					(this.mSearchQuadrantHeight * 2) + 512,
+					(this.mSearchQuadrantWidth * 2) + 512);
+			for (StructureSearcher.Type struct : foundRejectedStructures) {
+				// Check if any excluded structures have been found, if so seed is rejected
+				if(undiscoveredRejectedStructures.contains(struct)){
+					return false;
+				}
+			}
+		}
+
+		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
+		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
+		//! this is incorrect and amidst is... no idea why...
+		// TODO: Look into this (probably will fix the structures being off too...)
+		searchCenter = world.getSpawnWorldIcon().getCoordinates();
+
+		if (searchCenter == null) {
+			// The world spawn could not be determined, default to 0,0
+			searchCenter = CoordinatesInWorld.origin();
+		}
+
+		searchCenterX = searchCenter.getX();
+		searchCenterY = searchCenter.getY();
+
+		// Search for structures close to the spawnpoint within our radius
+		undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		// Only search if list not empty
 		if (!undiscoveredStructures.isEmpty()) {
 			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
@@ -209,7 +246,7 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 
-		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
+		undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
 		// Only search if list not empty
 		if (!undiscoveredRejectedStructures.isEmpty()) {
 			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
@@ -378,9 +415,12 @@ public class BiomeSearcher implements Runnable {
 				util.console("\t" + structure);
 			}
 		}
-
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
-			if (!singleton.getController().isPaused()) {
+		fxmlController controller = singleton.getController();
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && controller.isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
+			boolean paused = false;
+			if (controller != null)
+				paused = controller.isPaused();
+			if (!paused) {
 				World world;
 				try {
 					world = createWorld();
