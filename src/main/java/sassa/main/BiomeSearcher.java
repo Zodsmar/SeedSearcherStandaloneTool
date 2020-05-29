@@ -187,29 +187,6 @@ public class BiomeSearcher implements Runnable {
 			2 * this.mSearchQuadrantHeight);
 		int biomeCodesCount = biomeCodes.length;
 
-		if (biomes.length == 0 && rejectedBiomes.length == 0 && biomeSets.size() == 0 && rejectedBiomeSets.size() == 0 && structures.length == 0 && rejectedStructures.length == 0) {
-            util.console("Creating search lists...");
-		}
-
-		biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
-		rejectedBiomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Exclude");
-		searchBiomes = guiCollector.checkIfBiomesSelected(biomes, searchBiomes);
-        searchRejectedBiomes = guiCollector.checkIfBiomesSelected(rejectedBiomes, searchRejectedBiomes);
-		structures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Include");
-		searchStructures = guiCollector.checkIfStructuresSelected(structures, searchStructures);
-		rejectedStructures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Exclude");
-		searchRejectedStructures = guiCollector.checkIfStructuresSelected(rejectedStructures, searchRejectedStructures);
-		biomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
-		searchBiomeSets = guiCollector.checkIfBiomeSetsSelected(biomeSets, searchBiomeSets);
-		rejectedBiomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
-		searchRejectedBiomesSets = guiCollector.checkIfBiomeSetsSelected(rejectedBiomeSets, searchRejectedBiomesSets);
-
-		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures && !searchRejectedStructures) {
-			util.console("\nNo biomes are selected or rejected!\nPlease select Biomes!\nSearch has cancelled.\nRecommend you clear console!\n");
-			quitImmediate = true;
-			return false;
-		}
-
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		for(int i =0; i <= undiscoveredStructures.size(); i++){
 			StructureSearcher.Type struct = StructureSearcher.hasStructures(
@@ -325,11 +302,32 @@ public class BiomeSearcher implements Runnable {
 	 * @throws InterruptedException
 	 */
 	public static int totalRejectedSeedCount = 0;
-	void search() throws InterruptedException,IOException, FormatException, MinecraftInterfaceCreationException {
+	void search() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
 		int rejectedWorldsCount = 0;
 		int acceptedWorldsCount = 0;
         totalRejectedSeedCount = 0;
         singleton.getSequenceSeed().setText("" + 0);
+
+		util.console("Creating search lists...");
+
+		biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
+		rejectedBiomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Exclude");
+		searchBiomes = guiCollector.checkIfBiomesSelected(biomes, searchBiomes);
+		searchRejectedBiomes = guiCollector.checkIfBiomesSelected(rejectedBiomes, searchRejectedBiomes);
+		structures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Include");
+		searchStructures = guiCollector.checkIfStructuresSelected(structures, searchStructures);
+		rejectedStructures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Exclude");
+		searchRejectedStructures = guiCollector.checkIfStructuresSelected(rejectedStructures, searchRejectedStructures);
+		biomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
+		searchBiomeSets = guiCollector.checkIfBiomeSetsSelected(biomeSets, searchBiomeSets);
+		rejectedBiomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
+		searchRejectedBiomesSets = guiCollector.checkIfBiomeSetsSelected(rejectedBiomeSets, searchRejectedBiomesSets);
+
+		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures && !searchRejectedStructures) {
+			util.console("\nNo biomes/structures are selected or rejected!\nPlease select some before starting!\nSearch has been cancelled.\nRecommend you clear the console!\n");
+			return;
+		}
+
 		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck < this.mMaxSeed && !quitImmediate) {
 			if (!singleton.getController().isPaused()) {
 				World world;
@@ -389,7 +387,7 @@ public class BiomeSearcher implements Runnable {
 	public void run() {
 		try {
 			search();
-		} catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException e) {
+		} catch (ParseException | InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException e) {
 			e.printStackTrace();
 		}
 
