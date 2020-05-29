@@ -180,68 +180,82 @@ public class BiomeSearcher implements Runnable {
 		long searchCenterX = searchCenter.getX();
 		long searchCenterY = searchCenter.getY();
 
-		int[] biomeCodes = getBiomeCodes(
-			searchCenterX - this.mSearchQuadrantWidth,
-			searchCenterY - this.mSearchQuadrantHeight,
-			2 * this.mSearchQuadrantWidth,
-			2 * this.mSearchQuadrantHeight);
-		int biomeCodesCount = biomeCodes.length;
-
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
-		for(int i =0; i <= undiscoveredStructures.size(); i++){
-			StructureSearcher.Type struct = StructureSearcher.hasStructures(
+		// Only search if list not empty
+		if (!undiscoveredStructures.isEmpty()) {
+			System.out.println("Looking for structures..");
+			List<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
 					undiscoveredStructures,
 					world,
 					searchCenterX - this.mSearchQuadrantHeight,
-					searchCenterY -  this.mSearchQuadrantWidth,
+					searchCenterY - this.mSearchQuadrantWidth,
 					this.mSearchQuadrantHeight * 2,
 					this.mSearchQuadrantWidth * 2);
-			if(undiscoveredStructures.contains(struct)){
+			for (StructureSearcher.Type struct : foundStructures) {
 				undiscoveredStructures.remove(struct);
+			}
+
+			// Some structures not found, seed is rejected
+			if (!undiscoveredStructures.isEmpty()) {
+				return false;
 			}
 		}
 
 		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
-		for(int i =0; i <= undiscoveredRejectedStructures.size(); i++){
-			StructureSearcher.Type struct = StructureSearcher.hasStructures(
+		// Only search if list not empty
+		if (!undiscoveredRejectedStructures.isEmpty()) {
+			List<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
 					undiscoveredRejectedStructures,
 					world,
 					searchCenterX - this.mSearchQuadrantHeight,
-					searchCenterY -  this.mSearchQuadrantWidth,
+					searchCenterY - this.mSearchQuadrantWidth,
 					this.mSearchQuadrantHeight * 2,
 					this.mSearchQuadrantWidth * 2);
-			if(undiscoveredRejectedStructures.contains(struct)){
-				return false;
+			for (StructureSearcher.Type struct : foundRejectedStructures) {
+				// Found structure we want excluded, seed is rejected
+				if(undiscoveredRejectedStructures.contains(struct)){
+					return false;
+				}
 			}
 		}
 
-		// Start with a set of all biomes to find.
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
 		HashMap<Biome, String> undiscoveredBiomeSets = new HashMap<>(biomeSets);
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
-		for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
-			if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-				// A new biome has been found.
-				// Determine whether this was the last biome to find.
-			}
+		// Only search if lists are not empty
+		if (!undiscoveredBiomes.isEmpty() || !undiscoveredRejectedBiomes.isEmpty() || !undiscoveredBiomeSets.isEmpty() || !undiscoveredRejectedBiomeSets.isEmpty()) {
+			System.out.println("Looking for biomes..");
+			int[] biomeCodes = getBiomeCodes(
+					searchCenterX - this.mSearchQuadrantWidth,
+					searchCenterY - this.mSearchQuadrantHeight,
+					2 * this.mSearchQuadrantWidth,
+					2 * this.mSearchQuadrantHeight);
+			int biomeCodesCount = biomeCodes.length;
 
-			// In theory this should return false if the world contains a specific biome
-			if(undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-				//Works except for ocean. No idea why
-				return false; // Adding this makes excluded biomes not be resulted anymore. DO NOT REMOVE UNLESS YOU HAVE A FIX FOR THIS
-			}
+			for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
+				if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+					// A new biome has been found.
+					// Determine whether this was the last biome to find.
+				}
 
-			if (undiscoveredBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-				String setValue = undiscoveredBiomeSets.get(Biome.getByIndex(biomeCodes[biomeCodeIndex]));
-				// Get the iterator over the HashMap
-				undiscoveredBiomeSets.entrySet()
-				.removeIf(
-					entry -> (setValue.equals(entry.getValue())));
-			}
+				// In theory this should return false if the world contains a specific biome
+				if (undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+					//Works except for ocean. No idea why
+					return false; // Adding this makes excluded biomes not be resulted anymore. DO NOT REMOVE UNLESS YOU HAVE A FIX FOR THIS
+				}
 
-			if (undiscoveredRejectedBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-				return false;
+				if (undiscoveredBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+					String setValue = undiscoveredBiomeSets.get(Biome.getByIndex(biomeCodes[biomeCodeIndex]));
+					// Get the iterator over the HashMap
+					undiscoveredBiomeSets.entrySet()
+							.removeIf(
+									entry -> (setValue.equals(entry.getValue())));
+				}
+
+				if (undiscoveredRejectedBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+					return false;
+				}
 			}
 		}
 
