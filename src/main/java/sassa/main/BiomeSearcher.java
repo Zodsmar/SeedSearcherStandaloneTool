@@ -183,7 +183,6 @@ public class BiomeSearcher implements Runnable {
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		// Only search if list not empty
 		if (!undiscoveredStructures.isEmpty()) {
-			System.out.println("Looking for structures..");
 			List<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
 					undiscoveredStructures,
 					world,
@@ -195,7 +194,7 @@ public class BiomeSearcher implements Runnable {
 				undiscoveredStructures.remove(struct);
 			}
 
-			// Some structures not found, seed is rejected
+			// Check if any included structures have not been found, if so seed is rejected
 			if (!undiscoveredStructures.isEmpty()) {
 				return false;
 			}
@@ -212,7 +211,7 @@ public class BiomeSearcher implements Runnable {
 					this.mSearchQuadrantHeight * 2,
 					this.mSearchQuadrantWidth * 2);
 			for (StructureSearcher.Type struct : foundRejectedStructures) {
-				// Found structure we want excluded, seed is rejected
+				// Check if any excluded structures have been found, if so seed is rejected
 				if(undiscoveredRejectedStructures.contains(struct)){
 					return false;
 				}
@@ -225,7 +224,6 @@ public class BiomeSearcher implements Runnable {
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
 		// Only search if lists are not empty
 		if (!undiscoveredBiomes.isEmpty() || !undiscoveredRejectedBiomes.isEmpty() || !undiscoveredBiomeSets.isEmpty() || !undiscoveredRejectedBiomeSets.isEmpty()) {
-			System.out.println("Looking for biomes..");
 			int[] biomeCodes = getBiomeCodes(
 					searchCenterX - this.mSearchQuadrantWidth,
 					searchCenterY - this.mSearchQuadrantHeight,
