@@ -162,7 +162,6 @@ public class StructureSearcher {
 								coords);
 						if (mineshafts.size() >= 1 && (nwCornerX + distX) > mineshafts.get(0).getCoordinates().getX() && (nwCornerY + distY) > mineshafts.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.OCEAN_RUINS)) {
 						List<WorldIcon> ocean_ruins = StructureSearcher.findOceanRuins(
@@ -170,7 +169,6 @@ public class StructureSearcher {
 								coords);
 						if (ocean_ruins.size() >= 1 && (nwCornerX + distX) > ocean_ruins.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_ruins.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.OCEAN_FEATURES)) {
 						List<WorldIcon> ocean_features = StructureSearcher.findOceanFeatures(
@@ -178,7 +176,6 @@ public class StructureSearcher {
 								coords);
 						if (ocean_features.size() >= 1 && (nwCornerX + distX) > ocean_features.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_features.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.OCEAN_MONUMENT)) {
 						List<WorldIcon> ocean_monuments = StructureSearcher.findOceanMounments(
@@ -186,7 +183,6 @@ public class StructureSearcher {
 								coords);
 						if (ocean_monuments.size() >= 1 && (nwCornerX + distX) > ocean_monuments.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_monuments.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.SHIPWRECK)) {
 						List<WorldIcon> shipwreck = StructureSearcher.findShipwreck(
@@ -194,7 +190,6 @@ public class StructureSearcher {
 								coords);
 						if (shipwreck.size() >= 1 && (nwCornerX + distX) > shipwreck.get(0).getCoordinates().getX() && (nwCornerY + distY) > shipwreck.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.BURIED_TREASURE)) {
 						List<WorldIcon> buriedTreasure = StructureSearcher.findBuriedTreasure(
@@ -202,7 +197,6 @@ public class StructureSearcher {
 								coords);
 						if (buriedTreasure.size() >= 1 && (nwCornerX + distX) > buriedTreasure.get(0).getCoordinates().getX() && (nwCornerY + distY) > buriedTreasure.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.MANSION)) {
 						List<WorldIcon> mansion = StructureSearcher.findMansion(
@@ -210,7 +204,6 @@ public class StructureSearcher {
 								coords);
 						if (mansion.size() >= 1 && (nwCornerX + distX) > mansion.get(0).getCoordinates().getX() && (nwCornerY + distY) > mansion.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.STRONGHOLD)) {
 						List<WorldIcon> stronghold = StructureSearcher.findStronghold(
@@ -218,7 +211,6 @@ public class StructureSearcher {
 								coords);
 						if (stronghold.size() >= 1 && (nwCornerX + distX) > stronghold.get(0).getCoordinates().getX() && (nwCornerY + distY) > stronghold.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.VILLAGE)) {
 						List<WorldIcon> village = StructureSearcher.findVillage(
@@ -226,7 +218,6 @@ public class StructureSearcher {
 								coords);
 						if (village.size() >= 1 && (nwCornerX + distX) > village.get(0).getCoordinates().getX() && (nwCornerY + distY) > village.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);;
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.PILLAGER_OUTPOST)) {
 						List<WorldIcon> pillagerOutpost = StructureSearcher.findPillagerOutpost(
@@ -234,7 +225,6 @@ public class StructureSearcher {
 								coords);
 						if (pillagerOutpost.size() >= 1 && (nwCornerX + distX) > pillagerOutpost.get(0).getCoordinates().getX() && (nwCornerY + distY) > pillagerOutpost.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.DESERT_TEMPLE)) {
 						List<WorldIcon> deserttemple = StructureSearcher.findDesertTemple(
@@ -242,7 +232,6 @@ public class StructureSearcher {
 								coords);
 						if (deserttemple.size() >= 1 && (nwCornerX + distX) > deserttemple.get(0).getCoordinates().getX() && (nwCornerY + distY) > deserttemple.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.JUNGLE_TEMPLE)) {
 						List<WorldIcon> jungleTemple = StructureSearcher.findJungleTemple(
@@ -250,7 +239,6 @@ public class StructureSearcher {
 								coords);
 						if (jungleTemple.size() >= 1 && (nwCornerX + distX) > jungleTemple.get(0).getCoordinates().getX() && (nwCornerY + distY) > jungleTemple.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.WITCH_HUT)) {
 						List<WorldIcon> witchhut = StructureSearcher.findWitchHut(
@@ -258,7 +246,6 @@ public class StructureSearcher {
 								coords);
 						if (witchhut.size() >= 1 && (nwCornerX + distX) > witchhut.get(0).getCoordinates().getX() && (nwCornerY + distY) > witchhut.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					} else if (type.equals(Type.IGLOO)) {
 						List<WorldIcon> igloo = StructureSearcher.findIgloo(
@@ -266,10 +253,11 @@ public class StructureSearcher {
 								coords);
 						if (igloo.size() >= 1 && (nwCornerX + distX) > igloo.get(0).getCoordinates().getX() && (nwCornerY + distY) > igloo.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
-							structures.remove(type);
 						}
 					}
 				}
+				// Remove any structures we have already found, reduce unneeded lookups
+				structures.removeAll(foundStructures);
 				multiplierY++;
 			}
 			multiplierY=0;
