@@ -129,14 +129,23 @@ public class BiomeSearcher implements Runnable {
 		}
 	}
 
-	int[] getBiomeCodes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException {
-		return this.mMinecraftInterface.getBiomeData(
+	Set<Biome> getBiomes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException, UnknownBiomeIndexException {
+		Set<Biome> biomes = new HashSet<>();
+		int[] biomeCodes = this.mMinecraftInterface.getBiomeData(
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerX)),
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerY)),
 				width / 4,
 				height / 4,
 				true // useQuarterResolution
 		);
+		for(int code: biomeCodes){
+			try{
+				biomes.add(Biome.getByIndex(code));
+			} catch (UnknownBiomeIndexException e) {
+				System.out.println("No biome found: " + code + "!");
+			}
+		}
+		return biomes;
 	}
 
 	/**
@@ -156,8 +165,8 @@ public class BiomeSearcher implements Runnable {
 	StructureSearcher.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
 	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
 
-	boolean accept(World world) throws MinecraftInterfaceException, UnknownBiomeIndexException, InterruptedException,
-			IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
+	boolean accept(World world) throws MinecraftInterfaceException, InterruptedException,
+			IOException, FormatException, MinecraftInterfaceCreationException, ParseException, UnknownBiomeIndexException {
 		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
 		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
 		//! this is incorrect and amidst is... no idea why...
@@ -224,34 +233,33 @@ public class BiomeSearcher implements Runnable {
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
 		// Only search if lists are not empty
 		if (!undiscoveredBiomes.isEmpty() || !undiscoveredRejectedBiomes.isEmpty() || !undiscoveredBiomeSets.isEmpty() || !undiscoveredRejectedBiomeSets.isEmpty()) {
-			int[] biomeCodes = getBiomeCodes(
+			Set<Biome> biomes = getBiomes(
 					searchCenterX - this.mSearchQuadrantWidth,
 					searchCenterY - this.mSearchQuadrantHeight,
 					2 * this.mSearchQuadrantWidth,
 					2 * this.mSearchQuadrantHeight);
-			int biomeCodesCount = biomeCodes.length;
 
-			for (int biomeCodeIndex = 0; biomeCodeIndex < biomeCodesCount; biomeCodeIndex++) {
-				if (undiscoveredBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-					// A new biome has been found.
-					// Determine whether this was the last biome to find.
+			for (Biome biome: biomes) {
+
+				// Remove from included biomes list
+				undiscoveredBiomes.remove(biome);
+
+				// Check if any excluded biomes have been found, if so seed is rejected
+				if (undiscoveredRejectedBiomes.contains(biome)) {
+					return false;
 				}
 
-				// In theory this should return false if the world contains a specific biome
-				if (undiscoveredRejectedBiomes.remove(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-					//Works except for ocean. No idea why
-					return false; // Adding this makes excluded biomes not be resulted anymore. DO NOT REMOVE UNLESS YOU HAVE A FIX FOR THIS
-				}
-
-				if (undiscoveredBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
-					String setValue = undiscoveredBiomeSets.get(Biome.getByIndex(biomeCodes[biomeCodeIndex]));
+				// Remove from included biome sets list
+				if (undiscoveredBiomeSets.containsKey(biome)) {
+					String setValue = undiscoveredBiomeSets.get(biome);
 					// Get the iterator over the HashMap
 					undiscoveredBiomeSets.entrySet()
 							.removeIf(
 									entry -> (setValue.equals(entry.getValue())));
 				}
 
-				if (undiscoveredRejectedBiomeSets.containsKey(Biome.getByIndex(biomeCodes[biomeCodeIndex]))) {
+				// Check if any excluded biome sets have been found, if so seed is rejected
+				if (undiscoveredRejectedBiomeSets.containsKey(biome)) {
 					return false;
 				}
 			}
@@ -340,7 +348,7 @@ public class BiomeSearcher implements Runnable {
 			return;
 		}
 
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck < this.mMaxSeed && !quitImmediate) {
+		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
 			if (!singleton.getController().isPaused()) {
 				World world;
 				try {
@@ -370,14 +378,11 @@ public class BiomeSearcher implements Runnable {
 					updateRejectedWorldsProgress(rejectedWorldsCount);
 					continue;
 				}
-				System.out.println("Valid Seed: "+world.getWorldSeed().getLong());
+				System.out.println("Valid Seed: " + world.getWorldSeed().getLong());
 				acceptedWorldsCount++;
 				updateAcceptedWorldsProgress(rejectedWorldsCount, acceptedWorldsCount, world);
 				rejectedWorldsCount = 0;
 			}
-
-			//Literally without pause doesn't work....
-			System.out.print("");
 		}
 
 		util.console("Finished Search!");
