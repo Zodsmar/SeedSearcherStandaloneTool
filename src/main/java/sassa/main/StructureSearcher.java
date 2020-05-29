@@ -5,6 +5,7 @@ import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.icon.WorldIcon;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -147,8 +148,8 @@ public class StructureSearcher {
 		return CoordinatesInWorld.from(nwCornerX, nwCornerY);
 	}
 
-	public static List<Type> hasStructures(Set<Type> structures, World world, long nwCornerX, long nwCornerY, int distX, int distY) {
-        List<Type> foundStructures = new ArrayList();
+	public static Set<Type> hasStructures(Set<Type> structures, World world, long nwCornerX, long nwCornerY, int distX, int distY) {
+		Set<Type> foundStructures = new HashSet<>();
         int multiplierX = 0;
         int multiplierY = 0;
 		while ((nwCornerX + (multiplierX * 512)) < (nwCornerX + distX) && !structures.isEmpty()) {
