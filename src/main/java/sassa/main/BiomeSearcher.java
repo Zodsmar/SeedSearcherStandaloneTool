@@ -348,6 +348,37 @@ public class BiomeSearcher implements Runnable {
 			return;
 		}
 
+		if (biomes.length > 0 || !biomeSets.isEmpty()) {
+			util.console("Included Biomes:");
+			for (Biome biome : biomes) {
+				util.console("\t" + biome.getName());
+			}
+			for (Biome biome : biomeSets.keySet()) {
+				util.console("\t" + biome.getName());
+			}
+		}
+		if (rejectedBiomes.length > 0 || !rejectedBiomeSets.isEmpty()) {
+			util.console("Excluded Biomes:");
+			for (Biome biome : rejectedBiomes) {
+				util.console("\t" + biome.getName());
+			}
+			for (Biome biome : rejectedBiomeSets.keySet()) {
+				util.console("\t" + biome.getName());
+			}
+		}
+		if (structures.length > 0) {
+			util.console("Included Structures:");
+			for (StructureSearcher.Type structure : structures) {
+				util.console("\t" + structure);
+			}
+		}
+		if (rejectedStructures.length > 0) {
+			util.console("Excluded Structures:");
+			for (StructureSearcher.Type structure : rejectedStructures) {
+				util.console("\t" + structure);
+			}
+		}
+
 		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && singleton.getController().isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
 			if (!singleton.getController().isPaused()) {
 				World world;
