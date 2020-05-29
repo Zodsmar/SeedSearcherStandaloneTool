@@ -12,7 +12,7 @@ plugins {
 }
 
 dependencies {
-    implementation 'com.github.toolbox4minecraft:amidst:v4.4-beta1'
+    implementation 'com.github.toolbox4minecraft:amidst:v4.4'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
