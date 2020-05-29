@@ -25,7 +25,6 @@ public class StructureSearcher {
 		List<WorldIcon> villageFeatures = findVillageFeatures(world, coords);
 		List<WorldIcon> pillager_outpost = new ArrayList<WorldIcon>();
 		for (WorldIcon feature : villageFeatures) {
-            System.out.println("Found feature: " + feature.getName() + " - " + feature.getCoordinates());
 			if (feature.getName().toUpperCase().equals("PILLAGER OUTPOST")) {
 				pillager_outpost.add(feature);
 			}
