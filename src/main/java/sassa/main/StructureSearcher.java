@@ -155,7 +155,6 @@ public class StructureSearcher {
 		while ((nwCornerX + (multiplierX * 512)) < (nwCornerX + distX) && !structures.isEmpty()) {
 			while ((nwCornerY + (multiplierY * 512)) < (nwCornerY + distY) && !structures.isEmpty()) {
 				CoordinatesInWorld coords = coords(nwCornerX + (multiplierX * 512), nwCornerY + (multiplierY * 512));
-				System.out.println("Searching coords: " + coords);
 				for (Type type : structures) {
 					if (type.equals(Type.MINESHAFT)) {
 						List<WorldIcon> mineshafts = StructureSearcher.findMineshafts(
