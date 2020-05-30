@@ -1,6 +1,7 @@
 package sassa.util;
 
 import amidst.mojangapi.world.WorldType;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -35,18 +36,24 @@ public class Util {
 	}
 
 	public static void console(String output) {
-		console.appendText(output + "\n");
+		Platform.runLater(() -> {
+			console.appendText(output + "\n");
+		});
 
 		if(Singleton.getInstance().getAutoSave().isSelected()){
             appendToFile(Singleton.getInstance().getOutputFile(), output);
         }
 	}
 	public void consoleNoLine(String output) {
-		console.appendText(output);
+		Platform.runLater(() -> {
+			console.appendText(output);
+		});
 	}
 	
 	public static void consoleWipe() {
-		console.setText("");
+		Platform.runLater(() -> {
+			console.setText("");
+		});
 	}
 
 	/**
@@ -169,7 +176,6 @@ public class Util {
     }
 
     public static void appendToFile(File file, String text){
-		System.out.println(file);
         FileWriter fr = null;
         try {
             // Below constructor argument decides whether to append or override
