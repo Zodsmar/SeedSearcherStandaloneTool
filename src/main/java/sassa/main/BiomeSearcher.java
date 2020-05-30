@@ -35,110 +35,14 @@ import java.util.function.Consumer;
  *
  * @author scudobuio, Zodsmar, YourCoalAlt
  */
-public class BiomeSearcher implements Runnable {
-
-	private WorldBuilder mWorldBuilder;
-
-	private MinecraftInterface mMinecraftInterface;
-
-	/**
-	 * The width of each quadrant of the search area.
-	 * <p>
-	 * The value of this field is greater than {@code 0}.
-	 */
-	private int mSearchQuadrantWidth;
-
-	/**
-	 * The height of each quadrant of the search area.
-	 * <p>
-	 * The value of this field is greater than {@code 0}.
-	 */
-	private int mSearchQuadrantHeight;
-
-	/**
-	 * The number of matching worlds to discover.
-	 * <p>
-	 * The value of this field is greater than or equal to {@code 0}.
-	 */
-	private int mMaximumMatchingWorldsCount;
-
-	private long mMinSeed;
-	private long mMaxSeed;
-
-	private boolean RANDOM_SEEDS;
-	private boolean BEDROCK;
-	private boolean quitImmediate;
-
-	public static long currentSeedCheck = 0L;
-
-    guiCollector guiCollector = new guiCollector();
-    static Util util = new Util();
-    static Singleton singleton = Singleton.getInstance();
-
-	public BiomeSearcher(String minecraftVersion,
-			int searchQuadrantWidth, int searchQuadrantHeight, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed, boolean bedrock)
-			throws IOException, FormatException, MinecraftInterfaceCreationException {
-		this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
-
-		MinecraftInstallation minecraftInstallation;
-
-		String pathToDirectory = singleton.getMCPath().getText();
-		if (pathToDirectory == null ||
-			pathToDirectory.trim().equals(""))
-		{
-			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation();
-		} else {
-			minecraftInstallation = MinecraftInstallation.newLocalMinecraftInstallation(new File(pathToDirectory));
-		}
-		LauncherProfile launcherProfile = null;
-		try{
-			launcherProfile = minecraftInstallation.newLauncherProfile(minecraftVersion);
-		} catch (FileNotFoundException e) {
-			util.console("No install directory found for Minecraft version " + minecraftVersion + "!");
-			throw e;
-		}
-		this.mMinecraftInterface = MinecraftInterfaces.fromLocalProfile(launcherProfile);
-		this.mSearchQuadrantWidth = searchQuadrantWidth;
-		this.mSearchQuadrantHeight = searchQuadrantHeight;
-		this.mMaximumMatchingWorldsCount = maximumMatchingWorldsCount;
-		this.mMinSeed = minSeed;
-		this.mMaxSeed = maxSeed;
-		this.currentSeedCheck = minSeed;
-		this.RANDOM_SEEDS = randSeed;
-		this.BEDROCK = bedrock;
-	}
-
-	/**
-	 * Creates a random, default world using the default (empty) generator
-	 * options.
-	 */
-	World createWorld() throws MinecraftInterfaceException {
-		Consumer<World> onDispose = world -> {};
-		long seedNum = (new Random()).nextLong();
-		if(BEDROCK){
-			seedNum = (new Random()).nextInt();
-			if(seedNum < 0){
-				seedNum += 4294967296L;
-			}
-		}
-		if (RANDOM_SEEDS) {
-			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + seedNum), util.getWorldType(singleton.getWorldType().getValue().toString()));
-			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
-		} else {
-			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), util.getWorldType(singleton.getWorldType().getValue().toString()));
-			Variables.updateCurrentSeed(this.currentSeedCheck);
-			this.currentSeedCheck++;
-			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
-		}
-	}
-
-	Set<Biome> getBiomes(long nwCornerX, long nwCornerY, int width, int height) throws MinecraftInterfaceException, UnknownBiomeIndexException {
+public class BiomeSearcher {
+	static Set<Biome> getBiomes(MinecraftInterface minecraftInterface, long nwCornerX, long nwCornerY, int radius) throws MinecraftInterfaceException, UnknownBiomeIndexException {
 		Set<Biome> biomes = new HashSet<>();
-		int[] biomeCodes = this.mMinecraftInterface.getBiomeData(
+		int[] biomeCodes = minecraftInterface.getBiomeData(
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerX)),
 				(int) (Resolution.QUARTER.convertFromWorldToThis(nwCornerY)),
-				width / 4,
-				height / 4,
+				radius / 4,
+				radius / 4,
 				true // useQuarterResolution
 		);
 		for(int code: biomeCodes){
@@ -160,112 +64,10 @@ public class BiomeSearcher implements Runnable {
 	 * @throws InterruptedException
 	 */
 
-	Biome[] biomes = {}; boolean searchBiomes = true;
-	Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
-	HashMap<Biome, String> biomeSets = new HashMap<>(); boolean searchBiomeSets = true;
-	HashMap<Biome, String> rejectedBiomeSets = new HashMap<>(); boolean searchRejectedBiomesSets = true;
-	StructureSearcher.Type[] structures = {}; boolean searchStructures = true;
-	StructureSearcher.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
-	//, Biome.forest, Biome.desert, Biome.birchForest, Biome.plains
-
-	boolean accept(World world) throws MinecraftInterfaceException, InterruptedException,
+	public static boolean accept(World world, MinecraftInterface minecraftInterface, CoordinatesInWorld center, int SearchRadius, Biome[] biomes, HashMap<Biome, String> biomeSets, Biome[] rejectedBiomes, HashMap<Biome, String> rejectedBiomeSets) throws MinecraftInterfaceException, InterruptedException,
 			IOException, FormatException, MinecraftInterfaceCreationException, ParseException, UnknownBiomeIndexException {
-		// Start searching for structures around 0,0 for speed
-		CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
-
-		long searchCenterX = searchCenter.getX();
-		long searchCenterY = searchCenter.getY();
-
-		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
-		// Only search if list not empty
-		if (!undiscoveredStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
-					undiscoveredStructures,
-					world,
-					searchCenterX - (this.mSearchQuadrantHeight + 256),
-					searchCenterY - (this.mSearchQuadrantWidth + 256),
-					(this.mSearchQuadrantHeight * 2) + 512,
-					(this.mSearchQuadrantWidth * 2) + 512);
-			for (StructureSearcher.Type struct : foundStructures) {
-				undiscoveredStructures.remove(struct);
-			}
-
-			// Check if any included structures have not been found, if so seed is rejected
-			if (!undiscoveredStructures.isEmpty()) {
-				return false;
-			}
-		}
-
-		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
-		// Only search if list not empty
-		if (!undiscoveredRejectedStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
-					undiscoveredRejectedStructures,
-					world,
-					searchCenterX - (this.mSearchQuadrantHeight + 256),
-					searchCenterY - (this.mSearchQuadrantWidth + 256),
-					(this.mSearchQuadrantHeight * 2) + 512,
-					(this.mSearchQuadrantWidth * 2) + 512);
-			for (StructureSearcher.Type struct : foundRejectedStructures) {
-				// Check if any excluded structures have been found, if so seed is rejected
-				if(undiscoveredRejectedStructures.contains(struct)){
-					return false;
-				}
-			}
-		}
-
-		//! This returns the actual spawnpoint or should... but it doesn't it is off. Double checking
-		//! in amidst and it is incorrect I created the world to see if this was correct and amidst was off
-		//! this is incorrect and amidst is... no idea why...
-		// TODO: Look into this (probably will fix the structures being off too...)
-		searchCenter = world.getSpawnWorldIcon().getCoordinates();
-
-		if (searchCenter == null) {
-			// The world spawn could not be determined, default to 0,0
-			searchCenter = CoordinatesInWorld.origin();
-		}
-
-		searchCenterX = searchCenter.getX();
-		searchCenterY = searchCenter.getY();
-
-		// Search for structures close to the spawnpoint within our radius
-		undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
-		// Only search if list not empty
-		if (!undiscoveredStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
-					undiscoveredStructures,
-					world,
-					searchCenterX - this.mSearchQuadrantHeight,
-					searchCenterY - this.mSearchQuadrantWidth,
-					this.mSearchQuadrantHeight * 2,
-					this.mSearchQuadrantWidth * 2);
-			for (StructureSearcher.Type struct : foundStructures) {
-				undiscoveredStructures.remove(struct);
-			}
-
-			// Check if any included structures have not been found, if so seed is rejected
-			if (!undiscoveredStructures.isEmpty()) {
-				return false;
-			}
-		}
-
-		undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
-		// Only search if list not empty
-		if (!undiscoveredRejectedStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
-					undiscoveredRejectedStructures,
-					world,
-					searchCenterX - this.mSearchQuadrantHeight,
-					searchCenterY - this.mSearchQuadrantWidth,
-					this.mSearchQuadrantHeight * 2,
-					this.mSearchQuadrantWidth * 2);
-			for (StructureSearcher.Type struct : foundRejectedStructures) {
-				// Check if any excluded structures have been found, if so seed is rejected
-				if(undiscoveredRejectedStructures.contains(struct)){
-					return false;
-				}
-			}
-		}
+		long searchCenterX = center.getX();
+		long searchCenterY = center.getY();
 
 		Set<Biome> undiscoveredBiomes = new HashSet<>(Arrays.asList(biomes));
 		Set<Biome> undiscoveredRejectedBiomes = new HashSet<>(Arrays.asList(rejectedBiomes));
@@ -273,13 +75,13 @@ public class BiomeSearcher implements Runnable {
 		HashMap<Biome, String> undiscoveredRejectedBiomeSets = new HashMap<>(rejectedBiomeSets);
 		// Only search if lists are not empty
 		if (!undiscoveredBiomes.isEmpty() || !undiscoveredRejectedBiomes.isEmpty() || !undiscoveredBiomeSets.isEmpty() || !undiscoveredRejectedBiomeSets.isEmpty()) {
-			Set<Biome> biomes = getBiomes(
-					searchCenterX - this.mSearchQuadrantWidth,
-					searchCenterY - this.mSearchQuadrantHeight,
-					2 * this.mSearchQuadrantWidth,
-					2 * this.mSearchQuadrantHeight);
+			Set<Biome> biomeData = getBiomes(
+					minecraftInterface,
+					searchCenterX - SearchRadius,
+					searchCenterY - SearchRadius,
+					2 * SearchRadius);
 
-			for (Biome biome: biomes) {
+			for (Biome biome: biomeData) {
 
 				// Remove from included biomes list
 				undiscoveredBiomes.remove(biome);
@@ -305,7 +107,7 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 
-		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty() && undiscoveredStructures.isEmpty()) {
+		if (undiscoveredBiomes.isEmpty() && undiscoveredBiomeSets.isEmpty()) {
 			return true;
 		}
 
@@ -313,138 +115,5 @@ public class BiomeSearcher implements Runnable {
 //		System.out.println(undiscoveredBiomes);
 //		System.out.println(undiscoveredBiomeSets);
 		return false;
-	}
-
-	/**
-	 * Searches for matching worlds, and prints the seed of each matching world
-	 * to the given output stream.
-	 *
-	 * @throws MinecraftInterfaceCreationException
-	 * @throws FormatException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	void search() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
-		util.console("Creating search lists...");
-
-		biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
-		rejectedBiomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Exclude");
-		searchBiomes = guiCollector.checkIfBiomesSelected(biomes, searchBiomes);
-		searchRejectedBiomes = guiCollector.checkIfBiomesSelected(rejectedBiomes, searchRejectedBiomes);
-		structures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Include");
-		searchStructures = guiCollector.checkIfStructuresSelected(structures, searchStructures);
-		rejectedStructures = guiCollector.getStructuresFromArrayList(Singleton.getInstance().getStructureGridPane(), "Exclude");
-		searchRejectedStructures = guiCollector.checkIfStructuresSelected(rejectedStructures, searchRejectedStructures);
-		biomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Include");
-		searchBiomeSets = guiCollector.checkIfBiomeSetsSelected(biomeSets, searchBiomeSets);
-		rejectedBiomeSets = guiCollector.getBiomesSetsFromHashMap(Singleton.getInstance().getBiomeSetsGridPane(), "Exclude");
-		searchRejectedBiomesSets = guiCollector.checkIfBiomeSetsSelected(rejectedBiomeSets, searchRejectedBiomesSets);
-
-		if (!searchBiomes && !searchRejectedBiomes && !searchBiomeSets && !searchRejectedBiomesSets && !searchStructures && !searchRejectedStructures) {
-			util.console("\nNo biomes/structures are selected or rejected!\nPlease select some before starting!\nSearch has been cancelled.\nRecommend you clear the console!\n");
-			return;
-		}
-
-		if (biomes.length > 0 || !biomeSets.isEmpty()) {
-			util.console("Included Biomes:");
-			for (Biome biome : biomes) {
-				util.console("\t" + biome.getName());
-			}
-			for (Biome biome : biomeSets.keySet()) {
-				util.console("\t" + biome.getName());
-			}
-		}
-		if (rejectedBiomes.length > 0 || !rejectedBiomeSets.isEmpty()) {
-			util.console("Excluded Biomes:");
-			for (Biome biome : rejectedBiomes) {
-				util.console("\t" + biome.getName());
-			}
-			for (Biome biome : rejectedBiomeSets.keySet()) {
-				util.console("\t" + biome.getName());
-			}
-		}
-		if (structures.length > 0) {
-			util.console("Included Structures:");
-			for (StructureSearcher.Type structure : structures) {
-				util.console("\t" + structure);
-			}
-		}
-		if (rejectedStructures.length > 0) {
-			util.console("Excluded Structures:");
-			for (StructureSearcher.Type structure : rejectedStructures) {
-				util.console("\t" + structure);
-			}
-		}
-		fxmlController controller = singleton.getController();
-		while (Variables.acceptedWorlds() < this.mMaximumMatchingWorldsCount && controller.isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
-			boolean paused = false;
-			if (controller != null)
-				paused = controller.isPaused();
-			if (!paused) {
-				World world;
-				try {
-					world = createWorld();
-				} catch (MinecraftInterfaceException e) {
-					// TODO log
-					Variables.checkWorld();
-					continue;
-				}
-				boolean isWorldAccepted;
-				try {
-					isWorldAccepted = accept(world);
-				} catch (MinecraftInterfaceException | UnknownBiomeIndexException | ParseException e) {
-					// Biome data for the world could not be obtained.
-					// Biome data included an unknown biome code.
-					// TODO log
-					Variables.checkWorld();
-					continue;
-				}
-				if (!isWorldAccepted) {
-					Variables.checkWorld();
-					continue;
-				}
-				System.out.println("Valid Seed: " + world.getWorldSeed().getLong());
-
-				util.console((Variables.acceptedWorlds() + 1) + ": " + world.getWorldSeed().getLong() + " (rejected " + Variables.worldsSinceAccepted() + ")");
-				Variables.acceptWorld();
-			}
-		}
-
-		util.console("Finished Search!");
-		Platform.runLater(() -> {
-			try {
-				singleton.getController().stop();
-			} catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException e) {
-				e.printStackTrace();
-			}
-		});
-
-	}
-
-	/**
-	 * Searches for matching worlds, and prints the seed of each matching world
-	 * to the standard output stream.
-	 */
-
-	public void run() {
-		try {
-			search();
-		} catch (ParseException | InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	static {
-		// By default, AMIDST logs to the standard output stream and to an
-		// in-memory buffer.
-		// Turn off logging to the standard output stream.
-		// Otherwise, the desired output could be overwhelmed by noise.
-		AmidstLogger.removeListener("console");
-		// Turn off logging to the in-memory buffer.
-		// Otherwise, the JVM could run out of heap space when checking many
-		// seeds.
-		AmidstLogger.removeListener("master");
-		// TODO add file logging?
 	}
 }

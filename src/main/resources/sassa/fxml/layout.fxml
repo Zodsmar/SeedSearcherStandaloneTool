@@ -117,11 +117,9 @@
                            </tooltip></TextField>
                         <Text layoutX="284.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path to .minecraft directory (OPTIONAL, if blank default is used)" wrappingWidth="354.13671875" />
                         <TextField fx:id="seedsToFind" layoutX="106.0" layoutY="163.0" prefHeight="25.0" prefWidth="70.0" text="10" />
-                        <TextField fx:id="searchX" layoutX="106.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" text="512" />
-                        <TextField fx:id="searchZ" layoutX="106.0" layoutY="229.0" prefHeight="25.0" prefWidth="70.0" text="512" />
+                        <TextField fx:id="searchRadius" layoutX="106.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" text="512" />
                         <Text layoutX="14.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
-                        <Text layoutX="14.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (X)" />
-                        <Text layoutX="15.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Width (Z)" />
+                        <Text layoutX="14.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" />
                         <CheckBox fx:id="findStructures" layoutX="13.0" layoutY="265.0" mnemonicParsing="false" text="Find Structures">
                            <tooltip>
                               <Tooltip text="If you want to look for structures enable this and select the structure you would like. This does not work in bedrock mode. Also structure searching isn't 100% perfect." />
