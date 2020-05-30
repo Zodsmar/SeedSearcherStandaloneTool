@@ -135,6 +135,7 @@ public class Searcher implements Runnable {
     StructureSearcher.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
 
     void search() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
+        Variables.reset();
         util.console("Creating search lists...");
 
         biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
