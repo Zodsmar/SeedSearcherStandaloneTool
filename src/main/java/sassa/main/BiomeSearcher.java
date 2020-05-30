@@ -192,7 +192,7 @@ public class BiomeSearcher implements Runnable {
 		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		// Only search if list not empty
 		if (!undiscoveredStructures.isEmpty()) {
-			List<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
+			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
 					undiscoveredStructures,
 					world,
 					searchCenterX - this.mSearchQuadrantHeight,
@@ -212,7 +212,7 @@ public class BiomeSearcher implements Runnable {
 		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
 		// Only search if list not empty
 		if (!undiscoveredRejectedStructures.isEmpty()) {
-			List<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
+			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
 					undiscoveredRejectedStructures,
 					world,
 					searchCenterX - this.mSearchQuadrantHeight,
