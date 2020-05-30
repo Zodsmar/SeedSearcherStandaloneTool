@@ -96,9 +96,6 @@ public class fxmlController implements Initializable {
     private CheckBox devMode;
 
     @FXML
-    private CheckBox findStructures;
-
-    @FXML
     private CheckBox bedrockMode;
 
     @FXML
@@ -195,7 +192,6 @@ public class fxmlController implements Initializable {
         startBtn.setOnAction(buttonHandler);
         pauseBtn.setOnAction(buttonHandler);
         clearBtn.setOnAction(buttonHandler);
-        findStructures.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
         randomSeed.setOnAction(buttonHandler);
         devMode.setOnAction(buttonHandler);
@@ -218,14 +214,6 @@ public class fxmlController implements Initializable {
     EventHandler<javafx.event.ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
         @Override
         public void handle(javafx.event.ActionEvent e) {
-            if(e.getSource() == findStructures) {
-                if (findStructures.isSelected()) {
-                    structuresTab.setDisable(false);
-                } else {
-                    structuresTab.setDisable(true);
-                }
-            }
-
             if (e.getSource() == devMode) {
 //                Main.DEV_MODE = !Main.DEV_MODE;
 
@@ -241,13 +229,11 @@ public class fxmlController implements Initializable {
                     BEDROCK = true;
                     bedrockWarning.setVisible(true);
                     structuresTab.setDisable(true);
-                    findStructures.setDisable(true);
                     singleton.getWorldType().setValue("DEFAULT");
                     worldTypePane.setDisable(true);
                 } else {
                     BEDROCK = false;
                     bedrockWarning.setVisible(false);
-                    findStructures.setDisable(false);
                     structuresTab.setDisable(false);
                     worldTypePane.setDisable(false);
                 }
@@ -349,10 +335,6 @@ public class fxmlController implements Initializable {
 
     public boolean isRunning(){
         return running;
-    }
-
-    public boolean isStructureSearching(){
-        return findStructures.isSelected();
     }
 
     private void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
