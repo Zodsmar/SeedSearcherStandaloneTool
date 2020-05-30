@@ -3,6 +3,7 @@ package sassa.gui;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.parsing.FormatException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -308,13 +309,14 @@ public class fxmlController implements Initializable {
     }
 
     private void updateDisplay() {
-        if (!paused && running) {
-            timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
-            notificationLabel.setText("Running");
-        } else if(paused) {
-            notificationLabel.setText("Paused");
-        }
-
+        Platform.runLater(() -> {
+            if (!paused && running) {
+                timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
+                notificationLabel.setText("Running");
+            } else if (paused) {
+                notificationLabel.setText("Paused");
+            }
+        });
     }
 
     private void toggleRunning() throws InterruptedException, IOException, FormatException,
