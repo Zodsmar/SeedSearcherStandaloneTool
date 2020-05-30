@@ -1,13 +1,12 @@
 package sassa.main;
 
+import amidst.mojangapi.minecraftinterface.MinecraftInterface;
 import amidst.mojangapi.world.World;
+import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.icon.WorldIcon;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StructureSearcher {
 	
@@ -266,5 +265,53 @@ public class StructureSearcher {
 
 		return foundStructures;
 	}
-	
+
+	public static boolean accept(World world, MinecraftInterface minecraftInterface, CoordinatesInWorld center, int SearchRadius, Type[] structures, Type[] rejectedStructures){
+		long searchCenterX = center.getX();
+		long searchCenterY = center.getY();
+
+		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
+		// Only search if list not empty
+		if (!undiscoveredStructures.isEmpty()) {
+			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
+					undiscoveredStructures,
+					world,
+					searchCenterX - SearchRadius,
+					searchCenterY - SearchRadius,
+					SearchRadius * 2,
+					SearchRadius * 2);
+			for (StructureSearcher.Type struct : foundStructures) {
+				undiscoveredStructures.remove(struct);
+			}
+
+			// Check if any included structures have not been found, if so seed is rejected
+			if (!undiscoveredStructures.isEmpty()) {
+				return false;
+			}
+		}
+
+		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
+		// Only search if list not empty
+		if (!undiscoveredRejectedStructures.isEmpty()) {
+			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
+					undiscoveredRejectedStructures,
+					world,
+					searchCenterX - SearchRadius,
+					searchCenterY - SearchRadius,
+					SearchRadius * 2,
+					SearchRadius * 2);
+			for (StructureSearcher.Type struct : foundRejectedStructures) {
+				// Check if any excluded structures have been found, if so seed is rejected
+				if(undiscoveredRejectedStructures.contains(struct)){
+					return false;
+				}
+			}
+		}
+
+		if (undiscoveredStructures.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
 }

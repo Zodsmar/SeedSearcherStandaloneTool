@@ -3,6 +3,7 @@ package sassa.gui;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.parsing.FormatException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.json.simple.parser.ParseException;
 import sassa.main.BiomeSearcher;
+import sassa.main.Searcher;
 import sassa.util.Singleton;
 import sassa.util.Util;
 import sassa.util.Version;
@@ -40,8 +42,9 @@ public class fxmlController implements Initializable {
     private static long elapsedTime;
 
     static Thread t;
+    static Thread t2;
     static boolean allowThreadToSearch = true;
-    static BiomeSearcher r;
+    static Searcher r;
 
     public static String minecraftVersion = Version.V1_15_2;
     String[] versions = {
@@ -88,16 +91,10 @@ public class fxmlController implements Initializable {
     private TextField seedsToFind;
 
     @FXML
-    private TextField searchX;
-
-    @FXML
-    private TextField searchZ;
+    private TextField searchRadius;
 
     @FXML
     private CheckBox devMode;
-
-    @FXML
-    private CheckBox findStructures;
 
     @FXML
     private CheckBox bedrockMode;
@@ -196,7 +193,6 @@ public class fxmlController implements Initializable {
         startBtn.setOnAction(buttonHandler);
         pauseBtn.setOnAction(buttonHandler);
         clearBtn.setOnAction(buttonHandler);
-        findStructures.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
         randomSeed.setOnAction(buttonHandler);
         devMode.setOnAction(buttonHandler);
@@ -219,14 +215,6 @@ public class fxmlController implements Initializable {
     EventHandler<javafx.event.ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
         @Override
         public void handle(javafx.event.ActionEvent e) {
-            if(e.getSource() == findStructures) {
-                if (findStructures.isSelected()) {
-                    structuresTab.setDisable(false);
-                } else {
-                    structuresTab.setDisable(true);
-                }
-            }
-
             if (e.getSource() == devMode) {
 //                Main.DEV_MODE = !Main.DEV_MODE;
 
@@ -242,13 +230,11 @@ public class fxmlController implements Initializable {
                     BEDROCK = true;
                     bedrockWarning.setVisible(true);
                     structuresTab.setDisable(true);
-                    findStructures.setDisable(true);
                     singleton.getWorldType().setValue("DEFAULT");
                     worldTypePane.setDisable(true);
                 } else {
                     BEDROCK = false;
                     bedrockWarning.setVisible(false);
-                    findStructures.setDisable(false);
                     structuresTab.setDisable(false);
                     worldTypePane.setDisable(false);
                 }
@@ -289,11 +275,10 @@ public class fxmlController implements Initializable {
 
     };
 
-    BiomeSearcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
-        r = new BiomeSearcher(
+    Searcher createNewThread() throws IOException, FormatException, MinecraftInterfaceCreationException {
+        r = new Searcher(
                 minecraftVersion,
-                Integer.parseInt(searchX.getText()),
-                Integer.parseInt(searchZ.getText()),
+                Integer.parseInt(searchRadius.getText()),
                 Integer.parseInt(seedsToFind.getText()),
                 Long.parseLong(minSeed.getText()),
                 Long.parseLong(maxSeed.getText()),
@@ -324,13 +309,14 @@ public class fxmlController implements Initializable {
     }
 
     private void updateDisplay() {
-        if (!paused && running) {
-            timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
-            notificationLabel.setText("Running");
-        } else if(paused) {
-            notificationLabel.setText("Paused");
-        }
-
+        Platform.runLater(() -> {
+            if (!paused && running) {
+                timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
+                notificationLabel.setText("Running");
+            } else if (paused) {
+                notificationLabel.setText("Paused");
+            }
+        });
     }
 
     private void toggleRunning() throws InterruptedException, IOException, FormatException,
@@ -353,14 +339,9 @@ public class fxmlController implements Initializable {
         return running;
     }
 
-    public boolean isStructureSearching(){
-        return findStructures.isSelected();
-    }
-
     private void start() throws IOException, FormatException, MinecraftInterfaceCreationException {
         startBtn.setText("Stop");
-        searchX.setEditable(false);
-        searchZ.setEditable(false);
+        searchRadius.setEditable(false);
         seedsToFind.setEditable(false);
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
@@ -368,11 +349,12 @@ public class fxmlController implements Initializable {
         initTimer();
         t = new Thread(createNewThread());
         t.start();
+//        t2 = new Thread(createNewThread());
+//        t2.start();
     }
 
     public void stop() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException {
-        searchX.setEditable(true);
-        searchZ.setEditable(true);
+        searchRadius.setEditable(true);
         seedsToFind.setEditable(true);
         startBtn.setText("Start");
         pauseBtn.setText("Pause");
