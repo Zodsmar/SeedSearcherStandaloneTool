@@ -18,6 +18,8 @@ import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
 import javafx.application.Platform;
 import org.json.simple.parser.ParseException;
+import sassa.gui.Variables;
+import sassa.gui.fxmlController;
 import sassa.gui.guiCollector;
 import sassa.util.Singleton;
 import sassa.util.Util;
@@ -124,6 +126,7 @@ public class BiomeSearcher implements Runnable {
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		} else {
 			WorldOptions worldOptions = new WorldOptions(WorldSeed.fromUserInput("" + this.currentSeedCheck), util.getWorldType(singleton.getWorldType().getValue().toString()));
+			Variables.updateCurrentSeed(this.currentSeedCheck);
 			this.currentSeedCheck++;
 			return this.mWorldBuilder.from(this.mMinecraftInterface, onDispose, worldOptions);
 		}
@@ -313,43 +316,6 @@ public class BiomeSearcher implements Runnable {
 	}
 
 	/**
-	 * Updates the progress output for a world that has been rejected.
-	 *
-	 * @param rejectedWorldsCount the number of worlds that have been rejected
-	 *            since the last world was accepted
-	 */
-
-
-
-	static void updateRejectedWorldsProgress(int rejectedWorldsCount) {
-        singleton.getCRejSeed().setText(""+rejectedWorldsCount);
-		singleton.getTRejSeed().setText(""+totalRejectedSeedCount);
-		singleton.getSequenceSeed().setText("" + currentSeedCheck);
-	}
-
-	/**
-	 * Updates the progress output for a world that has been accepted.
-	 *
-	 * @param rejectedWorldsCount the number of worlds that have been rejected
-	 *            since the last world was accepted
-	 * @param acceptedWorldsCount the number of worlds that have been accepted,
-	 *            including the given world
-	 * @param acceptedWorld the world that has been accepted
-	 */
-	static void updateAcceptedWorldsProgress(
-			int rejectedWorldsCount,
-			int acceptedWorldsCount,
-			World acceptedWorld) {
-		if (rejectedWorldsCount / (1 << 4) > 0) {
-			// An incomplete line of dots was printed.
-			//Util.console("");
-		}
-		util.console(
-				acceptedWorldsCount + ": " + acceptedWorld.getWorldSeed().getLong() + " (rejected "
-						+ rejectedWorldsCount + ")");
-	}
-
-	/**
 	 * Searches for matching worlds, and prints the seed of each matching world
 	 * to the given output stream.
 	 *
@@ -358,13 +324,7 @@ public class BiomeSearcher implements Runnable {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static int totalRejectedSeedCount = 0;
 	void search() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
-		int rejectedWorldsCount = 0;
-		int acceptedWorldsCount = 0;
-        totalRejectedSeedCount = 0;
-        singleton.getSequenceSeed().setText("" + 0);
-
 		util.console("Creating search lists...");
 
 		biomes = guiCollector.getBiomesFromArrayList(Singleton.getInstance().getBiomesGridPane(),"Include");
@@ -416,7 +376,7 @@ public class BiomeSearcher implements Runnable {
 			}
 		}
 		fxmlController controller = singleton.getController();
-		while (acceptedWorldsCount < this.mMaximumMatchingWorldsCount && controller.isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
+		while (Variables.acceptedWorlds() < this.mMaximumMatchingWorldsCount && controller.isRunning() && this.currentSeedCheck <= this.mMaxSeed && !quitImmediate) {
 			boolean paused = false;
 			if (controller != null)
 				paused = controller.isPaused();
@@ -426,9 +386,7 @@ public class BiomeSearcher implements Runnable {
 					world = createWorld();
 				} catch (MinecraftInterfaceException e) {
 					// TODO log
-					rejectedWorldsCount++;
-					totalRejectedSeedCount++;
-					updateRejectedWorldsProgress(rejectedWorldsCount);
+					Variables.checkWorld();
 					continue;
 				}
 				boolean isWorldAccepted;
@@ -438,21 +396,17 @@ public class BiomeSearcher implements Runnable {
 					// Biome data for the world could not be obtained.
 					// Biome data included an unknown biome code.
 					// TODO log
-					rejectedWorldsCount++;
-					totalRejectedSeedCount++;
-					updateRejectedWorldsProgress(rejectedWorldsCount);
+					Variables.checkWorld();
 					continue;
 				}
 				if (!isWorldAccepted) {
-					rejectedWorldsCount++;
-					totalRejectedSeedCount++;
-					updateRejectedWorldsProgress(rejectedWorldsCount);
+					Variables.checkWorld();
 					continue;
 				}
 				System.out.println("Valid Seed: " + world.getWorldSeed().getLong());
-				acceptedWorldsCount++;
-				updateAcceptedWorldsProgress(rejectedWorldsCount, acceptedWorldsCount, world);
-				rejectedWorldsCount = 0;
+
+				util.console((Variables.acceptedWorlds() + 1) + ": " + world.getWorldSeed().getLong() + " (rejected " + Variables.worldsSinceAccepted() + ")");
+				Variables.acceptWorld();
 			}
 		}
 
