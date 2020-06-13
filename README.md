@@ -55,11 +55,11 @@ who is technically inclined would be a great help!
 ## Credit
 
 #### Dependencies
-https://github.com/toolbox4minecraft/amidst
-https://code.google.com/archive/p/json-simple/
-https://github.com/KaptainWutax/FeatureUtils
-https://github.com/KaptainWutax/SeedUtils
-https://github.com/KaptainWutax/BiomeUtils
+https://github.com/toolbox4minecraft/amidst <br />
+https://code.google.com/archive/p/json-simple/ <br />
+https://github.com/KaptainWutax/FeatureUtils <br />
+https://github.com/KaptainWutax/SeedUtils <br />
+https://github.com/KaptainWutax/BiomeUtils <br />
 
 
 #### User Credits
