@@ -14,11 +14,14 @@ plugins {
 dependencies {
     implementation 'com.github.toolbox4minecraft:amidst:v4.4'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.github.KaptainWutax:BiomeUtils:master-SNAPSHOT'
+    implementation 'com.github.KaptainWutax:FeatureUtils:master-SNAPSHOT'
+    implementation 'com.github.KaptainWutax:SeedUtils:master-SNAPSHOT'
 }
 
 
 group = 'sassa'
-version = 'v0.5.0'
+version = 'v0.5.1'
 sourceCompatibility = '1.8'
 String stringVersion = version
 

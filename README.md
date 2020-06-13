@@ -57,6 +57,10 @@ who is technically inclined would be a great help!
 #### Dependencies
 https://github.com/toolbox4minecraft/amidst
 https://code.google.com/archive/p/json-simple/
+https://github.com/KaptainWutax/FeatureUtils
+https://github.com/KaptainWutax/SeedUtils
+https://github.com/KaptainWutax/BiomeUtils
+
 
 #### User Credits
 scudobuio - for the initial search function
@@ -66,6 +70,8 @@ fraffugooby - Updating dependencies
 YourCoalAlt - Updating to 1.14.3
 
 PaulW - Adding Seed Range Searching
+
+RedSparrow - Optimization and Bug fixes
 
 #### Contact
 
