@@ -258,9 +258,7 @@ public class fxmlController implements Initializable {
     public void startSeedSearcher() throws IOException {
 
         long worldSeed = 4320562085990449695L;
-
-        // TODO: 100,000 crashes...
-        int searchRadius = 10000;
+        int searchRadius = 1000;
         int incrementer = 1;
 
         long startTime = System.nanoTime();
@@ -302,7 +300,7 @@ public class fxmlController implements Initializable {
 //            System.out.println(count++);
 //        } while(!b);
 
-        //searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
+        searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
 
         //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
 //

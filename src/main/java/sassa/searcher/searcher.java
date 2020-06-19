@@ -55,7 +55,8 @@ public class searcher {
                 }
             }
             if(structures.size() != sList.size()){
-                rejectedSeeds++;
+                rejectedSeeds += 1L << 16;
+                //System.out.println(rejectedSeeds);
                 continue;
             }
 
