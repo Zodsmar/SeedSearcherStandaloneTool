@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class guiCollector {
+public class GuiCollector {
 
     Util util = new Util();
     /**

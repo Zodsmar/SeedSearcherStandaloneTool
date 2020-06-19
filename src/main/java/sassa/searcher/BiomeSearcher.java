@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class biomeSearcher {
+public class BiomeSearcher {
 
     public static boolean findBiome(int searchSize, long worldSeed, Biome biomeToFind, String dimension, int incrementer){
 
@@ -82,29 +82,21 @@ public class biomeSearcher {
     public static boolean findBiomeFromCategory(int searchSize, long worldSeed, ArrayList<Biome.Category> biomeToFind, String dimension, int incrementer){
 
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
-        ArrayList<Biome> biomesToFindCopy = new ArrayList<>(buildBiomeListFromCategory(biomeToFind));
+        ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
         BiomeSource source = getBiomeSource(dimension, worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer){
             for(int j = -searchSize; j < searchSize; j += incrementer){
                 //System.out.println(biomesToFindCopy.contains(source.getBiome(i, 0, j)));
-                if(biomesToFindCopy.contains(source.getBiome(i, 0, j))){
-                    // TODO: need to delete biomes from array if they have the same category
-                    List<Biome> deleteCandidates = new ArrayList<>();
-                    for(Biome allBiomes : biomesToFindCopy){
-                        if(allBiomes.getCategory() == source.getBiome(i, 0, j).getCategory()){
-                            deleteCandidates.add(allBiomes);
-                        }
-                    }
-                    for(Biome deleteCandidate : deleteCandidates){
-                        biomesToFindCopy.remove(deleteCandidate);
-                        System.out.println(biomesToFindCopy.size());
-                    }
+                if(biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory())){
+                    System.out.println(source.getBiome(i, 0, j).getName() + " " + biomesToFindCopy.size());
+                   biomesToFindCopy.remove(source.getBiome(i,0,j).getCategory());
                 }
 
             }
         }
+        //System.out.println(biomesToFindCopy.size());
         if(biomesToFindCopy.isEmpty()){
             //System.out.println("Found all Biomes");
             System.out.println("Found world seed " + worldSeed);

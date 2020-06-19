@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class structureSearcher {
+public class StructureSearcher {
 
     public static BiomeSource getBiomeSource(String dimension, long worldSeed) {
         BiomeSource source = null;

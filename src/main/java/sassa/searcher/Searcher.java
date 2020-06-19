@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static sassa.searcher.biomeSearcher.findBiomeFromSource;
+import static sassa.searcher.BiomeSearcher.findBiomeFromSource;
 
-public class searcher {
+public class Searcher {
 
     /**
      * This should be the fastest method by far starting with structures first then biomes
