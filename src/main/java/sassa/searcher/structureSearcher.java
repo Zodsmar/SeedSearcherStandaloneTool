@@ -18,30 +18,12 @@ import java.util.Map;
 
 public class structureSearcher {
 
-    public static int findStructureRegion(int searchSize, int spacing){
-        // 32 is the strucuture region size
-        return (int) Math.ceil(searchSize / (float)(spacing * 16));
-    }
-
-    public static int findChunksToBlocks(int searchSize){
-        return (int) Math.floor(searchSize / 16);
-    }
-
-    /**
-     * Finds all Overworld Structures except Strongholds and Mineshafts
-     * @param searchSize
-     * @param worldSeed
-     * @param structure
-     * @param dimension
-     */
-
-    public static void findStructure(int searchSize, long worldSeed, RegionStructure structure, String dimension) {
-        Vec3i origin = new Vec3i(0, 0,0);
-        ChunkRand rand = new ChunkRand();
+    public static BiomeSource getBiomeSource(String dimension, long worldSeed) {
         BiomeSource source = null;
+
         switch(dimension){
             case "OVERWORLD":
-                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
+                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed);
                 break;
             case "NETHER":
                 source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
@@ -54,28 +36,35 @@ public class structureSearcher {
                 break;
         }
 
-        int regionSize = findStructureRegion(searchSize, structure.getSpacing());
-        int chunkToBlocks = findChunksToBlocks(searchSize);
-       // System.out.println(regionSize + " " + chunkToBlocks + " " + structure.getSpacing());
+        return source;
+    }
 
+    /**
+     * Finds all Overworld Structures except Strongholds and Mineshafts
+     * @param searchSize
+     * @param worldSeed
+     * @param structure
+     * @param dimension
+     */
 
-        List<CPos> structures = new ArrayList<>();
+    public static void findStructure(int searchSize, long worldSeed, RegionStructure<?, ?> structure, String dimension) {
+        ChunkRand rand = new ChunkRand();
+        BiomeSource source = getBiomeSource(dimension, worldSeed);
 
-        //Each village region is 32x32 chunks.
-        for(int regionX = -regionSize; regionX < regionSize; regionX++) {
-            for(int regionZ = -regionSize; regionZ < regionSize; regionZ++) {
-                CPos struct = structure.getInRegion(worldSeed, regionX, regionZ, rand);
-                //12 chunks is 192 blocks.
-                if (struct != null && struct.distanceTo(origin, DistanceMetric.CHEBYSHEV) <= chunkToBlocks) structures.add(struct);
-            }
-        }
+        RegionStructure.Data<?> lowerBound = structure.at(-searchSize >> 4, -searchSize >> 4);
+        RegionStructure.Data<?> upperBound = structure.at(searchSize >> 4, searchSize >> 4);
 
         int count = 0;
-        for(CPos struct: structures) {
-            if(structure.canSpawn(struct.getX(), struct.getZ(), source)) {
-                //System.out.println("Found world seed " + worldSeed + " with structure seed " + structureSeed);
-                //System.out.println("The structure is at (" + struct.getX() * 16 + ", " + struct.getZ() * 16 + ")");
-                count++;
+        for(int regionX = lowerBound.regionX; regionX <= upperBound.regionX; regionX++) {
+            for(int regionZ = lowerBound.regionZ; regionZ <= upperBound.regionZ; regionZ++) {
+                CPos struct = structure.getInRegion(worldSeed, regionX, regionZ, rand);
+                if (struct != null && struct.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) <= searchSize >> 4) {
+                    if(structure.canSpawn(struct.getX(), struct.getZ(), source)) {
+                        //System.out.println("Found world seed " + worldSeed + " with structure seed " + structureSeed);
+                        System.out.println("The structure is at (" + struct.getX() * 16 + ", " + struct.getZ() * 16 + ")");
+                        count++;
+                    }
+                }
             }
         }
         System.out.println(structure.toString() + ": "+ count);
@@ -85,11 +74,11 @@ public class structureSearcher {
     public static void findMineshaft(int searchSize, long worldSeed, Mineshaft mineshaft){
         ChunkRand rand = new ChunkRand();
         int count = 0;
-        for(int i = 0; i < findChunksToBlocks(searchSize); i++){
-            for(int j = 0; j < findChunksToBlocks(searchSize); j++){
+        for(int i = 0; i < searchSize >> 4; i++){
+            for(int j = 0; j < searchSize >> 4; j++){
                 Mineshaft.Data<?> mineshaftData = mineshaft.at(i, j);
                 if(mineshaftData.testStart(worldSeed, rand)){
-                    OverworldBiomeSource source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
+                    OverworldBiomeSource source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed);
                     if(mineshaftData.testBiome(source)){
                         count++;
                     }
@@ -110,14 +99,14 @@ public class structureSearcher {
         for(long structureSeed = 0; structureSeed < 1L << 48; structureSeed++) {
             for(RegionStructure searchStructure : list){
                 System.out.println(searchStructure);
-                int regionSize = findStructureRegion(searchSize, searchStructure.getSpacing());
-                int chunkToBlocks = findChunksToBlocks(searchSize);
+                RegionStructure.Data<?> lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
+                RegionStructure.Data<?> upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
                 List<CPos> foundStructures = new ArrayList<>();
-                for (int regionX = -regionSize; regionX < regionSize; regionX++) {
-                    for (int regionZ = -regionSize; regionZ < regionSize; regionZ++) {
+                for(int regionX = lowerBound.regionX; regionX <= upperBound.regionX; regionX++) {
+                    for(int regionZ = lowerBound.regionZ; regionZ <= upperBound.regionZ; regionZ++) {
                         CPos struct = searchStructure.getInRegion(structureSeed, regionX, regionZ, rand);
                         //12 chunks is 192 blocks.
-                        if (struct != null && struct.distanceTo(origin, DistanceMetric.CHEBYSHEV) <= chunkToBlocks){
+                        if (struct != null && struct.distanceTo(origin, DistanceMetric.CHEBYSHEV) <= searchSize >> 4){
                             foundStructures.add(struct);
                             structures.put(searchStructure, foundStructures);
                         }
@@ -133,21 +122,8 @@ public class structureSearcher {
             for(long upperBits = 0; upperBits < 1L << 16; upperBits++) {
                 long worldSeed = (upperBits << 48) | structureSeed;
 
-                BiomeSource source = null;
-                switch (dimension) {
-                    case "OVERWORLD":
-                        source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
-                        break;
-                    case "NETHER":
-                        source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
-                        break;
-                    case "END":
-                        source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
-                        break;
-                    default:
-                        System.out.println("USE OVERWORLD, NETHER, OR END");
-                        break;
-                }
+                BiomeSource source = getBiomeSource(dimension, worldSeed);
+
                 Map<RegionStructure, Integer> foundList = new HashMap<>();
                 for(Map.Entry<RegionStructure, List<CPos>> structure1 : structures.entrySet()){
                         RegionStructure key = structure1.getKey();

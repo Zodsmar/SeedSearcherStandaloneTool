@@ -261,7 +261,7 @@ public class fxmlController implements Initializable {
 
         // TODO: 100,000 crashes...
         int searchRadius = 10000;
-        int incrementer = 50;
+        int incrementer = 1;
 
         long startTime = System.nanoTime();
 
@@ -276,13 +276,13 @@ public class fxmlController implements Initializable {
         cat.add(Biome.Category.FOREST);
         cat.add(Biome.Category.ICY);
 
-        boolean b = false;
-        int count = 0;
-        do {
-            b = biomeSearcher.findBiomeFromCategory(searchRadius, new Random().nextLong(), cat, "OVERWORLD", incrementer);
-            //System.out.println(biomesToFind.size());
-            //System.out.println(count++);
-        } while(!b);
+//        boolean b = false;
+//        int count = 0;
+//        do {
+//            b = biomeSearcher.findBiomeFromCategory(searchRadius, new Random().nextLong(), cat, "OVERWORLD", incrementer);
+//            //System.out.println(biomesToFind.size());
+//            //System.out.println(count++);
+//        } while(!b);
 
 
         ArrayList<RegionStructure> structuresToFind = new ArrayList<>();
@@ -297,16 +297,16 @@ public class fxmlController implements Initializable {
 //        boolean b = false;
 //        int count = 0;
 //        do {
-//            b = biomeSearcher.findBiome(searchRadius, new Random().nextLong(), biomesToFind, "OVERWORLD", 50);
+//            b = biomeSearcher.findBiome(searchRadius, new Random().nextLong(), Biome.MUSHROOM_FIELDS, "OVERWORLD", incrementer);
 //            //System.out.println(biomesToFind.size());
 //            System.out.println(count++);
 //        } while(!b);
 
         //searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
 
-//        biomeSearcher.findBiome(searchRadius, worldSeed, Biome.SUNFLOWER_PLAINS, "OVERWORLD", incrementer);
+        //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
 //
-//        structureSearcher.findStructure(searchRadius, worldSeed, SHIPWRECK, "OVERWORLD");
+        //structureSearcher.findStructure(searchRadius, worldSeed, VILLAGE, "OVERWORLD");
 //        structureSearcher.findStructure(searchRadius, worldSeed, MONUMENT, "OVERWORLD");
 //        structureSearcher.findStructure(searchRadius, worldSeed, DESERT_PYRAMID, "OVERWORLD");
 //        structureSearcher.findStructure(searchRadius, worldSeed, PILLAGER_OUTPOST, "OVERWORLD");

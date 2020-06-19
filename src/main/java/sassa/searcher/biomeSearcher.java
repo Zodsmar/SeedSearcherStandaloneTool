@@ -16,54 +16,29 @@ import java.util.stream.Stream;
 
 public class biomeSearcher {
 
-    public static void findBiome(int searchSize, long worldSeed, Biome biomeToFind, String dimension, int incrementer){
+    public static boolean findBiome(int searchSize, long worldSeed, Biome biomeToFind, String dimension, int incrementer){
 
-        BiomeSource source = null;
-        switch(dimension){
-            case "OVERWORLD":
-                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
-                break;
-            case "NETHER":
-                source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            case "END":
-                source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            default:
-                System.out.println("USE OVERWORLD, NETHER, OR END");
-                break;
-        }
+        BiomeSource source = getBiomeSource(dimension, worldSeed);
+
         boolean found = false;
         for(int i = -searchSize; i < searchSize; i += incrementer){
             for(int j = -searchSize; j < searchSize; j += incrementer){
                 if(source.getBiome(i, 0, j) == biomeToFind){
-                    found = true;
+                    System.out.println("Found world seed " + worldSeed);
+                    return true;
                 }
 
             }
         }
-        System.out.println("Is Found? " + found);
+        return false;
 
     }
     public static boolean findBiome(int searchSize, long worldSeed, ArrayList<Biome> biomeToFind, String dimension, int incrementer){
 
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
-        BiomeSource source = null;
-        switch(dimension){
-            case "OVERWORLD":
-                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
-                break;
-            case "NETHER":
-                source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            case "END":
-                source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            default:
-                System.out.println("USE OVERWORLD, NETHER, OR END");
-                break;
-        }
+        BiomeSource source = getBiomeSource(dimension, worldSeed);
+
         boolean found = false;
         for(int i = -searchSize; i < searchSize; i += incrementer){
             for(int j = -searchSize; j < searchSize; j += incrementer){
@@ -108,21 +83,7 @@ public class biomeSearcher {
 
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(buildBiomeListFromCategory(biomeToFind));
-        BiomeSource source = null;
-        switch(dimension){
-            case "OVERWORLD":
-                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed).build();
-                break;
-            case "NETHER":
-                source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            case "END":
-                source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
-                break;
-            default:
-                System.out.println("USE OVERWORLD, NETHER, OR END");
-                break;
-        }
+        BiomeSource source = getBiomeSource(dimension, worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer){
@@ -171,6 +132,27 @@ public class biomeSearcher {
         }
 
         return biomes;
+    }
+
+    public static BiomeSource getBiomeSource(String dimension, long worldSeed) {
+        BiomeSource source = null;
+
+        switch(dimension){
+            case "OVERWORLD":
+                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed);
+                break;
+            case "NETHER":
+                source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
+                break;
+            case "END":
+                source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
+                break;
+            default:
+                System.out.println("USE OVERWORLD, NETHER, OR END");
+                break;
+        }
+
+        return source;
     }
 
 }
