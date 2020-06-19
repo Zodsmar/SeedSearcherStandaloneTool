@@ -14,8 +14,6 @@ import kaptainwutax.seedutils.util.math.Vec3i;
 
 import java.util.*;
 
-import static sassa.searcher.BiomeSearcher.findBiomeFromSource;
-
 public class Searcher {
 
     public static void main(String[] args) {
@@ -88,7 +86,7 @@ public class Searcher {
 
                 if(structureCount != sList.size())continue;
 
-                boolean allBiomesFound = findBiomeFromSource(searchSize, bList, source, incrementer);
+                boolean allBiomesFound = BiomeSearcher.findBiomeFromSource(searchSize, bList, source, incrementer);
                 if(!allBiomesFound)continue;
 
                 System.out.format("Found world seed %d with structure seed %d (rejected %d)\n", worldSeed, structureSeed, rejectedSeeds);
