@@ -6,7 +6,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.json.simple.parser.ParseException;
-import sassa.main.StructureSearcher;
 import sassa.util.Util;
 
 import java.io.IOException;
@@ -68,14 +67,14 @@ public class guiCollector {
         return completeBiomesList;
     }
 
-    public StructureSearcher.Type[] getStructuresFromArrayList(GridPane pane, String inORex){
-        List<String> checkedTexts = comboBoxManager(pane, inORex);
-        StructureSearcher.Type[] structures = new StructureSearcher.Type[checkedTexts.size()];
-        for (int i = 0; i < checkedTexts.size(); i++) {
-            structures[i] = StructureSearcher.Type.valueOf(checkedTexts.get(i).replaceAll(" ", "_").toUpperCase());
-        }
-        return structures;
-    }
+//    public StructureSearcher_old.Type[] getStructuresFromArrayList(GridPane pane, String inORex){
+//        List<String> checkedTexts = comboBoxManager(pane, inORex);
+//        StructureSearcher_old.Type[] structures = new StructureSearcher_old.Type[checkedTexts.size()];
+//        for (int i = 0; i < checkedTexts.size(); i++) {
+//            structures[i] = StructureSearcher_old.Type.valueOf(checkedTexts.get(i).replaceAll(" ", "_").toUpperCase());
+//        }
+//        return structures;
+//    }
 
     public boolean checkIfBiomesSelected(Biome[] searchable, boolean check){
         if (searchable.length == 0 && check) {
@@ -90,12 +89,12 @@ public class guiCollector {
         return check;
     }
 
-    public boolean checkIfStructuresSelected(StructureSearcher.Type[] searchable, boolean check){
-        if (searchable.length == 0 && check) {
-            check = false;
-        }
-        return check;
-    }
+//    public boolean checkIfStructuresSelected(StructureSearcher_old.Type[] searchable, boolean check){
+//        if (searchable.length == 0 && check) {
+//            check = false;
+//        }
+//        return check;
+//    }
 }
 
 
