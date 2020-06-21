@@ -8,14 +8,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
-import sassa.searcher.BiomeSearcher;
+import sassa.searcher.biomeSearcher;
+import sassa.searcher.searcher;
+import sassa.searcher.structureSearcher;
 import sassa.util.Singleton;
 
+import sassa.util.Util;
 import sassa.util.Version;
 
 import java.io.IOException;
@@ -254,7 +259,7 @@ public class fxmlController implements Initializable {
 
         long worldSeed = 4320562085990449695L;
         int searchRadius = 1000;
-        int incrementer = 50;
+        int incrementer = 1;
 
         long startTime = System.nanoTime();
 
@@ -269,13 +274,13 @@ public class fxmlController implements Initializable {
         cat.add(Biome.Category.FOREST);
         cat.add(Biome.Category.ICY);
 
-        boolean b = false;
-        int count = 0;
-        do {
-            b = BiomeSearcher.findBiomeFromCategory(searchRadius, new Random().nextLong(), cat, "OVERWORLD", incrementer);
-            //System.out.println(biomesToFind.size());
-            //System.out.println(count++);
-        } while(!b);
+//        boolean b = false;
+//        int count = 0;
+//        do {
+//            b = biomeSearcher.findBiomeFromCategory(searchRadius, new Random().nextLong(), cat, "OVERWORLD", incrementer);
+//            //System.out.println(biomesToFind.size());
+//            //System.out.println(count++);
+//        } while(!b);
 
 
         ArrayList<RegionStructure> structuresToFind = new ArrayList<>();
@@ -295,7 +300,7 @@ public class fxmlController implements Initializable {
 //            System.out.println(count++);
 //        } while(!b);
 
-        //searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
+        searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
 
         //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
 //
