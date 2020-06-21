@@ -8,25 +8,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
-import sassa.searcher.biomeSearcher;
-import sassa.searcher.searcher;
-import sassa.searcher.structureSearcher;
+import sassa.searcher.Searcher;
 import sassa.util.Singleton;
-
-import sassa.util.Util;
 import sassa.util.Version;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class fxmlController implements Initializable {
@@ -283,7 +276,7 @@ public class fxmlController implements Initializable {
 //        } while(!b);
 
 
-        ArrayList<RegionStructure> structuresToFind = new ArrayList<>();
+        ArrayList<RegionStructure<?, ?>> structuresToFind = new ArrayList<>();
         structuresToFind.add(VILLAGE);
         structuresToFind.add(MONUMENT);
         structuresToFind.add(DESERT_PYRAMID);
@@ -300,7 +293,7 @@ public class fxmlController implements Initializable {
 //            System.out.println(count++);
 //        } while(!b);
 
-        searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer);
+        Searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer, 16);
 
         //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
 //
