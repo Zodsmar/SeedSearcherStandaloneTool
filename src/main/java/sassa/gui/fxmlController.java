@@ -49,8 +49,6 @@ public class fxmlController implements Initializable {
     @FXML
     private ComboBox<String> mcVersions;
 
-    @FXML
-    private TextField mcPath;
 
     @FXML
     private TextField seedsToFind;
@@ -136,7 +134,6 @@ public class fxmlController implements Initializable {
         singleton.setBiomesGridPane(biomesGrid);
         singleton.setConsole(console);
         singleton.setMinecraftVersion(defaultVersion);
-        singleton.setMCPath(mcPath);
         singleton.setCRejSeed(cRejSeedCount);
         singleton.setTRejSeed(tRejSeedCount);
         singleton.setSeedCount(seedsToFind);
@@ -206,6 +203,8 @@ public class fxmlController implements Initializable {
                     worldTypePane.setDisable(false);
                 }
             } else if (e.getSource() == startBtn) {
+
+                GuiCollector.getBiomesFromUI(biomesGrid, "Include");
 //                try {
 //                    toggleRunning();
 //                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
@@ -349,6 +348,16 @@ public class fxmlController implements Initializable {
         return validBiomes;
     }
 
+    private ArrayList<String> generateCategoryUI(){
+
+        ArrayList<String> validCategory = new ArrayList<>();
+
+       for(Biome.Category c : Biome.Category.values()){
+           validCategory.add(c.getName());
+       }
+        return validCategory;
+    }
+
     private ArrayList<String> generateStructuresUI(MCVersion version){
 
         ArrayList<String> validStructures = new ArrayList<>();
@@ -408,7 +417,7 @@ public class fxmlController implements Initializable {
         clearGridPane(biomeSetsGrid);
         buildGridPane(biomesGrid, generateBiomesUI(version));
         buildGridPane(structuresGrid, generateStructuresUI(version));
-//                buildGridPane(biomeSetsGrid, "Biome Sets");
+        buildGridPane(biomeSetsGrid, generateCategoryUI());
     }
 
     public void donate(){

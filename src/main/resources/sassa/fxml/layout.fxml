@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -111,11 +126,6 @@
                         </Text>
                         <ComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
                         <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
-                        <TextField fx:id="mcPath" layoutX="282.0" layoutY="491.0" prefHeight="25.0" prefWidth="359.0">
-                           <tooltip>
-                              <Tooltip text="This requires absolute path" />
-                           </tooltip></TextField>
-                        <Text layoutX="284.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Path to .minecraft directory (OPTIONAL, if blank default is used)" wrappingWidth="354.13671875" />
                         <TextField fx:id="seedsToFind" layoutX="106.0" layoutY="163.0" prefHeight="25.0" prefWidth="70.0" text="10" />
                         <TextField fx:id="searchRadius" layoutX="106.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" text="512" />
                         <Text layoutX="14.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
@@ -155,11 +165,6 @@
                               <Text layoutX="37.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World Type" />
                            </children>
                         </Pane>
-                        <Text fill="#d30000" layoutX="284.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If it doesn't work try using \'s" wrappingWidth="124.13671875">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
                      </children>
                   </Pane>
                </content></Tab>

@@ -4,13 +4,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import org.json.simple.parser.ParseException;
+import kaptainwutax.biomeutils.Biome;
 import sassa.util.Util;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GuiCollector {
 
@@ -21,7 +18,7 @@ public class GuiCollector {
      *
      * @return
      */
-    private List<String> comboBoxManager(GridPane pane, String inORex) {
+    private static List<String> comboBoxManager(GridPane pane, String inORex) {
         List<String> checkedTexts = new ArrayList<String>();
         int k = 0;
         for(int i = 0; i < (pane.getChildren().size() / 3) + 1; i++) {
@@ -42,14 +39,22 @@ public class GuiCollector {
        return checkedTexts;
     }
 
-//    public Biome[] getBiomesFromArrayList(GridPane pane, String inORex){
-//        List<String> checkedTexts = comboBoxManager(pane, inORex);
-//        Biome[] biomes = new Biome[checkedTexts.size()];
-//        for (int i = 0; i < checkedTexts.size(); i++) {
-//            biomes[i] = Biome.getByName(checkedTexts.get(i));
-//        }
-//        return biomes;
-//    }
+    public static ArrayList<Biome> getBiomesFromUI(GridPane pane, String inORex){
+        List<String> checkedTexts = comboBoxManager(pane, inORex);
+        ArrayList<Biome> biomesList = new ArrayList<>();
+        for (int i = 0; i < checkedTexts.size(); i++) {
+            Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+            while(regIt.hasNext()){
+                Map.Entry mapElement = (Map.Entry)regIt.next();
+                Biome b = (Biome) mapElement.getValue();
+                if(b.getName() == checkedTexts.get(i)){
+                    biomesList.add(b);
+                }
+            }
+
+        }
+        return biomesList;
+    }
 //
 //    public HashMap<Biome, String> getBiomesSetsFromHashMap(GridPane pane, String inORex) throws IOException, ParseException {
 //        List<String> checkedTexts = comboBoxManager(pane, inORex);
