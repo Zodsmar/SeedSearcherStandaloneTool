@@ -5,6 +5,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.featureutils.structure.RegionStructure;
+import sassa.util.Singleton;
+import sassa.util.StructureProvider;
+import sassa.util.Structures;
 import sassa.util.Util;
 
 import java.util.*;
@@ -54,6 +58,24 @@ public class GuiCollector {
 
         }
         return biomesList;
+    }
+
+    public static ArrayList<RegionStructure<?,?>> getStructuresFromUI(GridPane pane, String inORex){
+        List<String> checkedTexts = comboBoxManager(pane, inORex);
+        ArrayList<RegionStructure<?,?>> structuresList = new ArrayList<>();
+        for (int i = 0; i < checkedTexts.size(); i++) {
+            Iterator regIt = Structures.STRUCTURE.entrySet().iterator();
+            while(regIt.hasNext()){
+                Map.Entry mapElement = (Map.Entry)regIt.next();
+                String name = (String) mapElement.getKey();
+                StructureProvider s = (StructureProvider) mapElement.getValue();
+                if(name == checkedTexts.get(i)){
+                    structuresList.add(s.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion()));
+                    System.out.println(name);
+                }
+            }
+        }
+        return structuresList;
     }
 //
 //    public HashMap<Biome, String> getBiomesSetsFromHashMap(GridPane pane, String inORex) throws IOException, ParseException {

@@ -204,7 +204,8 @@ public class fxmlController implements Initializable {
                 }
             } else if (e.getSource() == startBtn) {
 
-                GuiCollector.getBiomesFromUI(biomesGrid, "Include");
+                //GuiCollector.getBiomesFromUI(biomesGrid, "Include");
+                GuiCollector.getStructuresFromUI(structuresGrid, "Include");
 //                try {
 //                    toggleRunning();
 //                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |

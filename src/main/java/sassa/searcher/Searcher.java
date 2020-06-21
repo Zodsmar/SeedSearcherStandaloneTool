@@ -11,6 +11,7 @@ import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
 import kaptainwutax.seedutils.util.math.Vec3i;
+import sassa.util.Singleton;
 
 import java.util.*;
 
@@ -100,13 +101,13 @@ public class Searcher {
 
         switch(dimension){
             case "OVERWORLD":
-                source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed);
+                source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 break;
             case "NETHER":
-                source = new NetherBiomeSource(MCVersion.v1_15, worldSeed);
+                source = new NetherBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 break;
             case "END":
-                source = new EndBiomeSource(MCVersion.v1_15, worldSeed);
+                source = new EndBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 break;
             default:
                 System.out.println("USE OVERWORLD, NETHER, OR END");
