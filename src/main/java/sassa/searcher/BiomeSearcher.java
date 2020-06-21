@@ -15,7 +15,7 @@ public class BiomeSearcher {
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
                 if(source.getBiome(i, 0, j) == biomeToFind) {
-                    System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
+                    System.out.format("Found world seed %d (Shadow %d), position of Biome X, Z: %d, %d\n", worldSeed, WorldSeed.getShadowSeed(worldSeed), i, j);
                     return true;
                 }
 

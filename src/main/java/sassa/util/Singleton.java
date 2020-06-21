@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import kaptainwutax.seedutils.mc.MCVersion;
 import sassa.gui.fxmlController;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class Singleton {
 
     private GridPane biomesPane, structurePane, biomeSetsPane;
     private TextArea console;
-    private String minecraftVersion;
+    private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed;
     private TextField seedCount, mcPath;
     private fxmlController controller;
@@ -67,11 +68,11 @@ public class Singleton {
     public void setConsole(TextArea console){
         this.console = console;
     }
-    public String getMinecraftVersion(){
+    public MCVersion getMinecraftVersion(){
         return minecraftVersion;
     }
 
-    public void setMinecraftVersion(String minecraftVersion){
+    public void setMinecraftVersion(MCVersion minecraftVersion){
         this.minecraftVersion = minecraftVersion;
     }
 

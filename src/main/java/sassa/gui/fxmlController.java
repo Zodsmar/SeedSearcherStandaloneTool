@@ -1,26 +1,30 @@
 package sassa.gui;
 
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
-import sassa.searcher.Searcher;
 import sassa.util.Singleton;
-import sassa.util.Version;
+import sassa.util.StructureProvider;
+import sassa.util.Structures;
+import sassa.util.Util;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class fxmlController implements Initializable {
 
@@ -124,12 +128,14 @@ public class fxmlController implements Initializable {
 
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
+    MCVersion defaultVersion = MCVersion.v1_16;
+    Util util;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         singleton.setBiomesGridPane(biomesGrid);
         singleton.setConsole(console);
-        singleton.setMinecraftVersion(Version.getDefaultVersion());
+        singleton.setMinecraftVersion(defaultVersion);
         singleton.setMCPath(mcPath);
         singleton.setCRejSeed(cRejSeedCount);
         singleton.setTRejSeed(tRejSeedCount);
@@ -154,73 +160,79 @@ public class fxmlController implements Initializable {
         directoryBrowser.setOnAction(buttonHandler);
         saveConsole.setOnAction(buttonHandler);
 
-//        mcVersions.setItems(FXCollections
-//                .observableArrayList(versions));
-        mcVersions.setValue(Version.getDefaultVersion());
+
+        ArrayList<String> versions = new ArrayList<>();
+        for(MCVersion v : MCVersion.values()){
+            if(v.release > 12){
+                versions.add(v.name);
+            }
+        }
+        mcVersions.setItems(FXCollections
+                .observableArrayList(versions));
+        mcVersions.setValue(defaultVersion.name);
 
         //worldType.setItems(FXCollections.observableArrayList(worldTypes));
         singleton.getWorldType().setValue("DEFAULT");
+
+        util = new Util();
+
+        rebuildUI(defaultVersion);
     }
 
     EventHandler<ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
         @Override
         public void handle(javafx.event.ActionEvent e) {
-//            if (e.getSource() == devMode) {
-////                Main.DEV_MODE = !Main.DEV_MODE;
-//
-//            } else if (e.getSource() == randomSeed) {
-//                if(randomSeed.isSelected()){
-//                    randomSeedPane.setVisible(false);
-//                } else {
-//                    randomSeedPane.setVisible(true);
-//                }
-//                RANDOM_SEEDS = !RANDOM_SEEDS;
-//            } else if (e.getSource() == bedrockMode){
-//                if(bedrockMode.isSelected()){
-//                    BEDROCK = true;
-//                    bedrockWarning.setVisible(true);
-//                    structuresTab.setDisable(true);
-//                    singleton.getWorldType().setValue("DEFAULT");
-//                    worldTypePane.setDisable(true);
-//                } else {
-//                    BEDROCK = false;
-//                    bedrockWarning.setVisible(false);
-//                    structuresTab.setDisable(false);
-//                    worldTypePane.setDisable(false);
-//                }
-//            } else if (e.getSource() == startBtn) {
+            if (e.getSource() == devMode) {
+//                Main.DEV_MODE = !Main.DEV_MODE;
+
+            } else if (e.getSource() == randomSeed) {
+                if(randomSeed.isSelected()){
+                    randomSeedPane.setVisible(false);
+                } else {
+                    randomSeedPane.setVisible(true);
+                }
+                //RANDOM_SEEDS = !RANDOM_SEEDS;
+            } else if (e.getSource() == bedrockMode){
+                if(bedrockMode.isSelected()){
+                    //BEDROCK = true;
+                    bedrockWarning.setVisible(true);
+                    structuresTab.setDisable(true);
+                    singleton.getWorldType().setValue("DEFAULT");
+                    worldTypePane.setDisable(true);
+                } else {
+                   // BEDROCK = false;
+                    bedrockWarning.setVisible(false);
+                    structuresTab.setDisable(false);
+                    worldTypePane.setDisable(false);
+                }
+            } else if (e.getSource() == startBtn) {
 //                try {
 //                    toggleRunning();
 //                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
 //                        UnknownBiomeIndexException e1) {
 //                    e1.printStackTrace();
 //                }
-//            } else if (e.getSource() == pauseBtn) {
-//                togglePause();
-//            } else if (e.getSource() == clearBtn) {
+            } else if (e.getSource() == pauseBtn) {
+                //togglePause();
+            } else if (e.getSource() == clearBtn) {
 //                try {
 //                    reset();
 //                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
 //                        UnknownBiomeIndexException e1) {
 //                    e1.printStackTrace();
 //                }
-//            } else if (e.getSource() == mcVersions) {
-//                String selected = mcVersions.getSelectionModel().getSelectedItem();
-//                minecraftVersion = selected;
-//                Singleton.getInstance().setMinecraftVersion(minecraftVersion);
-//                System.out.println("Version: "+minecraftVersion+":"+mcVersions.getSelectionModel().getSelectedIndex());
-//                clearGridPane(biomesGrid);
-//                clearGridPane(structuresGrid);
-//                clearGridPane(biomeSetsGrid);
-//                buildGridPane(biomesGrid, "Biomes");
-//                buildGridPane(structuresGrid, "Structures");
-//                buildGridPane(biomeSetsGrid, "Biome Sets");
-//
-//            } else if(e.getSource() == directoryBrowser){
-//                util.chooseDirectory(outputFileText);
-//            } else if(e.getSource() == saveConsole){
-//                util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
-//            }
+            } else if (e.getSource() == mcVersions) {
+                String selected = mcVersions.getSelectionModel().getSelectedItem();
+                MCVersion version = MCVersion.fromString(selected);
+                Singleton.getInstance().setMinecraftVersion(version);
+                System.out.println("Version: "+selected+":"+mcVersions.getSelectionModel().getSelectedIndex());
+                rebuildUI(version);
+
+            } else if(e.getSource() == directoryBrowser){
+                util.chooseDirectory(outputFileText);
+            } else if(e.getSource() == saveConsole){
+                util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
+            }
         }
 
     };
@@ -230,7 +242,7 @@ public class fxmlController implements Initializable {
     public static final PillagerOutpost PILLAGER_OUTPOST = new PillagerOutpost(MCVersion.v1_15);
     public static final DesertPyramid DESERT_PYRAMID = new DesertPyramid(MCVersion.v1_15);
     public static final JunglePyramid JUNGLE_PYRAMID = new JunglePyramid(MCVersion.v1_15);
-    public static final OceanRuins OCEAN_RUINS = new OceanRuins(MCVersion.v1_15);
+    public static final OceanRuin OCEAN_RUINS = new OceanRuin(MCVersion.v1_15);
     public static final Mansion MANSION = new Mansion(MCVersion.v1_15);
     public static final Mineshaft MINESHAFT = new Mineshaft(MCVersion.v1_15, Mineshaft.Type.EITHER);
     public static final Monument MONUMENT = new Monument(MCVersion.v1_15);
@@ -252,16 +264,16 @@ public class fxmlController implements Initializable {
 
         long worldSeed = 4320562085990449695L;
         int searchRadius = 1000;
-        int incrementer = 1;
+        int incrementer = 50;
 
         long startTime = System.nanoTime();
 
         ArrayList<Biome> biomesToFind = new ArrayList<>();
-        biomesToFind.add(Biome.BIRCH_FOREST);
-        biomesToFind.add(Biome.OCEAN);
-        biomesToFind.add(Biome.FOREST);
-        biomesToFind.add(Biome.FLOWER_FOREST);
-        biomesToFind.add(Biome.MUSHROOM_FIELDS);
+        biomesToFind.add(Biome.DEEP_WARM_OCEAN);
+//        biomesToFind.add(Biome.OCEAN);
+//        biomesToFind.add(Biome.FOREST);
+//        biomesToFind.add(Biome.FLOWER_FOREST);
+        //biomesToFind.add(Biome.MUSHROOM_FIELDS);
 
         ArrayList<Biome.Category> cat = new ArrayList<>();
         cat.add(Biome.Category.FOREST);
@@ -277,24 +289,23 @@ public class fxmlController implements Initializable {
 
 
         ArrayList<RegionStructure<?, ?>> structuresToFind = new ArrayList<>();
-        structuresToFind.add(VILLAGE);
-        structuresToFind.add(MONUMENT);
-        structuresToFind.add(DESERT_PYRAMID);
-        structuresToFind.add(PILLAGER_OUTPOST);
-        structuresToFind.add(IGLOO);
-        structuresToFind.add(SWAMP_HUT);
-        //structuresToFind.add(MANSION);
+//        structuresToFind.add(VILLAGE);
+//        structuresToFind.add(MONUMENT);
+//        structuresToFind.add(DESERT_PYRAMID);
+//        structuresToFind.add(PILLAGER_OUTPOST);
+        //structuresToFind.add(IGLOO);
+        //structuresToFind.add(SWAMP_HUT);
+        structuresToFind.add(MANSION);
 
 //        boolean b = false;
 //        int count = 0;
 //        do {
-//            b = biomeSearcher.findBiome(searchRadius, new Random().nextLong(), Biome.MUSHROOM_FIELDS, "OVERWORLD", incrementer);
+//            b = BiomeSearcher.findBiome(searchRadius, new Random().nextLong(), Biome.DEEP_WARM_OCEAN, "OVERWORLD", incrementer);
 //            //System.out.println(biomesToFind.size());
 //            System.out.println(count++);
 //        } while(!b);
 
-        Searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer, 16);
-
+        //Searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer, 16);
         //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
 //
         //structureSearcher.findStructure(searchRadius, worldSeed, VILLAGE, "OVERWORLD");
@@ -321,6 +332,83 @@ public class fxmlController implements Initializable {
         //updateDisplay();
         //util.console("Welcome to SeedTool!");
         //util.console("Please select at least one biome before searching!");
+    }
+
+    private ArrayList<String> generateBiomesUI(MCVersion version){
+
+        ArrayList<String> validBiomes = new ArrayList<>();
+
+        Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+        while(regIt.hasNext()){
+            Map.Entry mapElement = (Map.Entry)regIt.next();
+            Biome b = (Biome) mapElement.getValue();
+            if(b.getVersion().release <= version.release){
+                validBiomes.add(b.getName());
+            }
+        }
+        return validBiomes;
+    }
+
+    private ArrayList<String> generateStructuresUI(MCVersion version){
+
+        ArrayList<String> validStructures = new ArrayList<>();
+
+        Iterator<Map.Entry<String, StructureProvider>> it = Structures.STRUCTURE.entrySet().iterator();
+
+        while(it.hasNext()) {
+            Map.Entry<String, StructureProvider> e = it.next();
+            String name = e.getKey();
+            StructureProvider struct = e.getValue();
+            if(struct.getVersion().release <= version.release) {
+                validStructures.add(name);
+            }
+        }
+        return validStructures;
+    }
+
+    private void buildGridPane(GridPane grid, ArrayList<String> searchList){
+        //ArrayList<String> searchingList = null;
+           // searchingList = (ArrayList) util.createSearchLists(searchName);
+
+        int k = 0;
+        for (int i = 0; i < (searchList.size() / 3) + 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (k < searchList.size()) {
+                    VBox tempGrid = new VBox();
+                    GridPane.setHgrow(tempGrid, Priority.ALWAYS);
+                    GridPane.setVgrow(tempGrid, Priority.ALWAYS);
+                    tempGrid.setAlignment(Pos.CENTER);
+                    grid.add(tempGrid, j, i);
+
+                    Text tempText = new Text(searchList.get(k));
+                    ComboBox<String> temp = new ComboBox<String>(FXCollections
+                            .observableArrayList(include_exclude_txt));
+                    tempGrid.getChildren().add(tempText);
+                    tempGrid.getChildren().add(temp);
+
+                    k++;
+                } else {
+                    Pane empty = new Pane();
+                    empty.setVisible(false);
+                    grid.add(empty, j, i + 1);
+                }
+            }
+        }
+    }
+
+    private void clearGridPane(GridPane pane){
+        pane.getChildren().clear();
+        pane.getColumnConstraints().clear();
+        pane.getRowConstraints().clear();
+    }
+
+    private void rebuildUI(MCVersion version){
+        clearGridPane(biomesGrid);
+        clearGridPane(structuresGrid);
+        clearGridPane(biomeSetsGrid);
+        buildGridPane(biomesGrid, generateBiomesUI(version));
+        buildGridPane(structuresGrid, generateStructuresUI(version));
+//                buildGridPane(biomeSetsGrid, "Biome Sets");
     }
 
     public void donate(){

@@ -1,6 +1,5 @@
 package sassa.util;
 
-import amidst.mojangapi.world.WorldType;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -99,60 +98,60 @@ public class Util {
     }
 	 */
 
-	public Object generateSearchLists(JSONObject obj, String searchName)  {
-		ArrayList<String> list = new ArrayList<String>();
-		HashMap<String, String> hashList = new HashMap<String, String>();
-		String minecraftVersion = Singleton.getInstance().getMinecraftVersion();
-		Map<String, Integer> versions = Version.getVersions();
-		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
-			String key = (String) iterator.next();
-			//System.out.println(Integer.valueOf(versions.get(minecraftVersion)));
-			if(Integer.valueOf(key) <= Integer.valueOf(versions.get(minecraftVersion))){
-				JSONObject subGroup = (JSONObject) obj.get(key);
-				for(Iterator iterator1 = subGroup.keySet().iterator(); iterator1.hasNext();){
-					String key1 = (String) iterator1.next();
-					JSONArray subGArray = (JSONArray)subGroup.get(key1);
-					if(searchName == "Biome Sets"){
-						list.add(key1);
-					} else {
-						for(int i = 0; i < subGArray.size(); i++){
-                            if(searchName == "getBiomeSets") {
-                                hashList.put((String)subGArray.get(i), key1);
+//	public Object generateSearchLists(JSONObject obj, String searchName)  {
+//		ArrayList<String> list = new ArrayList<String>();
+//		HashMap<String, String> hashList = new HashMap<String, String>();
+//		String minecraftVersion = Singleton.getInstance().getMinecraftVersion().name;
+//		Map<String, Integer> versions = Version_old.getVersions();
+//		for(Iterator iterator = obj.keySet().iterator(); iterator.hasNext();) {
+//			String key = (String) iterator.next();
+//			//System.out.println(Integer.valueOf(versions.get(minecraftVersion)));
+//			if(Integer.valueOf(key) <= Integer.valueOf(versions.get(minecraftVersion))){
+//				JSONObject subGroup = (JSONObject) obj.get(key);
+//				for(Iterator iterator1 = subGroup.keySet().iterator(); iterator1.hasNext();){
+//					String key1 = (String) iterator1.next();
+//					JSONArray subGArray = (JSONArray)subGroup.get(key1);
+//					if(searchName == "Biome Sets"){
+//						list.add(key1);
+//					} else {
+//						for(int i = 0; i < subGArray.size(); i++){
+//                            if(searchName == "getBiomeSets") {
+//                                hashList.put((String)subGArray.get(i), key1);
+//
+//                            } else {
+//                                list.add((String)subGArray.get(i));
+//                            }
+//						}
+//					}
+//				}
+//			}
+//		}
+//        if(searchName == "getBiomeSets") {
+//            return hashList;
+//        } else {
+//            return list;
+//        }
+//	}
 
-                            } else {
-                                list.add((String)subGArray.get(i));
-                            }
-						}
-					}
-				}
-			}
-		}
-        if(searchName == "getBiomeSets") {
-            return hashList;
-        } else {
-            return list;
-        }
-	}
-
-	public Object createSearchLists(String searchName) throws IOException, ParseException{
-
-		JSONObject jo = jsonParser("searchables.json");
-
-		ArrayList<String> jObjList;
-		HashMap<String, String> jObjMap;
-
-
-        if(searchName == "getBiomeSets"){
-            JSONObject jObj = (JSONObject) jo.get("Biome Sets");
-            jObjMap = (HashMap) generateSearchLists(jObj, searchName);
-            return jObjMap;
-        } else {
-            JSONObject jObj = (JSONObject) jo.get(searchName);
-            jObjList = (ArrayList) generateSearchLists(jObj, searchName);
-            return jObjList;
-        }
-
-	}
+//	public Object createSearchLists(String searchName) throws IOException, ParseException{
+//
+//		JSONObject jo = jsonParser("searchables.json");
+//
+//		ArrayList<String> jObjList;
+//		HashMap<String, String> jObjMap;
+//
+//
+//        if(searchName == "getBiomeSets"){
+//            JSONObject jObj = (JSONObject) jo.get("Biome Sets");
+//            jObjMap = (HashMap) generateSearchLists(jObj, searchName);
+//            return jObjMap;
+//        } else {
+//            JSONObject jObj = (JSONObject) jo.get(searchName);
+//            jObjList = (ArrayList) generateSearchLists(jObj, searchName);
+//            return jObjList;
+//        }
+//
+//	}
 
 	public void chooseDirectory(Label display){
         Stage stage = new Stage();
@@ -196,13 +195,13 @@ public class Util {
         }
     }
 
-    public WorldType getWorldType(String worldTypeString){
-		if(worldTypeString == "AMPLIFIED"){
-			return WorldType.AMPLIFIED;
-		} else if ( worldTypeString == "LARGE BIOMES"){
-			return WorldType.LARGE_BIOMES;
-		} else {
-			return WorldType.DEFAULT;
-		}
-	}
+//    public WorldType getWorldType(String worldTypeString){
+//		if(worldTypeString == "AMPLIFIED"){
+//			return WorldType.AMPLIFIED;
+//		} else if ( worldTypeString == "LARGE BIOMES"){
+//			return WorldType.LARGE_BIOMES;
+//		} else {
+//			return WorldType.DEFAULT;
+//		}
+//	}
 }

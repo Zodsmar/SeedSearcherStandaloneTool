@@ -7,7 +7,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 import sassa.gui.fxmlController;
-import sassa.util.Version;
 
 import java.io.IOException;
 
@@ -22,7 +21,6 @@ public class mainApp extends Application {
 	 */
 
     public static void main(String... args) throws IOException, ParseException {
-        Version.registerSupportedVersions();
         Application.launch(args);
     }
 

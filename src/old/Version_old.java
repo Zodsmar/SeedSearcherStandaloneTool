@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Version {
+public class Version_old {
 
 	//Default Version
-	static String minecraftVersion = Version.V1_15_2;
+	static String minecraftVersion = Version_old.V1_15_2;
 
 	public static final String V9_99_99 = "9.99.9"; // Used to block out unsupported biomes/structures
 	public static final String V1_15_2 = "1.15.2";
