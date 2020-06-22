@@ -14,11 +14,13 @@ public class StructureProvider {
     StructureSupplier structureSupplier;
     MCVersion version;
     String dimension;
+    int minValue;
 
-    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, String dimension){
+    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, String dimension, int minValue){
         this.structureSupplier = structureSupplier;
         this.version = version;
         this.dimension = dimension;
+        this.minValue = minValue;
     }
 
     public StructureSupplier getStructureSupplier() {
@@ -31,6 +33,14 @@ public class StructureProvider {
 
     public String getDimension() {
         return this.dimension;
+    }
+
+    public int getMinimumValue(){
+        return this.minValue;
+    }
+
+    public void setMinimumValue(int minValue) {
+        this.minValue = minValue;
     }
 
     public interface StructureSupplier {

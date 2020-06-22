@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.converter.IntegerStringConverter;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
@@ -25,6 +26,7 @@ import sassa.util.Util;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.UnaryOperator;
 
 public class fxmlController implements Initializable {
 
@@ -205,7 +207,7 @@ public class fxmlController implements Initializable {
             } else if (e.getSource() == startBtn) {
 
                 //GuiCollector.getBiomesFromUI(biomesGrid, "Include");
-                GuiCollector.getStructuresFromUI(structuresGrid, "Include");
+                GuiCollector.getStructures(structuresGrid, "Include");
 //                try {
 //                    toggleRunning();
 //                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
@@ -376,7 +378,7 @@ public class fxmlController implements Initializable {
         return validStructures;
     }
 
-    private void buildGridPane(GridPane grid, ArrayList<String> searchList){
+    private void buildGridPane(GridPane grid, ArrayList<String> searchList, boolean textField){
         //ArrayList<String> searchingList = null;
            // searchingList = (ArrayList) util.createSearchLists(searchName);
 
@@ -388,6 +390,7 @@ public class fxmlController implements Initializable {
                     GridPane.setHgrow(tempGrid, Priority.ALWAYS);
                     GridPane.setVgrow(tempGrid, Priority.ALWAYS);
                     tempGrid.setAlignment(Pos.CENTER);
+                    tempGrid.setSpacing(5);
                     grid.add(tempGrid, j, i);
 
                     Text tempText = new Text(searchList.get(k));
@@ -395,7 +398,13 @@ public class fxmlController implements Initializable {
                             .observableArrayList(include_exclude_txt));
                     tempGrid.getChildren().add(tempText);
                     tempGrid.getChildren().add(temp);
+                    if(textField == true) {
 
+                        TextField tempField = new TextField();
+                        tempField.setMaxWidth(50);
+                        tempField.setTooltip(new Tooltip("How many structures do you want to have? (Default if blank is 1 and its a minimum value)"));
+                        tempGrid.getChildren().add(tempField);
+                    }
                     k++;
                 } else {
                     Pane empty = new Pane();
@@ -416,9 +425,9 @@ public class fxmlController implements Initializable {
         clearGridPane(biomesGrid);
         clearGridPane(structuresGrid);
         clearGridPane(biomeSetsGrid);
-        buildGridPane(biomesGrid, generateBiomesUI(version));
-        buildGridPane(structuresGrid, generateStructuresUI(version));
-        buildGridPane(biomeSetsGrid, generateCategoryUI());
+        buildGridPane(biomesGrid, generateBiomesUI(version), false);
+        buildGridPane(structuresGrid, generateStructuresUI(version),true);
+        buildGridPane(biomeSetsGrid, generateCategoryUI(),false);
     }
 
     public void donate(){
