@@ -24,7 +24,7 @@ public class Singleton {
     private TextArea console;
     private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed;
-    private TextField seedCount, mcPath;
+    private TextField seedCount;
     private fxmlController controller;
     private CheckBox autoSave;
     private File outputFile;
@@ -74,14 +74,6 @@ public class Singleton {
 
     public void setMinecraftVersion(MCVersion minecraftVersion){
         this.minecraftVersion = minecraftVersion;
-    }
-
-    public TextField getMCPath(){
-        return mcPath;
-    }
-
-    public void setMCPath(TextField mcPath){
-        this.mcPath = mcPath;
     }
 
     public TextField getSeedCount(){

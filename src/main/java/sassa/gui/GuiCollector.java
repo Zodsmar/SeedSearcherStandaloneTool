@@ -85,6 +85,25 @@ public class GuiCollector {
         return biomesList;
     }
 
+    public static ArrayList<Biome.Category> getCategoryFromUI(GridPane pane, String inORex){
+        List<String> checkedTexts = comboBoxManager(pane, inORex);
+        ArrayList<Biome.Category> categoryList = new ArrayList<>();
+        for (int i = 0; i < checkedTexts.size(); i++) {
+            Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+            while(regIt.hasNext()){
+                Map.Entry mapElement = (Map.Entry)regIt.next();
+                Biome b = (Biome) mapElement.getValue();
+                if(b.getCategory().getName() == checkedTexts.get(i) && !categoryList.contains(b.getCategory())){
+                    categoryList.add(b.getCategory());
+                    System.out.println(b.getCategory().getName());
+                }
+            }
+
+        }
+
+        return categoryList;
+    }
+
     public static ArrayList<RegionStructure<?,?>> getStructuresFromUI(GridPane pane, String inORex){
         List<String> checkedTexts = comboBoxManager(pane, inORex);
         ArrayList<RegionStructure<?,?>> structuresList = new ArrayList<>();
