@@ -1,6 +1,8 @@
 package sassa.gui;
 
 
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +20,8 @@ import javafx.util.converter.IntegerStringConverter;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
+import sassa.searcher.SearchingThread;
+import sassa.searcher.StructureSearcher;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
 import sassa.util.Structures;
@@ -29,6 +33,18 @@ import java.util.*;
 import java.util.function.UnaryOperator;
 
 public class fxmlController implements Initializable {
+
+    private static final int DELAY = 0;
+    static Timer timer;
+    public static boolean running;
+    public static boolean paused;
+    private static long pausedTime;
+    @SuppressWarnings("unused")
+    private static long startTime; // TODO use this in the future to tell user when they started
+    private static long elapsedTime;
+
+
+    static boolean allowThreadToSearch = true;
 
     @FXML
     private Text cRejSeedCount;
@@ -125,6 +141,11 @@ public class fxmlController implements Initializable {
     @FXML
     private GridPane biomeSetsGrid;
 
+    @FXML
+    private Slider amountOfCores;
+
+    @FXML
+    private Text coresAmount;
 
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
@@ -145,7 +166,16 @@ public class fxmlController implements Initializable {
         singleton.setAutoSave(autoSaveConsole);
         singleton.setController(this);
         singleton.setWorldType(worldType);
+        singleton.setAmountOfCores(amountOfCores);
+        singleton.setCoresAmount(coresAmount);
 
+        amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
+        coresAmount.textProperty().bind(
+                Bindings.format(
+                        "%.0f",
+                        amountOfCores.valueProperty()
+                )
+        );
 
 //        util = new Util();
 //        guiCollector = new guiCollector();
@@ -209,21 +239,22 @@ public class fxmlController implements Initializable {
                 //GuiCollector.getBiomesFromUI(biomesGrid, "Include");
                 GuiCollector.getStructures(structuresGrid, "Include");
                 GuiCollector.getCategoryFromUI(biomeSetsGrid, "Include");
-//                try {
-//                    toggleRunning();
-//                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
-//                        UnknownBiomeIndexException e1) {
-//                    e1.printStackTrace();
-//                }
+                try {
+                    toggleRunning();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
             } else if (e.getSource() == pauseBtn) {
-                //togglePause();
+                togglePause();
             } else if (e.getSource() == clearBtn) {
-//                try {
-//                    reset();
-//                } catch (InterruptedException | IOException | FormatException | MinecraftInterfaceCreationException |
-//                        UnknownBiomeIndexException e1) {
-//                    e1.printStackTrace();
-//                }
+                try {
+                    reset();
+                } catch (InterruptedException | IOException e1) {
+                    e1.printStackTrace();
+                }
             } else if (e.getSource() == mcVersions) {
                 String selected = mcVersions.getSelectionModel().getSelectedItem();
                 MCVersion version = MCVersion.fromString(selected);
@@ -292,12 +323,12 @@ public class fxmlController implements Initializable {
 
 
         ArrayList<RegionStructure<?, ?>> structuresToFind = new ArrayList<>();
-//        structuresToFind.add(VILLAGE);
-//        structuresToFind.add(MONUMENT);
-//        structuresToFind.add(DESERT_PYRAMID);
-//        structuresToFind.add(PILLAGER_OUTPOST);
-        //structuresToFind.add(IGLOO);
-        //structuresToFind.add(SWAMP_HUT);
+        structuresToFind.add(VILLAGE);
+        structuresToFind.add(MONUMENT);
+        structuresToFind.add(DESERT_PYRAMID);
+        structuresToFind.add(PILLAGER_OUTPOST);
+//        structuresToFind.add(IGLOO);
+        structuresToFind.add(SWAMP_HUT);
         structuresToFind.add(MANSION);
 
 //        boolean b = false;
@@ -321,7 +352,7 @@ public class fxmlController implements Initializable {
 
 
 
-        //structureSearcher.findStructureRandomly(searchRadius, structuresToFind, "OVERWORLD");
+        StructureSearcher.findStructureRandomly(searchRadius, structuresToFind, "OVERWORLD", 16);
 
         //structureSearcher.findStructure(searchRadius, worldSeed, FORTRESS, "NETHER");
         //structureSearcher.findStructure(searchRadius, worldSeed, END_CITY, "END");
@@ -332,9 +363,136 @@ public class fxmlController implements Initializable {
 
 
         //structureSearcher.findMineshaft(1024, 4320562085990449695L, MCVersion.v1_15, Mineshaft.Type.EITHER);
-        //updateDisplay();
-        //util.console("Welcome to SeedTool!");
-        //util.console("Please select at least one biome before searching!");
+        updateDisplay();
+        util.console("Welcome to SeedTool!");
+        util.console("Please select at least one biome before searching!");
+    }
+
+    void createNewThreads() throws IOException {
+        ArrayList<StructureProvider> structuresIN = GuiCollector.getStructures(structuresGrid, "Include");
+        ArrayList<StructureProvider> structuresOUT = GuiCollector.getStructures(structuresGrid, "Exclude");
+        ArrayList<Biome> biomesIN = GuiCollector.getBiomesFromUI(biomesGrid, "Include");
+        ArrayList<Biome> biomesOUT = GuiCollector.getBiomesFromUI(biomesGrid, "Exclude");
+        ArrayList<Biome.Category> categoriesIN = GuiCollector.getCategoryFromUI(biomeSetsGrid, "Include");
+        ArrayList<Biome.Category> categoriesOUT = GuiCollector.getCategoryFromUI(biomeSetsGrid, "Exclude");
+        Thread searchingT = new SearchingThread(structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+
+        System.out.println(coresAmount.getText());
+        //return r;
+    }
+
+    private void initTimer() {
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                updateDisplay();
+            }
+        },DELAY,1);
+    }
+
+    private void updateDisplay() {
+        Platform.runLater(() -> {
+            if (!paused && running) {
+                timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
+                notificationLabel.setText("Running");
+            } else if (paused) {
+                notificationLabel.setText("Paused");
+            }
+        });
+    }
+
+    private void toggleRunning() throws InterruptedException, IOException {
+        allowThreadToSearch = true;
+        if (running) {
+            System.out.println("Shutting Down...");
+            stop();
+        } else {
+            if (allowThreadToSearch) {
+                start();
+            } else {
+                stop();
+            }
+        }
+
+    }
+
+    public boolean isRunning(){
+        return running;
+    }
+
+    private void start() throws IOException {
+        startBtn.setText("Stop");
+        searchRadius.setEditable(false);
+        seedsToFind.setEditable(false);
+        startTime = System.currentTimeMillis();
+        elapsedTime = System.currentTimeMillis();
+        running = true;
+        initTimer();
+        createNewThreads();
+        //t = new Thread(createNewThread());
+//        for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
+//            Thread t = new SearchingThread();
+//            t.start();
+//        }
+//        t.start();
+//        t2 = new Thread(createNewThread());
+//        t2.start();
+    }
+
+    public void stop() throws InterruptedException, IOException{
+        searchRadius.setEditable(true);
+        seedsToFind.setEditable(true);
+        startBtn.setText("Start");
+        pauseBtn.setText("Pause");
+        running = false;
+        notificationLabel.setText("Stopped");
+        sequencedSeed.setText("0");
+        if(timer != null)
+            timer.cancel();
+        //if (t != null) t.interrupt();
+    }
+
+    private void togglePause() {
+        if (!running) {
+            util.console("Cannot pause when you aren't running!");
+        } else {
+            paused = !paused;
+            String text = (paused) ? "Paused" : "Pause";
+
+            if (paused) {
+                pausedTime = System.currentTimeMillis();
+                timer.cancel();
+            } else {
+                elapsedTime += System.currentTimeMillis() - pausedTime;
+                initTimer();
+
+                //startTime = timeAtPause;
+            }
+            pauseBtn.setText(text);
+            updateDisplay();
+        }
+    }
+
+    public boolean isPaused(){
+        return paused;
+    }
+    private void reset() throws InterruptedException, IOException {
+        if (paused) {
+            togglePause();
+        }
+        stop();
+        util.consoleWipe();
+        timeElapsed.setText("00:00:00");
+        startTime = System.currentTimeMillis();
+        pausedTime = 0;
+        elapsedTime = System.currentTimeMillis();
+        cRejSeedCount.setText("0");
+        tRejSeedCount.setText("0");
+        notificationLabel.setText("Offline");
+
+        updateDisplay();
     }
 
     private ArrayList<String> generateBiomesUI(MCVersion version){

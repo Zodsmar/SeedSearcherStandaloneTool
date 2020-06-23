@@ -1,9 +1,6 @@
 package sassa.util;
 
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import kaptainwutax.seedutils.mc.MCVersion;
@@ -23,12 +20,14 @@ public class Singleton {
     private GridPane biomesPane, structurePane, biomeSetsPane;
     private TextArea console;
     private MCVersion minecraftVersion;
-    private Text tRejSeed, cRejSeed, sequencedSeed;
+    private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
     private TextField seedCount;
     private fxmlController controller;
     private CheckBox autoSave;
     private File outputFile;
     private ComboBox worldType;
+    private Slider amountOfCores;
+
 
     public void setController(fxmlController controller){
         this.controller = controller;
@@ -130,5 +129,21 @@ public class Singleton {
 
     public void setWorldType(ComboBox worldType) {
         this.worldType = worldType;
+    }
+
+    public Slider getAmountOfCores(){
+        return amountOfCores;
+    }
+
+    public void setAmountOfCores(Slider amountOfCores) {
+        this.amountOfCores = amountOfCores;
+    }
+
+    public Text getCoresAmount(){
+        return coresAmount;
+    }
+
+    public void setCoresAmount(Text coresAmount){
+        this.coresAmount = coresAmount;
     }
 }

@@ -114,7 +114,6 @@ public class StructureSearcher {
                         break;
                     }
                 }
-
                 if(structureCount != list.size())continue;
 
                 System.out.format("Found world seed %d with structure seed %d (rejected %d)\n", worldSeed, structureSeed, rejectedSeeds);

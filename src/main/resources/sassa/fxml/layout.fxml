@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -165,6 +166,9 @@
                               <Text layoutX="37.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World Type" />
                            </children>
                         </Pane>
+                        <Slider fx:id="amountOfCores" layoutX="301.0" layoutY="497.0" min="1.0" value="1.0" />
+                        <Text layoutX="329.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores to use:" />
+                        <Text fx:id="coresAmount" layoutX="407.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
                      </children>
                   </Pane>
                </content></Tab>
