@@ -368,16 +368,23 @@ public class fxmlController implements Initializable {
         util.console("Please select at least one biome before searching!");
     }
 
-    void createNewThreads() throws IOException {
+    void createNewThreads() throws IOException, InterruptedException {
         ArrayList<StructureProvider> structuresIN = GuiCollector.getStructures(structuresGrid, "Include");
         ArrayList<StructureProvider> structuresOUT = GuiCollector.getStructures(structuresGrid, "Exclude");
         ArrayList<Biome> biomesIN = GuiCollector.getBiomesFromUI(biomesGrid, "Include");
         ArrayList<Biome> biomesOUT = GuiCollector.getBiomesFromUI(biomesGrid, "Exclude");
         ArrayList<Biome.Category> categoriesIN = GuiCollector.getCategoryFromUI(biomeSetsGrid, "Include");
         ArrayList<Biome.Category> categoriesOUT = GuiCollector.getCategoryFromUI(biomeSetsGrid, "Exclude");
-        Thread searchingT = new SearchingThread(structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+        if (structuresIN.size() == 0 && structuresOUT.size() == 0
+                && biomesIN.size() == 0 && biomesOUT.size() == 0 //
+                && categoriesIN.size() == 0 && categoriesOUT.size() == 0) {
+            util.console("Select something to search...");
+            toggleRunning();
+            //print out the world seed (Plus possibly more information)
+        }
+        Thread searchingT = new SearchingThread(0,structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
 
-        System.out.println(coresAmount.getText());
+        //System.out.println(coresAmount.getText());
         //return r;
     }
 
@@ -422,7 +429,7 @@ public class fxmlController implements Initializable {
         return running;
     }
 
-    private void start() throws IOException {
+    private void start() throws IOException, InterruptedException {
         startBtn.setText("Stop");
         searchRadius.setEditable(false);
         seedsToFind.setEditable(false);
