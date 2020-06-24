@@ -21,9 +21,9 @@ public class Singleton {
     private TextArea console;
     private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
-    private TextField seedCount, incrementer;
+    private TextField seedCount, incrementer, minSeed, maxSeed;
     private fxmlController controller;
-    private CheckBox autoSave, shadowMode, bedrockMode;
+    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed;
     private File outputFile;
     private ComboBox worldType;
     private Slider amountOfCores;
@@ -172,4 +172,27 @@ public class Singleton {
         this.coresAmount = coresAmount;
     }
 
+    public TextField getMinSeed()  {
+        return minSeed;
+    }
+
+    public void setMinSeed(TextField minSeed){
+        this.minSeed = minSeed;
+    }
+
+    public TextField getMaxSeed()  {
+        return maxSeed;
+    }
+
+    public void setMaxSeed(TextField maxSeed){
+        this.maxSeed = maxSeed;
+    }
+
+    public void setRandomSeed(CheckBox randomSeed){
+        this.randomSeed = randomSeed;
+    }
+
+    public CheckBox getRandomSeed(){
+        return randomSeed;
+    }
 }

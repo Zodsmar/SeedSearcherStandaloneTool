@@ -2,7 +2,6 @@ package sassa.searcher;
 
 import javafx.application.Platform;
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.seedutils.lcg.rand.Rand;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
@@ -12,7 +11,6 @@ import sassa.util.Util;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 public class SearchingThread extends Thread implements Runnable{
@@ -57,12 +55,28 @@ public class SearchingThread extends Thread implements Runnable{
     private void searching() throws IOException, InterruptedException {
         Singleton sg = Singleton.getInstance();
         Util util = new Util();
-        while ( Long.parseLong(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
-            long randomSeed;
-            if(sg.getBedrockMode().isSelected()){
-                randomSeed = new Random().nextInt();
+        boolean startNotRandom = false, endOfRandoms = false;
+        long randomSeed = 0;
+        while ( Long.parseLong(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
+
+            
+            if(!sg.getRandomSeed().isSelected() && startNotRandom == false){
+                randomSeed = Long.parseLong(sg.getMinSeed().getText());
+                startNotRandom = true;
+                Variables.updateCurrentSeed(randomSeed);
+            } else if (!sg.getRandomSeed().isSelected() && startNotRandom == true){
+                if(randomSeed >= Long.parseLong(sg.getMaxSeed().getText())){
+                    break;
+                }
+
+                randomSeed++;
+                Variables.updateCurrentSeed(randomSeed);
             } else {
-                randomSeed = new Random().nextLong();
+                if(sg.getBedrockMode().isSelected()){
+                    randomSeed = new Random().nextInt();
+                } else {
+                    randomSeed = new Random().nextLong();
+                }
             }
 
             int incrementer = Integer.parseInt(sg.getIncrementer().getText());

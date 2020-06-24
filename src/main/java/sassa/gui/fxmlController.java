@@ -178,6 +178,9 @@ public class fxmlController implements Initializable {
         singleton.setShadowMode(shadowMode);
         singleton.setIncrementer(incrementer);
         singleton.setBedrockMode(bedrockMode);
+        singleton.setMaxSeed(maxSeed);
+        singleton.setMinSeed(minSeed);
+        singleton.setRandomSeed(randomSeed);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
@@ -227,8 +230,11 @@ public class fxmlController implements Initializable {
             } else if (e.getSource() == randomSeed) {
                 if(randomSeed.isSelected()){
                     randomSeedPane.setVisible(false);
+                    amountOfCores.setDisable(false);
                 } else {
                     randomSeedPane.setVisible(true);
+                    amountOfCores.setValue(1);
+                    amountOfCores.setDisable(true);
                 }
                 //RANDOM_SEEDS = !RANDOM_SEEDS;
             } else if (e.getSource() == bedrockMode){
