@@ -148,6 +148,12 @@ public class fxmlController implements Initializable {
     @FXML
     private Text coresAmount;
 
+    @FXML
+    private TextField incrementer;
+
+    @FXML
+    private CheckBox shadowMode;
+
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
     MCVersion defaultVersion = MCVersion.v1_16;
@@ -169,6 +175,8 @@ public class fxmlController implements Initializable {
         singleton.setWorldType(worldType);
         singleton.setAmountOfCores(amountOfCores);
         singleton.setCoresAmount(coresAmount);
+        singleton.setShadowMode(shadowMode);
+        singleton.setIncrementer(incrementer);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
@@ -472,6 +480,7 @@ public class fxmlController implements Initializable {
             }
         }
         currentThreads = new ArrayList<>();
+        Variables.reset();
     }
 
     private void togglePause() {

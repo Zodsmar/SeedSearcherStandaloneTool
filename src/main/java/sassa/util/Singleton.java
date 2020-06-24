@@ -21,9 +21,9 @@ public class Singleton {
     private TextArea console;
     private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
-    private TextField seedCount;
+    private TextField seedCount, incrementer;
     private fxmlController controller;
-    private CheckBox autoSave;
+    private CheckBox autoSave, shadowMode;
     private File outputFile;
     private ComboBox worldType;
     private Slider amountOfCores;
@@ -137,6 +137,22 @@ public class Singleton {
 
     public void setAmountOfCores(Slider amountOfCores) {
         this.amountOfCores = amountOfCores;
+    }
+
+    public TextField getIncrementer()  {
+        return incrementer;
+    }
+
+    public void setIncrementer(TextField incrementer){
+        this.incrementer = incrementer;
+    }
+
+    public CheckBox getShadowMode(){
+        return shadowMode;
+    }
+
+    public void setShadowMode(CheckBox shadowMode){
+        this.shadowMode = shadowMode;
     }
 
     public Text getCoresAmount(){

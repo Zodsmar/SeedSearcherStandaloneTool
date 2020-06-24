@@ -155,9 +155,10 @@ public class GuiCollector {
                     value = 1;
                 }
                 s.setMinimumValue(value);
-                System.out.println(name + " " + s.getMinimumValue());
-                structuresList.add(s);
-
+                //System.out.println(name + " " + s.getMinimumValue());
+                for(int i = 0; i < s.getMinimumValue(); i++) {
+                    structuresList.add(s);
+                }
             }
         }
 

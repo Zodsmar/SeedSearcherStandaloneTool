@@ -51,7 +51,7 @@ public class SearchingThread extends Thread implements Runnable{
         while ( Integer.parseInt(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
 
             long randomSeed = new Random().nextLong();
-
+            int incrementer = Integer.parseInt(sg.getIncrementer().getText());
             //Make sure to create new copies everytime so it doesnt give false positives
             ArrayList<StructureProvider> si = new ArrayList<>(this.structuresIN);
             ArrayList<StructureProvider> so = new ArrayList<>(this.structuresOUT);
@@ -63,26 +63,26 @@ public class SearchingThread extends Thread implements Runnable{
             Variables.checkWorld();
 
             if (si.size() != 0) {
-
+                si = StructureSearcher.findStructure(searchRadius, randomSeed, si);
                 //After searching if size still doesn't equal 0 (meaning it didnt find everything its looking for continue)
                 if (si.size() != 0) {
                     continue;
                 }
             }
             if (so.size() != 0) {
-
+                so = StructureSearcher.findStructureEx(searchRadius, randomSeed, so);
                 if (so.size() != 0) {
                     continue;
                 }
             }
             if (bi.size() != 0) {
-                bi = BiomeSearcher.findBiome(searchRadius, randomSeed, bi,"OVERWORLD", 50);
+                bi = BiomeSearcher.findBiome(searchRadius, randomSeed, bi, incrementer);
                 if (bi.size() != 0) {
                     continue;
                 }
             }
             if (bo.size() != 0) {
-
+                bo = BiomeSearcher.findBiomeEx(searchRadius, randomSeed, bo, incrementer);
                 if (bo.size() != 0) {
                     continue;
                 }
