@@ -37,6 +37,10 @@ public class Variables {
         return acceptedWorlds;
     }
 
+    public static void minOneCheckWorld() {
+        checkedWorlds--;
+    }
+
     public static void updateCurrentSeed(long seed){
         // Update gui text
         Platform.runLater(() -> {

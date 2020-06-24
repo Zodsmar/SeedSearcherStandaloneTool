@@ -43,6 +43,7 @@ public class fxmlController implements Initializable {
     private static long startTime; // TODO use this in the future to tell user when they started
     private static long elapsedTime;
 
+    private static ArrayList<Thread> currentThreads = new ArrayList<>();
 
     static boolean allowThreadToSearch = true;
 
@@ -352,7 +353,7 @@ public class fxmlController implements Initializable {
 
 
 
-        StructureSearcher.findStructureRandomly(searchRadius, structuresToFind, "OVERWORLD", 16);
+        //StructureSearcher.findStructureRandomly(searchRadius, structuresToFind, "OVERWORLD", 16);
 
         //structureSearcher.findStructure(searchRadius, worldSeed, FORTRESS, "NETHER");
         //structureSearcher.findStructure(searchRadius, worldSeed, END_CITY, "END");
@@ -381,9 +382,15 @@ public class fxmlController implements Initializable {
             util.console("Select something to search...");
             toggleRunning();
             //print out the world seed (Plus possibly more information)
-        }
-        Thread searchingT = new SearchingThread(0,structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+        } else {
+            for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
 
+                Thread t = new SearchingThread(0, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+                t.start();
+                currentThreads.add(t);
+            }
+            System.out.println(currentThreads.size());
+        }
         //System.out.println(coresAmount.getText());
         //return r;
     }
@@ -459,6 +466,12 @@ public class fxmlController implements Initializable {
         if(timer != null)
             timer.cancel();
         //if (t != null) t.interrupt();
+        for(Thread t : currentThreads) {
+            if(t != null){
+                t.interrupt();
+            }
+        }
+        currentThreads = new ArrayList<>();
     }
 
     private void togglePause() {
@@ -490,7 +503,7 @@ public class fxmlController implements Initializable {
             togglePause();
         }
         stop();
-        util.consoleWipe();
+        // util.consoleWipe();
         timeElapsed.setText("00:00:00");
         startTime = System.currentTimeMillis();
         pausedTime = 0;

@@ -1,11 +1,14 @@
 package sassa.searcher;
 
 import kaptainwutax.biomeutils.Biome;
+import sassa.gui.Variables;
 import sassa.gui.fxmlController;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
+import sassa.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class SearchingThread extends Thread implements Runnable{
@@ -17,8 +20,9 @@ public class SearchingThread extends Thread implements Runnable{
     private ArrayList<Biome> biomesOUT;
     private ArrayList<Biome.Category> categoriesIN;
     private ArrayList<Biome.Category> categoriesOUT;
+    private int searchRadius;
 
-    public SearchingThread(long startSeed, ArrayList<StructureProvider> structuresIN, ArrayList<StructureProvider> structuresOUT, ArrayList<Biome> biomesIN, ArrayList<Biome> biomesOUT, ArrayList<Biome.Category> categoriesIN, ArrayList<Biome.Category> categoriesOUT) {
+    public SearchingThread(long startSeed, int searchRadius, ArrayList<StructureProvider> structuresIN, ArrayList<StructureProvider> structuresOUT, ArrayList<Biome> biomesIN, ArrayList<Biome> biomesOUT, ArrayList<Biome.Category> categoriesIN, ArrayList<Biome.Category> categoriesOUT) {
         this.startSeed = startSeed;
         this.structuresIN = structuresIN;
         this.structuresOUT = structuresOUT;
@@ -26,6 +30,7 @@ public class SearchingThread extends Thread implements Runnable{
         this.biomesOUT = biomesOUT;
         this.categoriesIN = categoriesIN;
         this.categoriesOUT = categoriesOUT;
+        this.searchRadius = searchRadius;
     }
 
     @Override
@@ -36,13 +41,14 @@ public class SearchingThread extends Thread implements Runnable{
          * - check that all values are being passed up correctly to variables
          * - Profit (Run this as many times to speed up searching within computer limits ofc)
          */
+        searching();
     }
 
     private void searching() {
         Singleton sg = Singleton.getInstance();
-
+        Util util = new Util();
         //TODO: Change from 0 to seedsFound
-        while ( Integer.parseInt(sg.getSeedCount().getText()) >= 0 && fxmlController.running == true && fxmlController.paused == false) {
+        while ( Integer.parseInt(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
 
             long randomSeed = new Random().nextLong();
 
@@ -54,6 +60,7 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> ci = new ArrayList<>(this.categoriesIN);
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
+            Variables.checkWorld();
 
             if (si.size() != 0) {
 
@@ -69,7 +76,7 @@ public class SearchingThread extends Thread implements Runnable{
                 }
             }
             if (bi.size() != 0) {
-
+                bi = BiomeSearcher.findBiome(searchRadius, randomSeed, bi,"OVERWORLD", 50);
                 if (bi.size() != 0) {
                     continue;
                 }
@@ -96,8 +103,12 @@ public class SearchingThread extends Thread implements Runnable{
             if (si.size() == 0 && so.size() == 0
                     && bi.size() == 0 && bo.size() == 0 //
                     && ci.size() == 0 && co.size() == 0) {
-
+                util.console(String.valueOf(randomSeed));
+                Variables.acceptWorld();
+                Variables.minOneCheckWorld();
                 //print out the world seed (Plus possibly more information)
+            } else {
+                System.out.println("Failed");
             }
         }
         //if(seedsFound >= Integer.parseInt(sg.getSeedCount().getText())) {

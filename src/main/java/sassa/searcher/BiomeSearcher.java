@@ -25,7 +25,7 @@ public class BiomeSearcher {
         return false;
     }
 
-    public static boolean findBiome(int searchSize, long worldSeed, Collection<Biome> biomeToFind, String dimension, int incrementer) {
+    public static ArrayList<Biome> findBiome(int searchSize, long worldSeed, Collection<Biome> biomeToFind, String dimension, int incrementer) {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
@@ -35,13 +35,13 @@ public class BiomeSearcher {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j));
 
                 if(biomesToFindCopy.isEmpty()) {
-                    System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
-                    return true;
+                    //System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
+                    return biomesToFindCopy;
                 }
             }
         }
 
-        return false;
+        return biomesToFindCopy;
     }
 
     public static boolean findBiomeFromSource(int searchSize, Collection<Biome> biomeToFind, BiomeSource source, int incrementer) {
