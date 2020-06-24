@@ -37,8 +37,6 @@ public class fxmlController implements Initializable {
     private static final int DELAY = 0;
     static Timer timer;
     public static boolean running;
-    public static boolean paused;
-    private static long pausedTime;
     @SuppressWarnings("unused")
     private static long startTime; // TODO use this in the future to tell user when they started
     private static long elapsedTime;
@@ -55,9 +53,6 @@ public class fxmlController implements Initializable {
 
     @FXML
     private Button startBtn;
-
-    @FXML
-    private Button pauseBtn;
 
     @FXML
     private Button clearBtn;
@@ -193,7 +188,6 @@ public class fxmlController implements Initializable {
 //        util = new Util();
 //        guiCollector = new guiCollector();
         startBtn.setOnAction(buttonHandler);
-        pauseBtn.setOnAction(buttonHandler);
         clearBtn.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
         randomSeed.setOnAction(buttonHandler);
@@ -263,8 +257,6 @@ public class fxmlController implements Initializable {
                     ioException.printStackTrace();
                 }
 
-            } else if (e.getSource() == pauseBtn) {
-                togglePause();
             } else if (e.getSource() == clearBtn) {
                 try {
                     reset();
@@ -423,29 +415,22 @@ public class fxmlController implements Initializable {
 
     private void updateDisplay() {
         Platform.runLater(() -> {
-            if (!paused && running) {
+            if (running) {
                 timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
                 notificationLabel.setText("Running");
 
                 if (cRejSeedCount != null) cRejSeedCount.setText("" + Variables.worldsSinceAccepted());
                 if (tRejSeedCount != null) tRejSeedCount.setText("" + Variables.checkedWorlds());
-            } else if (paused) {
-                notificationLabel.setText("Paused");
             }
         });
     }
 
     private void toggleRunning() throws InterruptedException, IOException {
-        allowThreadToSearch = true;
         if (running) {
             System.out.println("Shutting Down...");
             stop();
         } else {
-            if (allowThreadToSearch) {
-                start();
-            } else {
-                stop();
-            }
+            start();
         }
 
     }
@@ -478,7 +463,6 @@ public class fxmlController implements Initializable {
         searchRadius.setEditable(true);
         seedsToFind.setEditable(true);
         startBtn.setText("Start");
-        pauseBtn.setText("Pause");
         running = false;
         notificationLabel.setText("Stopped");
         sequencedSeed.setText("0");
@@ -493,39 +477,12 @@ public class fxmlController implements Initializable {
         currentThreads = new ArrayList<>();
     }
 
-    private void togglePause() {
-        if (!running) {
-            util.console("Cannot pause when you aren't running!");
-        } else {
-            paused = !paused;
-            String text = (paused) ? "Paused" : "Pause";
-
-            if (paused) {
-                pausedTime = System.currentTimeMillis();
-                timer.cancel();
-            } else {
-                elapsedTime += System.currentTimeMillis() - pausedTime;
-                initTimer();
-
-                //startTime = timeAtPause;
-            }
-            pauseBtn.setText(text);
-            updateDisplay();
-        }
-    }
-
-    public boolean isPaused(){
-        return paused;
-    }
     private void reset() throws InterruptedException, IOException {
-        if (paused) {
-            togglePause();
-        }
+
         stop();
         // util.consoleWipe();
         timeElapsed.setText("00:00:00");
         startTime = System.currentTimeMillis();
-        pausedTime = 0;
         elapsedTime = System.currentTimeMillis();
         cRejSeedCount.setText("0");
         tRejSeedCount.setText("0");

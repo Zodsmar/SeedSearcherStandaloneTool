@@ -289,8 +289,7 @@
                      <tooltip>
                         <Tooltip text="Start and Stop the seed searcher" />
                      </tooltip></Button>
-                  <Button fx:id="pauseBtn" layoutX="175.0" layoutY="2.0" mnemonicParsing="false" text="Pause" />
-                  <Button fx:id="clearBtn" layoutX="242.0" layoutY="2.0" mnemonicParsing="false" text="Clear" />
+                  <Button fx:id="clearBtn" layoutX="169.0" layoutY="2.0" mnemonicParsing="false" text="Clear" />
                </children>
             </Pane>
          </center>
