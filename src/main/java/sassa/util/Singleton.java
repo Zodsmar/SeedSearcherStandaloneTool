@@ -23,10 +23,11 @@ public class Singleton {
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
     private TextField seedCount, incrementer;
     private fxmlController controller;
-    private CheckBox autoSave, shadowMode;
+    private CheckBox autoSave, shadowMode, bedrockMode;
     private File outputFile;
     private ComboBox worldType;
     private Slider amountOfCores;
+
 
 
     public void setController(fxmlController controller){
@@ -155,6 +156,14 @@ public class Singleton {
         this.shadowMode = shadowMode;
     }
 
+    public CheckBox getBedrockMode(){
+        return bedrockMode;
+    }
+
+    public void setBedrockMode(CheckBox bedrockMode){
+        this.bedrockMode = bedrockMode;
+    }
+
     public Text getCoresAmount(){
         return coresAmount;
     }
@@ -162,4 +171,5 @@ public class Singleton {
     public void setCoresAmount(Text coresAmount){
         this.coresAmount = coresAmount;
     }
+
 }

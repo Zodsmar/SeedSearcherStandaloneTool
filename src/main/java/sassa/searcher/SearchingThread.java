@@ -2,6 +2,7 @@ package sassa.searcher;
 
 import javafx.application.Platform;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.seedutils.lcg.rand.Rand;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
@@ -57,8 +58,13 @@ public class SearchingThread extends Thread implements Runnable{
         Singleton sg = Singleton.getInstance();
         Util util = new Util();
         while ( Long.parseLong(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
+            long randomSeed;
+            if(sg.getBedrockMode().isSelected()){
+                randomSeed = new Random().nextInt();
+            } else {
+                randomSeed = new Random().nextLong();
+            }
 
-            long randomSeed = new Random().nextLong();
             int incrementer = Integer.parseInt(sg.getIncrementer().getText());
             //Make sure to create new copies everytime so it doesnt give false positives
             ArrayList<StructureProvider> si = new ArrayList<>(this.structuresIN);

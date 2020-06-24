@@ -177,6 +177,7 @@ public class fxmlController implements Initializable {
         singleton.setCoresAmount(coresAmount);
         singleton.setShadowMode(shadowMode);
         singleton.setIncrementer(incrementer);
+        singleton.setBedrockMode(bedrockMode);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
