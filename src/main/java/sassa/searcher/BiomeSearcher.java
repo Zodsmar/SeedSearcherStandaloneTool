@@ -69,7 +69,7 @@ public class BiomeSearcher {
             }
         }
 
-        return new ArrayList<Biome>();
+        return new ArrayList<>();
     }
 
     public static boolean findBiomeFromSource(int searchSize, Collection<Biome> biomeToFind, BiomeSource source, int incrementer) {
@@ -86,23 +86,42 @@ public class BiomeSearcher {
         return false;
     }
 
-    public static boolean findBiomeFromCategory(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, String dimension, int incrementer) {
+    public static ArrayList<Biome.Category> findBiomeFromCategory(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, int incrementer) {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
-        BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
+        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+//        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+//        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j).getCategory());
 
                 if(biomesToFindCopy.isEmpty()) {
-                    System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
-                    return true;
+                    return biomesToFindCopy;
                 }
             }
         }
 
-        return false;
+        return biomesToFindCopy;
+    }
+
+    public static ArrayList<Biome.Category> findBiomeFromCategoryEx(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, int incrementer) {
+        // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
+        ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
+        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+//        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+//        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+
+        for(int i = -searchSize; i < searchSize; i += incrementer) {
+            for(int j = -searchSize; j < searchSize; j += incrementer) {
+                if(biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory())){
+                    return biomesToFindCopy;
+                }
+            }
+        }
+
+        return new ArrayList<>();
     }
 
 }

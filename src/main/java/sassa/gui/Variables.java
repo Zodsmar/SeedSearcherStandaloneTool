@@ -22,12 +22,12 @@ public class Variables {
         ++worldsSinceAccepted;
         ++checkedWorlds;
         // Update gui text
-        Platform.runLater(() -> {
-            Text elem = singleton.getCRejSeed();
-            if (elem != null) elem.setText("" + worldsSinceAccepted);
-            elem = singleton.getTRejSeed();
-            if (elem != null) elem.setText("" + checkedWorlds);
-        });
+//        Platform.runLater(() -> {
+//            Text elem = singleton.getCRejSeed();
+//            if (elem != null) elem.setText("" + worldsSinceAccepted);
+//            elem = singleton.getTRejSeed();
+//            if (elem != null) elem.setText("" + checkedWorlds);
+//        });
         return checkedWorlds;
     }
 

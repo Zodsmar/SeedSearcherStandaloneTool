@@ -1,12 +1,15 @@
 package sassa.searcher;
 
+import javafx.application.Platform;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
 import sassa.util.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -41,14 +44,19 @@ public class SearchingThread extends Thread implements Runnable{
          * - check that all values are being passed up correctly to variables
          * - Profit (Run this as many times to speed up searching within computer limits ofc)
          */
-        searching();
+        try {
+            searching();
+        } catch (IOException e) {
+            System.out.println("IO Exception");
+        } catch (InterruptedException e) {
+            System.out.println("Interupeted");
+        }
     }
 
-    private void searching() {
+    private void searching() throws IOException, InterruptedException {
         Singleton sg = Singleton.getInstance();
         Util util = new Util();
-        //TODO: Change from 0 to seedsFound
-        while ( Integer.parseInt(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
+        while ( Long.parseLong(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && fxmlController.paused == false) {
 
             long randomSeed = new Random().nextLong();
             int incrementer = Integer.parseInt(sg.getIncrementer().getText());
@@ -88,13 +96,13 @@ public class SearchingThread extends Thread implements Runnable{
                 }
             }
             if (ci.size() != 0) {
-
+                ci = BiomeSearcher.findBiomeFromCategory(searchRadius, randomSeed, ci, incrementer);
                 if (ci.size() != 0) {
                     continue;
                 }
             }
             if (co.size() != 0) {
-
+                co = BiomeSearcher.findBiomeFromCategoryEx(searchRadius, randomSeed, co, incrementer);
                 if (co.size() != 0) {
                     continue;
                 }
@@ -103,7 +111,12 @@ public class SearchingThread extends Thread implements Runnable{
             if (si.size() == 0 && so.size() == 0
                     && bi.size() == 0 && bo.size() == 0 //
                     && ci.size() == 0 && co.size() == 0) {
-                util.console(String.valueOf(randomSeed));
+                if(Singleton.getInstance().getShadowMode().isSelected()){
+                    util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + " )");
+                } else {
+                    util.console(String.valueOf(randomSeed));
+                }
+
                 Variables.acceptWorld();
                 Variables.minOneCheckWorld();
                 //print out the world seed (Plus possibly more information)
@@ -111,8 +124,14 @@ public class SearchingThread extends Thread implements Runnable{
                 System.out.println("Failed");
             }
         }
-        //if(seedsFound >= Integer.parseInt(sg.getSeedCount().getText())) {
-        //     STOP EVERYTHING
-        //}
+        // Should stop
+        Platform.runLater(() -> {
+            try {
+                Singleton.getInstance().getController().stop();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }

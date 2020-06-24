@@ -419,6 +419,9 @@ public class fxmlController implements Initializable {
             if (!paused && running) {
                 timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
                 notificationLabel.setText("Running");
+
+                if (cRejSeedCount != null) cRejSeedCount.setText("" + Variables.worldsSinceAccepted());
+                if (tRejSeedCount != null) tRejSeedCount.setText("" + Variables.checkedWorlds());
             } else if (paused) {
                 notificationLabel.setText("Paused");
             }
@@ -453,6 +456,7 @@ public class fxmlController implements Initializable {
         running = true;
         initTimer();
         createNewThreads();
+        Variables.reset();
         //t = new Thread(createNewThread());
 //        for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
 //            Thread t = new SearchingThread();
@@ -480,7 +484,6 @@ public class fxmlController implements Initializable {
             }
         }
         currentThreads = new ArrayList<>();
-        Variables.reset();
     }
 
     private void togglePause() {
