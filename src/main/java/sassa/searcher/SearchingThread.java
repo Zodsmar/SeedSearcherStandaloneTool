@@ -88,61 +88,56 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> ci = new ArrayList<>(this.categoriesIN);
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
-            Variables.checkWorld();
-
-            if (si.size() != 0) {
-                si = StructureSearcher.findStructure(searchRadius, randomSeed, si);
-                //After searching if size still doesn't equal 0 (meaning it didnt find everything its looking for continue)
-                if (si.size() != 0) {
-                    continue;
-                }
-            }
-            if (so.size() != 0) {
-                so = StructureSearcher.findStructureEx(searchRadius, randomSeed, so);
-                if (so.size() != 0) {
-                    continue;
-                }
-            }
-            if (bi.size() != 0) {
-                bi = BiomeSearcher.findBiome(searchRadius, randomSeed, bi, incrementer);
-                if (bi.size() != 0) {
-                    continue;
-                }
-            }
-            if (bo.size() != 0) {
-                bo = BiomeSearcher.findBiomeEx(searchRadius, randomSeed, bo, incrementer);
-                if (bo.size() != 0) {
-                    continue;
-                }
-            }
-            if (ci.size() != 0) {
-                ci = BiomeSearcher.findBiomeFromCategory(searchRadius, randomSeed, ci, incrementer);
-                if (ci.size() != 0) {
-                    continue;
-                }
-            }
-            if (co.size() != 0) {
-                co = BiomeSearcher.findBiomeFromCategoryEx(searchRadius, randomSeed, co, incrementer);
-                if (co.size() != 0) {
-                    continue;
-                }
-            }
-
-            if (si.size() == 0 && so.size() == 0
-                    && bi.size() == 0 && bo.size() == 0 //
-                    && ci.size() == 0 && co.size() == 0) {
-                if(Singleton.getInstance().getShadowMode().isSelected()){
-                    util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + " )");
-                } else {
-                    util.console(String.valueOf(randomSeed));
-                }
-
-                Variables.acceptWorld();
-                Variables.minOneCheckWorld();
-                //print out the world seed (Plus possibly more information)
+            if(false){ // si.size() != 0 && bi.size() != 0){
+                System.out.println("Hi");
+                Searcher.searchRandomly(searchRadius, si, bi, ci, "OVERWORLD", incrementer, 16);
+                break;
             } else {
-                System.out.println("Failed");
+                Variables.checkWorld(1);
+
+                if (si.size() != 0) {
+                    si = StructureSearcher.findStructure(searchRadius, randomSeed, si);
+                    if (si.size() != 0) continue;
+                }
+                if (so.size() != 0) {
+                    so = StructureSearcher.findStructureEx(searchRadius, randomSeed, so);
+                    if (so.size() != 0) continue;
+                }
+                if (bi.size() != 0) {
+                    bi = BiomeSearcher.findBiome(searchRadius, randomSeed, bi, incrementer);
+                    if (bi.size() != 0) continue;
+                }
+                if (bo.size() != 0) {
+                    bo = BiomeSearcher.findBiomeEx(searchRadius, randomSeed, bo, incrementer);
+                    if (bo.size() != 0) continue;
+                }
+                if (ci.size() != 0) {
+                    ci = BiomeSearcher.findBiomeFromCategory(searchRadius, randomSeed, ci, incrementer);
+                    if (ci.size() != 0) continue;
+
+                }
+                if (co.size() != 0) {
+                    co = BiomeSearcher.findBiomeFromCategoryEx(searchRadius, randomSeed, co, incrementer);
+                    if (co.size() != 0) continue;
+                }
+
+                if (si.size() == 0 && so.size() == 0
+                        && bi.size() == 0 && bo.size() == 0 //
+                        && ci.size() == 0 && co.size() == 0) {
+                    if(Singleton.getInstance().getShadowMode().isSelected()){
+                        util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + " )");
+                    } else {
+                        util.console(String.valueOf(randomSeed));
+                    }
+
+
+                    //print out the world seed (Plus possibly more information)
+                } else {
+                    System.out.println("Failed");
+                }
             }
+            Variables.acceptWorld();
+            Variables.minOneCheckWorld();
         }
         // Should stop
         Platform.runLater(() -> {

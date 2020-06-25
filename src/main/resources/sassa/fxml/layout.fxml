@@ -167,7 +167,7 @@
                            </children>
                         </Pane>
                         <Slider fx:id="amountOfCores" layoutX="301.0" layoutY="497.0" min="1.0" value="1.0" />
-                        <Text layoutX="329.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores to use:" />
+                        <Text layoutX="320.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Threads to use:" />
                         <Text fx:id="coresAmount" layoutX="407.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
                         <TextField fx:id="incrementer" layoutX="106.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="50" />
                         <Text layoutX="14.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementer" />

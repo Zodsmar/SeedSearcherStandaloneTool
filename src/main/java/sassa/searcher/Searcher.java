@@ -9,20 +9,94 @@ import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
+import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
 import kaptainwutax.seedutils.util.math.Vec3i;
+import sassa.gui.Variables;
+import sassa.gui.fxmlController;
 import sassa.util.Singleton;
+import sassa.util.StructureProvider;
+import sassa.util.Util;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Searcher {
 
-    public static void main(String[] args) {
-        searchRandomly(300, new ArrayList<>(Arrays.asList(
-                new Mansion(MCVersion.v1_15)
-        )), new ArrayList<>(Arrays.asList(
-                Biome.MUSHROOM_FIELDS
-        )), "OVERWORLD", 50, 10);
+    public static void searchRandomly(int searchSize, Collection<StructureProvider> sList, Collection<Biome> bList, Collection<Biome.Category> cList, String dimension, int incrementer, int biomePrecision) {
+        Vec3i origin = new Vec3i(0, 0,0);
+        ChunkRand rand = new ChunkRand();
+        int totalStructures = 0;
+
+        Map<StructureProvider, List<CPos>> structures = new HashMap<>();
+        sList = sList.stream().distinct().collect(Collectors.toList());
+        while(fxmlController.running == true && Long.parseLong(Singleton.getInstance().getSeedCount().getText()) >= Variables.acceptedWorlds()){
+            for(long structureSeed = 0; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
+                for(StructureProvider searchProvider: sList) {
+                    RegionStructure<?,?> searchStructure = searchProvider.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
+                    RegionStructure.Data<?> lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
+                    RegionStructure.Data<?> upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
+
+                    List<CPos> foundStructures = new ArrayList<>();
+
+                    for(int regionX = lowerBound.regionX; regionX <= upperBound.regionX; regionX++) {
+                        for(int regionZ = lowerBound.regionZ; regionZ <= upperBound.regionZ; regionZ++) {
+                            CPos struct = searchStructure.getInRegion(structureSeed, regionX, regionZ, rand);
+                            if(struct == null)continue;
+                            if(struct.distanceTo(origin, DistanceMetric.CHEBYSHEV) > searchSize >> 4)continue;
+                            foundStructures.add(struct);
+                        }
+                    }
+
+                    if(foundStructures.isEmpty())break;
+                    structures.put(searchProvider, foundStructures);
+                }
+
+                if(structures.size() != sList.size()) {
+                    Variables.checkWorld(1L << biomePrecision);
+                    continue;
+                }
+
+                System.out.println("Found structure seed " + structureSeed + ", checking biomes...");
+
+                for(long upperBits = 0; upperBits < 1L << biomePrecision; upperBits++, Variables.checkWorld(1)) {
+                    long worldSeed = (upperBits << 48) | structureSeed;
+                    //System.out.println(worldSeed);
+                    BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
+
+                    int structureCount = 0;
+
+                    for(Map.Entry<StructureProvider, List<CPos>> e : structures.entrySet()) {
+                        StructureProvider structure = e.getKey();
+                        List<CPos> starts = e.getValue();
+
+                        RegionStructure<?,?> searchStructure = structure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
+
+                        for(CPos start : starts) {
+                            if(!searchStructure.canSpawn(start.getX(), start.getZ(), source))continue;
+                            structureCount++;
+                            if(structureCount >= structure.getMinimumValue()){
+                                totalStructures += structure.getMinimumValue();
+                                break;
+                            }
+                        }
+                    }
+
+                    if(structureCount != totalStructures)continue;
+
+                    ArrayList<Biome> allBiomesFound = BiomeSearcher.findBiome(searchSize, worldSeed, bList, incrementer);
+                    if(allBiomesFound.size() != 0)continue;
+                    Util util = new Util();
+                    if(Singleton.getInstance().getShadowMode().isSelected()){
+                        util.console(String.valueOf(worldSeed) + " (Shadow: " + WorldSeed.getShadowSeed(worldSeed) + " )");
+                    } else {
+                        util.console(String.valueOf(worldSeed));
+                    }
+                    Variables.acceptWorld();
+                    Variables.minOneCheckWorld();
+                }
+            }
+        }
     }
 
     /**
@@ -33,7 +107,7 @@ public class Searcher {
      * @param dimension - "OVERWORLD", "NETHER", "END"
      * @param incrementer - the amount of blocks to skip for biome searching
      */
-    public static void searchRandomly(int searchSize, Collection<RegionStructure<?, ?>> sList, Collection<Biome> bList, String dimension, int incrementer, int biomePrecision) {
+    public static void searchRandomly_old(int searchSize, Collection<RegionStructure<?, ?>> sList, Collection<Biome> bList, String dimension, int incrementer, int biomePrecision) {
         Vec3i origin = new Vec3i(0, 0,0);
         ChunkRand rand = new ChunkRand();
         int rejectedSeeds = 0;

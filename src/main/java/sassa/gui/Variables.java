@@ -18,9 +18,9 @@ public class Variables {
         worldsSinceAccepted = 0;
     }
 
-    public static int checkWorld(){
-        ++worldsSinceAccepted;
-        ++checkedWorlds;
+    public static int checkWorld(long value){
+        worldsSinceAccepted += value;
+        checkedWorlds += value;
         // Update gui text
 //        Platform.runLater(() -> {
 //            Text elem = singleton.getCRejSeed();

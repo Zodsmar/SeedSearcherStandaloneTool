@@ -449,14 +449,6 @@ public class fxmlController implements Initializable {
         initTimer();
         createNewThreads();
         Variables.reset();
-        //t = new Thread(createNewThread());
-//        for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
-//            Thread t = new SearchingThread();
-//            t.start();
-//        }
-//        t.start();
-//        t2 = new Thread(createNewThread());
-//        t2.start();
     }
 
     public void stop() throws InterruptedException, IOException{
@@ -468,7 +460,7 @@ public class fxmlController implements Initializable {
         sequencedSeed.setText("0");
         if(timer != null)
             timer.cancel();
-        //if (t != null) t.interrupt();
+
         for(Thread t : currentThreads) {
             if(t != null){
                 t.interrupt();
@@ -480,7 +472,7 @@ public class fxmlController implements Initializable {
     private void reset() throws InterruptedException, IOException {
 
         stop();
-        // util.consoleWipe();
+        util.consoleWipe();
         timeElapsed.setText("00:00:00");
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
@@ -534,8 +526,6 @@ public class fxmlController implements Initializable {
     }
 
     private void buildGridPane(GridPane grid, ArrayList<String> searchList, boolean textField){
-        //ArrayList<String> searchingList = null;
-           // searchingList = (ArrayList) util.createSearchLists(searchName);
 
         int k = 0;
         for (int i = 0; i < (searchList.size() / 3) + 1; i++) {
@@ -586,6 +576,6 @@ public class fxmlController implements Initializable {
     }
 
     public void donate(){
-        // util.openWebPage("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url");
+        util.openWebPage("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url");
     }
 }
