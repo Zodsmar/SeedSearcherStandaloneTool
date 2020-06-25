@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class SearchingThread extends Thread implements Runnable{
 
-    private long startSeed;
+    private long startSeedStructure;
     private ArrayList<StructureProvider> structuresIN;
     private ArrayList<StructureProvider> structuresOUT;
     private ArrayList<Biome> biomesIN;
@@ -24,8 +24,8 @@ public class SearchingThread extends Thread implements Runnable{
     private ArrayList<Biome.Category> categoriesOUT;
     private int searchRadius;
 
-    public SearchingThread(long startSeed, int searchRadius, ArrayList<StructureProvider> structuresIN, ArrayList<StructureProvider> structuresOUT, ArrayList<Biome> biomesIN, ArrayList<Biome> biomesOUT, ArrayList<Biome.Category> categoriesIN, ArrayList<Biome.Category> categoriesOUT) {
-        this.startSeed = startSeed;
+    public SearchingThread(long startSeedStructure, int searchRadius, ArrayList<StructureProvider> structuresIN, ArrayList<StructureProvider> structuresOUT, ArrayList<Biome> biomesIN, ArrayList<Biome> biomesOUT, ArrayList<Biome.Category> categoriesIN, ArrayList<Biome.Category> categoriesOUT) {
+        this.startSeedStructure = startSeedStructure;
         this.structuresIN = structuresIN;
         this.structuresOUT = structuresOUT;
         this.biomesIN = biomesIN;
@@ -88,9 +88,8 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> ci = new ArrayList<>(this.categoriesIN);
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
-            if(false){ // si.size() != 0 && bi.size() != 0){
-                System.out.println("Hi");
-                Searcher.searchRandomly(searchRadius, si, bi, ci, "OVERWORLD", incrementer, 16);
+            if( si.size() != 0 && bi.size() != 0){ //false){ //
+                Searcher.searchRandomly(searchRadius, startSeedStructure, si, bi, ci, "OVERWORLD", incrementer, 16);
                 break;
             } else {
                 Variables.checkWorld(1);

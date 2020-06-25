@@ -391,8 +391,8 @@ public class fxmlController implements Initializable {
             //print out the world seed (Plus possibly more information)
         } else {
             for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
-
-                Thread t = new SearchingThread(0, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+                long startingStructureSeed = (long) Math.floor(Math.pow(2, 48)/singleton.getAmountOfCores().getValue() * i);
+                Thread t = new SearchingThread(startingStructureSeed, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
                 t.start();
                 currentThreads.add(t);
             }
