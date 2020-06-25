@@ -89,7 +89,7 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
             if( si.size() != 0){ //false){ //
-                Searcher.searchRandomly(searchRadius, startSeedStructure, si, bi, ci, "OVERWORLD", incrementer, 16);
+                Searcher.searchRandomly(searchRadius, startSeedStructure, si, so, bi, ci, "OVERWORLD", incrementer, 16);
                 break;
             } else {
                 Variables.checkWorld(1);

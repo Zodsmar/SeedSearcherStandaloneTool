@@ -23,13 +23,15 @@ import java.util.stream.Collectors;
 
 public class Searcher {
 
-    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<Biome> bList, Collection<Biome.Category> cList, String dimension, int incrementer, int biomePrecision) {
+    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome.Category> cList, String dimension, int incrementer, int biomePrecision) {
         Vec3i origin = new Vec3i(0, 0,0);
         ChunkRand rand = new ChunkRand();
         int totalStructures = sList.size();
 
         Map<StructureProvider, List<CPos>> structures = new HashMap<>();
+        Map<StructureProvider, List<CPos>> structuresOUT = new HashMap<>();
         sList = sList.stream().distinct().collect(Collectors.toList());
+        soList = soList.stream().distinct().collect(Collectors.toList());
         for(long structureSeed = startSeedStructure; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
             for(StructureProvider searchProvider: sList) {
 
@@ -55,6 +57,34 @@ public class Searcher {
                 if(foundStructures.isEmpty())break;
                 structures.put(searchProvider, foundStructures);
             }
+            if(soList.size() != 0){
+                //TODO: figure out structureOUT
+//                for(StructureProvider searchProvider: soList) {
+//
+//                    if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) <= Variables.acceptedWorlds()){
+//                        return;
+//                    }
+//
+//                    RegionStructure<?,?> searchStructure = searchProvider.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
+//                    RegionStructure.Data<?> lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
+//                    RegionStructure.Data<?> upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
+//
+//                    List<CPos> foundStructures = new ArrayList<>();
+//
+//                    for(int regionX = lowerBound.regionX; regionX <= upperBound.regionX; regionX++) {
+//                        for(int regionZ = lowerBound.regionZ; regionZ <= upperBound.regionZ; regionZ++) {
+//                            CPos struct = searchStructure.getInRegion(structureSeed, regionX, regionZ, rand);
+//                            if(struct == null)continue;
+//                            if(struct.distanceTo(origin, DistanceMetric.CHEBYSHEV) > searchSize >> 4)continue;
+//                            foundStructures.add(struct);
+//                        }
+//                    }
+//                   // if (foundStructures.size() < searchProvider.getMinimumValue()) break;
+//                    if(foundStructures.isEmpty())break;
+//                    structuresOUT.put(searchProvider, foundStructures);
+//                }
+            }
+
             //System.out.println(structures.size() + " " + sList.size());
 
             if(structures.size() != sList.size()) {
@@ -91,9 +121,15 @@ public class Searcher {
                 }
 
                 if(structureCount != totalStructures)continue;
+                if(cList.size() != 0){
+                    ArrayList<Biome.Category> allCategoriesFound = BiomeSearcher.findBiomeFromCategory(searchSize, worldSeed, cList, incrementer);
+                    if(allCategoriesFound.size() != 0)continue;
+                }
+                if(bList.size() != 0){
+                    ArrayList<Biome> allBiomesFound = BiomeSearcher.findBiome(searchSize, worldSeed, bList, incrementer);
+                    if(allBiomesFound.size() != 0)continue;
+                }
 
-                ArrayList<Biome> allBiomesFound = BiomeSearcher.findBiome(searchSize, worldSeed, bList, incrementer);
-                if(allBiomesFound.size() != 0)continue;
                 Util util = new Util();
                 if(Singleton.getInstance().getShadowMode().isSelected()){
                     util.console(String.valueOf(worldSeed) + " (Shadow: " + WorldSeed.getShadowSeed(worldSeed) + " )");

@@ -95,7 +95,7 @@ public class GuiCollector {
                 Biome b = (Biome) mapElement.getValue();
                 if(b.getCategory().getName() == checkedTexts.get(i) && !categoryList.contains(b.getCategory())){
                     categoryList.add(b.getCategory());
-                    System.out.println(b.getCategory().getName());
+                    //System.out.println(b.getCategory().getName());
                 }
             }
 
