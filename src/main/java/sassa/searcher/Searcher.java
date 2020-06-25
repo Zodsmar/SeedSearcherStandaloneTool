@@ -32,6 +32,11 @@ public class Searcher {
         sList = sList.stream().distinct().collect(Collectors.toList());
         for(long structureSeed = startSeedStructure; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
             for(StructureProvider searchProvider: sList) {
+
+                if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) <= Variables.acceptedWorlds()){
+                    return;
+                }
+
                 RegionStructure<?,?> searchStructure = searchProvider.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
                 RegionStructure.Data<?> lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
                 RegionStructure.Data<?> upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
@@ -46,14 +51,12 @@ public class Searcher {
                         foundStructures.add(struct);
                     }
                 }
-
+                if (foundStructures.size() < searchProvider.getMinimumValue()) break;
                 if(foundStructures.isEmpty())break;
                 structures.put(searchProvider, foundStructures);
             }
-            System.out.println(structures.size() + " " + sList.size());
+            //System.out.println(structures.size() + " " + sList.size());
 
-            //TODO: as long as 1 structure of each exists it works but what if you want atleast 3 of each for it
-            // to pass (handled lower but not at the structure seed level)
             if(structures.size() != sList.size()) {
                 Variables.checkWorld(1L << biomePrecision);
                 continue;
