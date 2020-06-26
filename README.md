@@ -8,9 +8,11 @@ also hover over UI elements to get more information.
 
 ## Features
 
-> - **Bedrock Mode**
-> - Search based on minecraft version (1.15.2 - 1.7.10)
+> - *Bedrock Mode*
+> - **Nether and End Dimension Searching (Structures and Biomes)**
+> - Search based on minecraft version (1.16.X - 1.7.10)
 > - Search in specific radius from spawn
+> - **Search based on how many structures minimum must exist**
 > - World Type (Default, Amplified, Large Biomes)
 > - Biomes, Biome Sets (OR function), and Structures
 > - Randomized Seeds (Or search from a seed range)
@@ -55,7 +57,7 @@ who is technically inclined would be a great help!
 ## Credit
 
 #### Dependencies
-https://github.com/toolbox4minecraft/amidst <br />
+
 https://code.google.com/archive/p/json-simple/ <br />
 https://github.com/KaptainWutax/FeatureUtils <br />
 https://github.com/KaptainWutax/SeedUtils <br />
@@ -63,6 +65,9 @@ https://github.com/KaptainWutax/BiomeUtils <br />
 
 
 #### User Credits
+
+KaptainWutax - Code optimizations and Utils dependencies
+
 scudobuio - for the initial search function
 
 fraffugooby - Updating dependencies
