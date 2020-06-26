@@ -149,6 +149,9 @@ public class fxmlController implements Initializable {
     @FXML
     private CheckBox shadowMode;
 
+    @FXML
+    private Button resetUIBtn;
+
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
     MCVersion defaultVersion = MCVersion.v1_16;
@@ -195,6 +198,7 @@ public class fxmlController implements Initializable {
         mcVersions.setOnAction(buttonHandler);
         directoryBrowser.setOnAction(buttonHandler);
         saveConsole.setOnAction(buttonHandler);
+        resetUIBtn.setOnAction(buttonHandler);
 
 
         ArrayList<String> versions = new ArrayList<>();
@@ -245,10 +249,6 @@ public class fxmlController implements Initializable {
                     worldTypePane.setDisable(false);
                 }
             } else if (e.getSource() == startBtn) {
-
-                //GuiCollector.getBiomesFromUI(biomesGrid, "Include");
-                GuiCollector.getStructures(structuresGrid, "Include");
-                GuiCollector.getCategoryFromUI(biomeSetsGrid, "Include");
                 try {
                     toggleRunning();
                 } catch (InterruptedException interruptedException) {
@@ -274,6 +274,8 @@ public class fxmlController implements Initializable {
                 util.chooseDirectory(outputFileText);
             } else if(e.getSource() == saveConsole){
                 util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
+            } else if (e.getSource() == resetUIBtn) {
+                rebuildUI(singleton.getMinecraftVersion());
             }
         }
 

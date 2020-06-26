@@ -172,6 +172,7 @@
                         <TextField fx:id="incrementer" layoutX="106.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="50" />
                         <Text layoutX="14.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementer" />
                         <CheckBox fx:id="shadowMode" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" text="Shadow Seeds" />
+                        <Button fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false" text="Reset GUI" />
                      </children>
                   </Pane>
                </content></Tab>
