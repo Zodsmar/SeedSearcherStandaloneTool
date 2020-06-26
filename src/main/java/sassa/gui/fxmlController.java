@@ -40,6 +40,9 @@ public class fxmlController implements Initializable {
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
 
+    String[] worldTypes = {
+            "DEFAULT/AMP", "LARGE BIOMES"
+    };
 
     @FXML
     private Text cRejSeedCount;
@@ -205,8 +208,8 @@ public class fxmlController implements Initializable {
                 .observableArrayList(versions));
         mcVersions.setValue(defaultVersion.name);
 
-        //worldType.setItems(FXCollections.observableArrayList(worldTypes));
-        singleton.getWorldType().setValue("DEFAULT");
+        worldType.setItems(FXCollections.observableArrayList(worldTypes));
+        singleton.getWorldType().setValue("DEFAULT/AMP");
 
         util = new Util();
 
@@ -234,7 +237,7 @@ public class fxmlController implements Initializable {
                     //BEDROCK = true;
                     bedrockWarning.setVisible(true);
                     structuresTab.setDisable(true);
-                    singleton.getWorldType().setValue("DEFAULT");
+                    singleton.getWorldType().setValue("DEFAULT/AMP");
                     worldTypePane.setDisable(true);
                 } else {
                    // BEDROCK = false;
@@ -274,29 +277,6 @@ public class fxmlController implements Initializable {
         }
 
     };
-    public static final Village VILLAGE = new Village(MCVersion.v1_15);
-    public static final BuriedTreasure BURIED_TREASURE = new BuriedTreasure(MCVersion.v1_15);
-    public static final Igloo IGLOO = new Igloo(MCVersion.v1_15);
-    public static final PillagerOutpost PILLAGER_OUTPOST = new PillagerOutpost(MCVersion.v1_15);
-    public static final DesertPyramid DESERT_PYRAMID = new DesertPyramid(MCVersion.v1_15);
-    public static final JunglePyramid JUNGLE_PYRAMID = new JunglePyramid(MCVersion.v1_15);
-    public static final OceanRuin OCEAN_RUINS = new OceanRuin(MCVersion.v1_15);
-    public static final Mansion MANSION = new Mansion(MCVersion.v1_15);
-    public static final Mineshaft MINESHAFT = new Mineshaft(MCVersion.v1_15, Mineshaft.Type.EITHER);
-    public static final Monument MONUMENT = new Monument(MCVersion.v1_15);
-    public static final Shipwreck SHIPWRECK = new Shipwreck(MCVersion.v1_15);
-    public static final SwampHut SWAMP_HUT = new SwampHut(MCVersion.v1_15);
-
-    public static final BastionRemnant BASTION_REMNANT = new BastionRemnant(MCVersion.v1_16);
-    public static final EndCity END_CITY = new EndCity(MCVersion.v1_15);
-
-    //Fortress doesnt use regions pre 1.16
-    public static final Fortress FORTRESS = new Fortress(MCVersion.v1_16);
-    public static final NetherFossil NETHER_FOSSIL = new NetherFossil(MCVersion.v1_16);
-    public static final RuinedPortal RUINED_PORTAL = new RuinedPortal(MCVersion.v1_16);
-
-    //TODO: Will add strongholds later
-    //public static final Stronghold STRONGHOLD = new Stronghold(MCVersion.v1_15);
 
     public void startSeedSearcher() throws IOException {
         updateDisplay();

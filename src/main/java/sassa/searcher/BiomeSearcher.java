@@ -3,6 +3,7 @@ package sassa.searcher;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
+import sassa.util.Singleton;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +15,7 @@ public class BiomeSearcher {
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         //BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
         BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+        //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 

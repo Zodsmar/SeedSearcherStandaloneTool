@@ -140,28 +140,11 @@ public class Searcher {
 
         switch(dimension){
             case "OVERWORLD":
-                source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
-                break;
-            case "NETHER":
-                source = new NetherBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
-                break;
-            case "END":
-                source = new EndBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
-                break;
-            default:
-                System.out.println("USE OVERWORLD, NETHER, OR END");
-                break;
-        }
-
-        return source;
-    }
-
-    public static BiomeSource getBiomeSourceForLargeWorlds(String dimension, long worldSeed) {
-        BiomeSource source = null;
-
-        switch(dimension){
-            case "OVERWORLD":
-                source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed, 6 ,4);
+                if(Singleton.getInstance().getWorldType().getValue() == "LARGE BIOMES"){
+                    source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed, 6 ,4);
+                } else {
+                    source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
+                }
                 break;
             case "NETHER":
                 source = new NetherBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
