@@ -16,12 +16,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.converter.IntegerStringConverter;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.MCVersion;
 import sassa.searcher.SearchingThread;
-import sassa.searcher.StructureSearcher;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
 import sassa.util.Structures;
@@ -30,20 +28,18 @@ import sassa.util.Util;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.function.UnaryOperator;
 
 public class fxmlController implements Initializable {
 
     private static final int DELAY = 0;
     static Timer timer;
     public static boolean running;
-    @SuppressWarnings("unused")
+
     private static long startTime; // TODO use this in the future to tell user when they started
     private static long elapsedTime;
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
 
-    static boolean allowThreadToSearch = true;
 
     @FXML
     private Text cRejSeedCount;
@@ -188,8 +184,6 @@ public class fxmlController implements Initializable {
                 )
         );
 
-//        util = new Util();
-//        guiCollector = new guiCollector();
         startBtn.setOnAction(buttonHandler);
         clearBtn.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
@@ -305,74 +299,6 @@ public class fxmlController implements Initializable {
     //public static final Stronghold STRONGHOLD = new Stronghold(MCVersion.v1_15);
 
     public void startSeedSearcher() throws IOException {
-
-        long worldSeed = 4320562085990449695L;
-        int searchRadius = 1000;
-        int incrementer = 50;
-
-        long startTime = System.nanoTime();
-
-        ArrayList<Biome> biomesToFind = new ArrayList<>();
-        biomesToFind.add(Biome.DEEP_WARM_OCEAN);
-//        biomesToFind.add(Biome.OCEAN);
-//        biomesToFind.add(Biome.FOREST);
-//        biomesToFind.add(Biome.FLOWER_FOREST);
-        //biomesToFind.add(Biome.MUSHROOM_FIELDS);
-
-        ArrayList<Biome.Category> cat = new ArrayList<>();
-        cat.add(Biome.Category.FOREST);
-        cat.add(Biome.Category.ICY);
-
-//        boolean b = false;
-//        int count = 0;
-//        do {
-//            b = biomeSearcher.findBiomeFromCategory(searchRadius, new Random().nextLong(), cat, "OVERWORLD", incrementer);
-//            //System.out.println(biomesToFind.size());
-//            //System.out.println(count++);
-//        } while(!b);
-
-
-        ArrayList<RegionStructure<?, ?>> structuresToFind = new ArrayList<>();
-        structuresToFind.add(VILLAGE);
-        structuresToFind.add(MONUMENT);
-        structuresToFind.add(DESERT_PYRAMID);
-        structuresToFind.add(PILLAGER_OUTPOST);
-//        structuresToFind.add(IGLOO);
-        structuresToFind.add(SWAMP_HUT);
-        structuresToFind.add(MANSION);
-
-//        boolean b = false;
-//        int count = 0;
-//        do {
-//            b = BiomeSearcher.findBiome(searchRadius, new Random().nextLong(), Biome.DEEP_WARM_OCEAN, "OVERWORLD", incrementer);
-//            //System.out.println(biomesToFind.size());
-//            System.out.println(count++);
-//        } while(!b);
-
-        //Searcher.searchRandomly(searchRadius, structuresToFind, biomesToFind, "OVERWORLD", incrementer, 16);
-        //biomeSearcher.findBiome(searchRadius, worldSeed, Biome.PLAINS, "OVERWORLD", incrementer);
-//
-        //structureSearcher.findStructure(searchRadius, worldSeed, VILLAGE, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, MONUMENT, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, DESERT_PYRAMID, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, PILLAGER_OUTPOST, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, IGLOO, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, SWAMP_HUT, "OVERWORLD");
-//        structureSearcher.findStructure(searchRadius, worldSeed, MANSION, "OVERWORLD");
-
-
-
-        //StructureSearcher.findStructureRandomly(searchRadius, structuresToFind, "OVERWORLD", 16);
-
-        //structureSearcher.findStructure(searchRadius, worldSeed, FORTRESS, "NETHER");
-        //structureSearcher.findStructure(searchRadius, worldSeed, END_CITY, "END");
-        //structureSearcher.findMineshaft(searchRadius, worldSeed, MINESHAFT);
-        long elapsedTime = System.nanoTime() - startTime;
-
-        System.out.println(elapsedTime/1000000 + "/ms");
-
-
-        //structureSearcher.findMineshaft(1024, 4320562085990449695L, MCVersion.v1_15, Mineshaft.Type.EITHER);
         updateDisplay();
         util.console("Welcome to SeedTool!");
         util.console("Please select at least one biome before searching!");
@@ -400,8 +326,6 @@ public class fxmlController implements Initializable {
             }
             System.out.println(currentThreads.size());
         }
-        //System.out.println(coresAmount.getText());
-        //return r;
     }
 
     private void initTimer() {

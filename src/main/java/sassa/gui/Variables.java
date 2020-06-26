@@ -22,13 +22,6 @@ public class Variables {
     public static AtomicLong checkWorld(long value){
         worldsSinceAccepted.addAndGet(value);
         checkedWorlds.addAndGet(value);
-        // Update gui text
-//        Platform.runLater(() -> {
-//            Text elem = singleton.getCRejSeed();
-//            if (elem != null) elem.setText("" + worldsSinceAccepted);
-//            elem = singleton.getTRejSeed();
-//            if (elem != null) elem.setText("" + checkedWorlds);
-//        });
         return checkedWorlds;
     }
 

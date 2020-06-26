@@ -30,11 +30,4 @@ public class Structures {
         STRUCTURE.put(Structure.getName(BuriedTreasure.class), new StructureProvider(BuriedTreasure::new, MCVersion.v1_13, "OVERWORLD", 1));
         STRUCTURE.put(Structure.getName(BastionRemnant.class), new StructureProvider(BastionRemnant::new, MCVersion.v1_16, "NETHER", 1));
     }
-
-//    public static void main(String[] args) {
-//        RegionStructure<?, ?> village = STRUCTURE.get("village").create(MCVersion.fromString("1.15.2"));
-//    }
-
-
-
 }

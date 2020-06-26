@@ -6,17 +6,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.featureutils.structure.RegionStructure;
-import sassa.util.Singleton;
 import sassa.util.StructureProvider;
 import sassa.util.Structures;
-import sassa.util.Util;
 
 import java.util.*;
 
 public class GuiCollector {
 
-    Util util = new Util();
     /**
      * Some Biomes come back as null. No idea. The Names match each other so it
      * should work (Apparently it works like 1 in 10 times...)
@@ -64,7 +60,6 @@ public class GuiCollector {
                 }
             }
         }
-
         return checkedTexts;
     }
 
@@ -102,43 +97,6 @@ public class GuiCollector {
         }
 
         return categoryList;
-    }
-
-    public static ArrayList<RegionStructure<?,?>> getStructuresFromUI(GridPane pane, String inORex){
-        List<String> checkedTexts = comboBoxManager(pane, inORex);
-        ArrayList<RegionStructure<?,?>> structuresList = new ArrayList<>();
-        for (int i = 0; i < checkedTexts.size(); i++) {
-            Iterator regIt = Structures.STRUCTURE.entrySet().iterator();
-            while(regIt.hasNext()){
-                Map.Entry mapElement = (Map.Entry)regIt.next();
-                String name = (String) mapElement.getKey();
-                StructureProvider s = (StructureProvider) mapElement.getValue();
-                if(name == checkedTexts.get(i)){
-                    structuresList.add(s.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion()));
-                    System.out.println(name);
-                }
-            }
-        }
-        return structuresList;
-    }
-
-
-    // Returns Map with Dimensions
-    public static HashMap<String, RegionStructure<?,?>> getStructuresFromUIWithDim(GridPane pane, String inORex){
-        List<String> checkedTexts = comboBoxManager(pane, inORex);
-        HashMap<String, RegionStructure<?,?>> structuresList = new HashMap<>();
-        for (int i = 0; i < checkedTexts.size(); i++) {
-            Iterator regIt = Structures.STRUCTURE.entrySet().iterator();
-            while(regIt.hasNext()){
-                Map.Entry mapElement = (Map.Entry)regIt.next();
-                String name = (String) mapElement.getKey();
-                StructureProvider s = (StructureProvider) mapElement.getValue();
-                if(name == checkedTexts.get(i)){
-                    structuresList.put(s.getDimension(), s.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion()));
-                }
-            }
-        }
-        return structuresList;
     }
 
     public static ArrayList<StructureProvider> getStructures(GridPane pane, String inORex){
@@ -180,51 +138,6 @@ public class GuiCollector {
             return -1;
         }
     }
-
-//
-//    public HashMap<Biome, String> getBiomesSetsFromHashMap(GridPane pane, String inORex) throws IOException, ParseException {
-//        List<String> checkedTexts = comboBoxManager(pane, inORex);
-//        HashMap<Biome, String> completeBiomesList = new HashMap<>();
-//        HashMap<String, String> sets = (HashMap) util.createSearchLists("getBiomeSets");
-//        for( HashMap.Entry<String,String> e: sets.entrySet() ){
-//            if(checkedTexts.contains(e.getValue())){
-//                Biome biome = Biome.getByName(e.getKey());
-//                String set = e.getValue();
-//                completeBiomesList.put(biome, set);
-//            }
-//        }
-//
-//        return completeBiomesList;
-//    }
-
-//    public StructureSearcher_old.Type[] getStructuresFromArrayList(GridPane pane, String inORex){
-//        List<String> checkedTexts = comboBoxManager(pane, inORex);
-//        StructureSearcher_old.Type[] structures = new StructureSearcher_old.Type[checkedTexts.size()];
-//        for (int i = 0; i < checkedTexts.size(); i++) {
-//            structures[i] = StructureSearcher_old.Type.valueOf(checkedTexts.get(i).replaceAll(" ", "_").toUpperCase());
-//        }
-//        return structures;
-//    }
-
-//    public boolean checkIfBiomesSelected(Biome[] searchable, boolean check){
-//        if (searchable.length == 0 && check) {
-//            check = false;
-//        }
-//        return check;
-//    }
-//    public boolean checkIfBiomeSetsSelected(HashMap<Biome, String> searchable, boolean check){
-//        if (searchable.size() == 0 && check) {
-//            check = false;
-//        }
-//        return check;
-//    }
-
-//    public boolean checkIfStructuresSelected(StructureSearcher_old.Type[] searchable, boolean check){
-//        if (searchable.length == 0 && check) {
-//            check = false;
-//        }
-//        return check;
-//    }
 }
 
 
