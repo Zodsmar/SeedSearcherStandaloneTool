@@ -1,0 +1,36 @@
+
+/jgoodies-forms-1.8.0-sources.jar
+/jgoodies-forms-1.8.0.jar
+/logs/
+/amidst-v4-3-beta4.jar
+/jgoodies-common-1.4.0.jar
+/target/
+.vscode
+.settings
+
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+# IntelliJ IDEA project files #
+/*.iml
+/.idea/*
+/bin
+/dist
+/logs
+/nbproject
+/build
+/lib/logs
+
+history.txt
+target/
+/dependency-reduced-pom.xml
+devtools.properties
+tests
+
+.gradle
+**/build/
+!src/**/build/
+/gradle
