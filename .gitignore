@@ -34,3 +34,6 @@ tests
 **/build/
 !src/**/build/
 /gradle
+
+_site/*
+.sass-cache/*
