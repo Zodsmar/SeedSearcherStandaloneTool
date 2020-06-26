@@ -349,6 +349,7 @@ public class fxmlController implements Initializable {
         startBtn.setText("Stop");
         searchRadius.setEditable(false);
         seedsToFind.setEditable(false);
+        incrementer.setEditable(false);
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
         running = true;
@@ -360,6 +361,7 @@ public class fxmlController implements Initializable {
     public void stop() throws InterruptedException, IOException{
         searchRadius.setEditable(true);
         seedsToFind.setEditable(true);
+        incrementer.setEditable(true);
         startBtn.setText("Start");
         running = false;
         notificationLabel.setText("Stopped");
