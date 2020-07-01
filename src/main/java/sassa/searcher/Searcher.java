@@ -32,7 +32,7 @@ public class Searcher {
         for(long structureSeed = startSeedStructure; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
             for(StructureProvider searchProvider: sList) {
 
-                if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) <= Variables.acceptedWorlds()){
+                if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) < Variables.acceptedWorlds()){
                     return;
                 }
 
@@ -67,7 +67,7 @@ public class Searcher {
             for(long upperBits = 0; upperBits < 1L << biomePrecision; upperBits++, Variables.checkWorld(1)) {
                 long worldSeed = (upperBits << 48) | structureSeed;
 
-                if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) <= Variables.acceptedWorlds()){
+                if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) < Variables.acceptedWorlds()){
                     return;
                 }
 
@@ -129,7 +129,7 @@ public class Searcher {
 
 
             }
-            if(fxmlController.running == false || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) <= Variables.acceptedWorlds()){
+            if(fxmlController.running == false || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) < Variables.acceptedWorlds()){
                 return;
             }
         }

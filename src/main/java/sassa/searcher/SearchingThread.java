@@ -57,7 +57,7 @@ public class SearchingThread extends Thread implements Runnable{
         Util util = new Util();
         boolean startNotRandom = false, endOfRandoms = false;
         long randomSeed = 0;
-        while ( Long.parseLong(sg.getSeedCount().getText()) >= Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
+        while ( Long.parseLong(sg.getSeedCount().getText()) > Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
 
             
             if(!sg.getRandomSeed().isSelected() && startNotRandom == false){
@@ -88,7 +88,7 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> ci = new ArrayList<>(this.categoriesIN);
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
-            if( si.size() != 0 && sg.getRandomSeed().isSelected()) {
+            if(si.size() != 0 && sg.getRandomSeed().isSelected()) {
                 Searcher.searchRandomly(searchRadius, startSeedStructure, si, so, bi, bo, ci, co, "OVERWORLD", incrementer, 16);
                 break;
             } else {
