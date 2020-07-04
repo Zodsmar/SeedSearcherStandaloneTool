@@ -14,17 +14,19 @@ public class BiomeSearcher {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         //BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
         //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j));
-                //biomesToFindCopy.remove(source1.getBiome(i, 0, j));
-                //biomesToFindCopy.remove(source2.getBiome(i, 0, j));
+                biomesToFindCopy.remove(source1.getBiome(i, 0, j));
+                biomesToFindCopy.remove(source2.getBiome(i, 0, j));
+
+
 
                 if(biomesToFindCopy.isEmpty()) {
                     //System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
@@ -41,13 +43,13 @@ public class BiomeSearcher {
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         //BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
         BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
-                if(biomesToFindCopy.contains(source.getBiome(i, 0, j))){
+                if(biomesToFindCopy.contains(source.getBiome(i, 0, j)) || biomesToFindCopy.contains(source1.getBiome(i, 0, j)) || biomesToFindCopy.contains(source2.getBiome(i, 0, j))){
                     return biomesToFindCopy;
                 }
                 //biomesToFindCopy.remove(source1.getBiome(i, 0, j));
@@ -62,12 +64,14 @@ public class BiomeSearcher {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
         BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-//        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-//        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j).getCategory());
+                biomesToFindCopy.remove(source1.getBiome(i, 0, j).getCategory());
+                biomesToFindCopy.remove(source2.getBiome(i, 0, j).getCategory());
 
                 if(biomesToFindCopy.isEmpty()) {
                     return biomesToFindCopy;
@@ -82,12 +86,12 @@ public class BiomeSearcher {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
         BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-//        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-//        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
-                if(biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory())){
+                if(biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory()) || biomesToFindCopy.contains(source1.getBiome(i, 0, j).getCategory())|| biomesToFindCopy.contains(source2.getBiome(i, 0, j).getCategory())){
                     return biomesToFindCopy;
                 }
             }

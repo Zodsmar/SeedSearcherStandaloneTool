@@ -71,16 +71,15 @@ public class Searcher {
                     return;
                 }
 
-                BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
+
 
                 int structureCount = 0;
 
                 for(Map.Entry<StructureProvider, List<CPos>> e : structures.entrySet()) {
                     StructureProvider structure = e.getKey();
                     List<CPos> starts = e.getValue();
-
+                    BiomeSource source = Searcher.getBiomeSource(e.getKey().getDimension(), worldSeed);
                     RegionStructure<?,?> searchStructure = structure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
-
                     for(CPos start : starts) {
                         if(!searchStructure.canSpawn(start.getX(), start.getZ(), source))continue;
                         structureCount++;

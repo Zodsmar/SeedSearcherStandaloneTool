@@ -278,7 +278,7 @@ public class fxmlController implements Initializable {
 
     };
 
-    public void startSeedSearcher() throws IOException {
+    public void startSeedSearcher() {
         updateDisplay();
         util.console("Welcome to SeedTool!");
         util.console("Please select at least one biome before searching!");
@@ -358,7 +358,14 @@ public class fxmlController implements Initializable {
         Variables.reset();
     }
 
-    public void stop() throws InterruptedException, IOException{
+    public void stop(){
+        for(Thread t : currentThreads) {
+            if(t != null){
+                t.interrupt();
+            }
+        }
+        currentThreads = new ArrayList<>();
+
         searchRadius.setEditable(true);
         seedsToFind.setEditable(true);
         incrementer.setEditable(true);
@@ -369,12 +376,8 @@ public class fxmlController implements Initializable {
         if(timer != null)
             timer.cancel();
 
-        for(Thread t : currentThreads) {
-            if(t != null){
-                t.interrupt();
-            }
-        }
-        currentThreads = new ArrayList<>();
+
+        util.console("---------END OF SEARCH---------");
     }
 
     private void reset() throws InterruptedException, IOException {

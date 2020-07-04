@@ -17,7 +17,7 @@ public class StructureSearcher {
 
     public static ArrayList<StructureProvider> findStructure(int searchSize, long worldSeed, ArrayList<StructureProvider> list) {
         ChunkRand rand = new ChunkRand();
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+        //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
         // TODO: Add biome percision back in int biomePercision
@@ -36,7 +36,7 @@ public class StructureSearcher {
 
                     if (structs == null) continue;
                     if (structs.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > searchSize >> 4) continue;
-                    if (!struct.canSpawn(structs.getX(), structs.getZ(), source)) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
+                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed))) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
 
                     howManyStructures++;
                     if(howManyStructures >= Collections.frequency(listReturn, searchStructure)){
@@ -61,7 +61,7 @@ public class StructureSearcher {
 
     public static ArrayList<StructureProvider> findStructureEx(int searchSize, long worldSeed, ArrayList<StructureProvider> list) {
         ChunkRand rand = new ChunkRand();
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+        //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
         // TODO: Add biome percision back in int biomePercision
@@ -80,7 +80,7 @@ public class StructureSearcher {
 
                     if (structs == null) continue;
                     if (structs.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > searchSize >> 4) continue;
-                    if (!struct.canSpawn(structs.getX(), structs.getZ(), source)) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
+                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed))) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
 
                     howManyStructures++;
                     if(howManyStructures >= Collections.frequency(listReturn, searchStructure)){
