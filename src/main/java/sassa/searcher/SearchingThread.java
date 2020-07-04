@@ -139,13 +139,10 @@ public class SearchingThread extends Thread implements Runnable{
             Variables.minOneCheckWorld();
         }
         // Should stop
-        Platform.runLater(() -> {
-            try {
+        if(fxmlController.running == true){
+            Platform.runLater(() -> {
                 Singleton.getInstance().getController().stop();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        });
-
+            });
+        }
     }
 }

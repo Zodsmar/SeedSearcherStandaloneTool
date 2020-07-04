@@ -359,6 +359,7 @@ public class fxmlController implements Initializable {
     }
 
     public void stop(){
+        running = false;
         for(Thread t : currentThreads) {
             if(t != null){
                 t.interrupt();
@@ -370,7 +371,6 @@ public class fxmlController implements Initializable {
         seedsToFind.setEditable(true);
         incrementer.setEditable(true);
         startBtn.setText("Start");
-        running = false;
         notificationLabel.setText("Stopped");
         sequencedSeed.setText("0");
         if(timer != null)
