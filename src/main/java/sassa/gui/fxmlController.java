@@ -347,6 +347,7 @@ public class fxmlController implements Initializable {
 
     private void start() throws IOException, InterruptedException {
         startBtn.setText("Stop");
+        Variables.reset();
         searchRadius.setEditable(false);
         seedsToFind.setEditable(false);
         incrementer.setEditable(false);
@@ -355,7 +356,6 @@ public class fxmlController implements Initializable {
         running = true;
         initTimer();
         createNewThreads();
-        Variables.reset();
     }
 
     public void stop(){
@@ -377,7 +377,7 @@ public class fxmlController implements Initializable {
             timer.cancel();
 
 
-        util.console("---------END OF SEARCH---------");
+        util.console("---END OF SEARCH---");
     }
 
     private void reset() throws InterruptedException, IOException {

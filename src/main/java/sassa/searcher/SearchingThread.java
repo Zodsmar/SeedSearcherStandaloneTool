@@ -122,13 +122,12 @@ public class SearchingThread extends Thread implements Runnable{
 
                 if (si.size() == 0 && so.size() == 0
                         && bi.size() == 0 && bo.size() == 0 //
-                        && ci.size() == 0 && co.size() == 0) {
+                        && ci.size() == 0 && co.size() == 0 && fxmlController.running == true) {
                     if(Singleton.getInstance().getShadowMode().isSelected()){
                         util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + " )");
                     } else {
                         util.console(String.valueOf(randomSeed));
                     }
-
 
                     //print out the world seed (Plus possibly more information)
                 } else {
@@ -140,6 +139,7 @@ public class SearchingThread extends Thread implements Runnable{
         }
         // Should stop
         if(fxmlController.running == true){
+            fxmlController.running = false;
             Platform.runLater(() -> {
                 Singleton.getInstance().getController().stop();
             });

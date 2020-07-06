@@ -118,10 +118,12 @@ public class Searcher {
                 }
 
                 Util util = new Util();
-                if(Singleton.getInstance().getShadowMode().isSelected()){
-                    util.console(String.valueOf(worldSeed) + " (Shadow: " + WorldSeed.getShadowSeed(worldSeed) + " )");
-                } else {
-                    util.console(String.valueOf(worldSeed));
+                if(fxmlController.running == true){
+                    if(Singleton.getInstance().getShadowMode().isSelected()){
+                        util.console(String.valueOf(worldSeed) + " (Shadow: " + WorldSeed.getShadowSeed(worldSeed) + " )");
+                    } else {
+                        util.console(String.valueOf(worldSeed));
+                    }
                 }
                 Variables.acceptWorld();
                 Variables.minOneCheckWorld();
