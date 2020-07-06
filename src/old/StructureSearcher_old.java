@@ -1,14 +1,13 @@
-package sassa.main;
+package sassa.old;
 
 import amidst.mojangapi.minecraftinterface.MinecraftInterface;
 import amidst.mojangapi.world.World;
-import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.icon.WorldIcon;
 
 import java.util.*;
 
-public class StructureSearcher {
+public class StructureSearcher_old {
 	
 	public boolean structureFound = false;
 	
@@ -156,98 +155,98 @@ public class StructureSearcher {
 				CoordinatesInWorld coords = coords(nwCornerX + (multiplierX * 512), nwCornerY + (multiplierY * 512));
 				for (Type type : structures) {
 					if (type.equals(Type.MINESHAFT)) {
-						List<WorldIcon> mineshafts = StructureSearcher.findMineshafts(
+						List<WorldIcon> mineshafts = StructureSearcher_old.findMineshafts(
 								world,
 								coords);
 						if (mineshafts.size() >= 1 && (nwCornerX + distX) > mineshafts.get(0).getCoordinates().getX() && (nwCornerY + distY) > mineshafts.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.OCEAN_RUINS)) {
-						List<WorldIcon> ocean_ruins = StructureSearcher.findOceanRuins(
+						List<WorldIcon> ocean_ruins = StructureSearcher_old.findOceanRuins(
 								world,
 								coords);
 						if (ocean_ruins.size() >= 1 && (nwCornerX + distX) > ocean_ruins.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_ruins.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.OCEAN_FEATURES)) {
-						List<WorldIcon> ocean_features = StructureSearcher.findOceanFeatures(
+						List<WorldIcon> ocean_features = StructureSearcher_old.findOceanFeatures(
 								world,
 								coords);
 						if (ocean_features.size() >= 1 && (nwCornerX + distX) > ocean_features.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_features.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.OCEAN_MONUMENT)) {
-						List<WorldIcon> ocean_monuments = StructureSearcher.findOceanMounments(
+						List<WorldIcon> ocean_monuments = StructureSearcher_old.findOceanMounments(
 								world,
 								coords);
 						if (ocean_monuments.size() >= 1 && (nwCornerX + distX) > ocean_monuments.get(0).getCoordinates().getX() && (nwCornerY + distY) > ocean_monuments.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.SHIPWRECK)) {
-						List<WorldIcon> shipwreck = StructureSearcher.findShipwreck(
+						List<WorldIcon> shipwreck = StructureSearcher_old.findShipwreck(
 								world,
 								coords);
 						if (shipwreck.size() >= 1 && (nwCornerX + distX) > shipwreck.get(0).getCoordinates().getX() && (nwCornerY + distY) > shipwreck.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.BURIED_TREASURE)) {
-						List<WorldIcon> buriedTreasure = StructureSearcher.findBuriedTreasure(
+						List<WorldIcon> buriedTreasure = StructureSearcher_old.findBuriedTreasure(
 								world,
 								coords);
 						if (buriedTreasure.size() >= 1 && (nwCornerX + distX) > buriedTreasure.get(0).getCoordinates().getX() && (nwCornerY + distY) > buriedTreasure.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.MANSION)) {
-						List<WorldIcon> mansion = StructureSearcher.findMansion(
+						List<WorldIcon> mansion = StructureSearcher_old.findMansion(
 								world,
 								coords);
 						if (mansion.size() >= 1 && (nwCornerX + distX) > mansion.get(0).getCoordinates().getX() && (nwCornerY + distY) > mansion.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.STRONGHOLD)) {
-						List<WorldIcon> stronghold = StructureSearcher.findStronghold(
+						List<WorldIcon> stronghold = StructureSearcher_old.findStronghold(
 								world,
 								coords);
 						if (stronghold.size() >= 1 && (nwCornerX + distX) > stronghold.get(0).getCoordinates().getX() && (nwCornerY + distY) > stronghold.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.VILLAGE)) {
-						List<WorldIcon> village = StructureSearcher.findVillage(
+						List<WorldIcon> village = StructureSearcher_old.findVillage(
 								world,
 								coords);
 						if (village.size() >= 1 && (nwCornerX + distX) > village.get(0).getCoordinates().getX() && (nwCornerY + distY) > village.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);;
 						}
 					} else if (type.equals(Type.PILLAGER_OUTPOST)) {
-						List<WorldIcon> pillagerOutpost = StructureSearcher.findPillagerOutpost(
+						List<WorldIcon> pillagerOutpost = StructureSearcher_old.findPillagerOutpost(
 								world,
 								coords);
 						if (pillagerOutpost.size() >= 1 && (nwCornerX + distX) > pillagerOutpost.get(0).getCoordinates().getX() && (nwCornerY + distY) > pillagerOutpost.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.DESERT_TEMPLE)) {
-						List<WorldIcon> deserttemple = StructureSearcher.findDesertTemple(
+						List<WorldIcon> deserttemple = StructureSearcher_old.findDesertTemple(
 								world,
 								coords);
 						if (deserttemple.size() >= 1 && (nwCornerX + distX) > deserttemple.get(0).getCoordinates().getX() && (nwCornerY + distY) > deserttemple.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.JUNGLE_TEMPLE)) {
-						List<WorldIcon> jungleTemple = StructureSearcher.findJungleTemple(
+						List<WorldIcon> jungleTemple = StructureSearcher_old.findJungleTemple(
 								world,
 								coords);
 						if (jungleTemple.size() >= 1 && (nwCornerX + distX) > jungleTemple.get(0).getCoordinates().getX() && (nwCornerY + distY) > jungleTemple.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.WITCH_HUT)) {
-						List<WorldIcon> witchhut = StructureSearcher.findWitchHut(
+						List<WorldIcon> witchhut = StructureSearcher_old.findWitchHut(
 								world,
 								coords);
 						if (witchhut.size() >= 1 && (nwCornerX + distX) > witchhut.get(0).getCoordinates().getX() && (nwCornerY + distY) > witchhut.get(0).getCoordinates().getY()) {
 							foundStructures.add(type);
 						}
 					} else if (type.equals(Type.IGLOO)) {
-						List<WorldIcon> igloo = StructureSearcher.findIgloo(
+						List<WorldIcon> igloo = StructureSearcher_old.findIgloo(
 								world,
 								coords);
 						if (igloo.size() >= 1 && (nwCornerX + distX) > igloo.get(0).getCoordinates().getX() && (nwCornerY + distY) > igloo.get(0).getCoordinates().getY()) {
@@ -270,17 +269,17 @@ public class StructureSearcher {
 		long searchCenterX = center.getX();
 		long searchCenterY = center.getY();
 
-		Set<StructureSearcher.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
+		Set<StructureSearcher_old.Type> undiscoveredStructures = new HashSet<>(Arrays.asList(structures));
 		// Only search if list not empty
 		if (!undiscoveredStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundStructures = StructureSearcher.hasStructures(
+			Set<StructureSearcher_old.Type> foundStructures = StructureSearcher_old.hasStructures(
 					undiscoveredStructures,
 					world,
 					searchCenterX - SearchRadius,
 					searchCenterY - SearchRadius,
 					SearchRadius * 2,
 					SearchRadius * 2);
-			for (StructureSearcher.Type struct : foundStructures) {
+			for (StructureSearcher_old.Type struct : foundStructures) {
 				undiscoveredStructures.remove(struct);
 			}
 
@@ -290,17 +289,17 @@ public class StructureSearcher {
 			}
 		}
 
-		Set<StructureSearcher.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
+		Set<StructureSearcher_old.Type> undiscoveredRejectedStructures = new HashSet<>(Arrays.asList(rejectedStructures));
 		// Only search if list not empty
 		if (!undiscoveredRejectedStructures.isEmpty()) {
-			Set<StructureSearcher.Type> foundRejectedStructures = StructureSearcher.hasStructures(
+			Set<StructureSearcher_old.Type> foundRejectedStructures = StructureSearcher_old.hasStructures(
 					undiscoveredRejectedStructures,
 					world,
 					searchCenterX - SearchRadius,
 					searchCenterY - SearchRadius,
 					SearchRadius * 2,
 					SearchRadius * 2);
-			for (StructureSearcher.Type struct : foundRejectedStructures) {
+			for (StructureSearcher_old.Type struct : foundRejectedStructures) {
 				// Check if any excluded structures have been found, if so seed is rejected
 				if(undiscoveredRejectedStructures.contains(struct)){
 					return false;

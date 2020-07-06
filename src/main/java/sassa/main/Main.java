@@ -1,7 +1,5 @@
 package sassa.main;
 
-import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
-import amidst.parsing.FormatException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -15,7 +13,7 @@ public class Main {
 	TODO: Better comments so people can understand will do that for v0.6.0
 	*/
 
-	public static void main(String... args) throws IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
+	public static void main(String... args) throws IOException, ParseException {
 		mainApp.main(args);
 	}
 

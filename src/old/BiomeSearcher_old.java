@@ -1,41 +1,25 @@
-package sassa.main;
+package sassa.old;
 
-import amidst.logging.AmidstLogger;
-import amidst.mojangapi.file.LauncherProfile;
-import amidst.mojangapi.file.MinecraftInstallation;
 import amidst.mojangapi.minecraftinterface.MinecraftInterface;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceCreationException;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceException;
-import amidst.mojangapi.minecraftinterface.MinecraftInterfaces;
 import amidst.mojangapi.world.World;
-import amidst.mojangapi.world.WorldBuilder;
-import amidst.mojangapi.world.WorldOptions;
-import amidst.mojangapi.world.WorldSeed;
 import amidst.mojangapi.world.biome.Biome;
 import amidst.mojangapi.world.biome.UnknownBiomeIndexException;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
 import amidst.parsing.FormatException;
-import javafx.application.Platform;
 import org.json.simple.parser.ParseException;
-import sassa.gui.Variables;
-import sassa.gui.fxmlController;
-import sassa.gui.guiCollector;
-import sassa.util.Singleton;
-import sassa.util.Util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * A service that searches for worlds that match specific criteria.
  *
  * @author scudobuio, Zodsmar, YourCoalAlt
  */
-public class BiomeSearcher {
+public class BiomeSearcher_old {
 	static Set<Biome> getBiomes(MinecraftInterface minecraftInterface, long nwCornerX, long nwCornerY, int radius) throws MinecraftInterfaceException, UnknownBiomeIndexException {
 		Set<Biome> biomes = new HashSet<>();
 		int[] biomeCodes = minecraftInterface.getBiomeData(

@@ -1,4 +1,4 @@
-package sassa.main;
+package sassa.old;
 
 import amidst.logging.AmidstLogger;
 import amidst.mojangapi.file.LauncherProfile;
@@ -18,7 +18,6 @@ import amidst.parsing.FormatException;
 import javafx.application.Platform;
 import org.json.simple.parser.ParseException;
 import sassa.gui.Variables;
-import sassa.gui.fxmlController;
 import sassa.gui.guiCollector;
 import sassa.util.Singleton;
 import sassa.util.Util;
@@ -30,7 +29,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class Searcher implements Runnable {
+public class Searcher_old implements Runnable {
 
     private WorldBuilder mWorldBuilder;
 
@@ -63,7 +62,7 @@ public class Searcher implements Runnable {
     static Util util = new Util();
     static Singleton singleton = Singleton.getInstance();
 
-    public Searcher(String minecraftVersion, int searchRadius, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed, boolean bedrock)
+    public Searcher_old(String minecraftVersion, int searchRadius, int maximumMatchingWorldsCount, long minSeed, long maxSeed, boolean randSeed, boolean bedrock)
             throws IOException, FormatException, MinecraftInterfaceCreationException {
         this.mWorldBuilder = WorldBuilder.createSilentPlayerless();
 
@@ -131,8 +130,8 @@ public class Searcher implements Runnable {
     Biome[] rejectedBiomes = {}; boolean searchRejectedBiomes = true;
     HashMap<Biome, String> biomeSets = new HashMap<>(); boolean searchBiomeSets = true;
     HashMap<Biome, String> rejectedBiomeSets = new HashMap<>(); boolean searchRejectedBiomesSets = true;
-    StructureSearcher.Type[] structures = {}; boolean searchStructures = true;
-    StructureSearcher.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
+    StructureSearcher_old.Type[] structures = {}; boolean searchStructures = true;
+    StructureSearcher_old.Type[] rejectedStructures = {}; boolean searchRejectedStructures = true;
 
     void search() throws InterruptedException, IOException, FormatException, MinecraftInterfaceCreationException, ParseException {
         Variables.reset();
@@ -176,17 +175,17 @@ public class Searcher implements Runnable {
         }
         if (structures.length > 0) {
             util.console("Included Structures:");
-            for (StructureSearcher.Type structure : structures) {
+            for (StructureSearcher_old.Type structure : structures) {
                 util.console("\t" + structure);
             }
         }
         if (rejectedStructures.length > 0) {
             util.console("Excluded Structures:");
-            for (StructureSearcher.Type structure : rejectedStructures) {
+            for (StructureSearcher_old.Type structure : rejectedStructures) {
                 util.console("\t" + structure);
             }
         }
-        fxmlController controller = singleton.getController();
+        fxmlController_old controller = singleton.getController();
         while (Variables.acceptedWorlds() < this.maximumMatchingWorldsCount && controller.isRunning() && this.currentSeedCheck <= this.maxSeed && !quitImmediate) {
             boolean paused = false;
             if (controller != null)
@@ -235,7 +234,7 @@ public class Searcher implements Runnable {
         CoordinatesInWorld searchCenter = CoordinatesInWorld.origin();
 
         // Check structures within the area
-        if (!StructureSearcher.accept(world, minecraftInterface, searchCenter, searchRadius + 256, structures, rejectedStructures)) return false;
+        if (!StructureSearcher_old.accept(world, minecraftInterface, searchCenter, searchRadius + 256, structures, rejectedStructures)) return false;
 
         // Set the real spawnpoint
         searchCenter = world.getSpawnWorldIcon().getCoordinates();
@@ -246,9 +245,9 @@ public class Searcher implements Runnable {
         }
 
         // Check structures within the area
-        if (!StructureSearcher.accept(world, minecraftInterface, searchCenter, searchRadius, structures, rejectedStructures)) return false;
+        if (!StructureSearcher_old.accept(world, minecraftInterface, searchCenter, searchRadius, structures, rejectedStructures)) return false;
         // Check biomes within the area
-        if (!BiomeSearcher.accept(world, minecraftInterface, searchCenter, searchRadius, biomes, biomeSets, rejectedBiomes, rejectedBiomeSets)) return false;
+        if (!BiomeSearcher_old.accept(world, minecraftInterface, searchCenter, searchRadius, biomes, biomeSets, rejectedBiomes, rejectedBiomeSets)) return false;
 
         return true;
     }

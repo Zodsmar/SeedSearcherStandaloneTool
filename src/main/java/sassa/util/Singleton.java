@@ -1,11 +1,9 @@
 package sassa.util;
 
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import kaptainwutax.seedutils.mc.MCVersion;
 import sassa.gui.fxmlController;
 
 import java.io.File;
@@ -21,13 +19,16 @@ public class Singleton {
 
     private GridPane biomesPane, structurePane, biomeSetsPane;
     private TextArea console;
-    private String minecraftVersion;
-    private Text tRejSeed, cRejSeed, sequencedSeed;
-    private TextField seedCount, mcPath;
+    private MCVersion minecraftVersion;
+    private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
+    private TextField seedCount, incrementer, minSeed, maxSeed;
     private fxmlController controller;
-    private CheckBox autoSave;
+    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed;
     private File outputFile;
     private ComboBox worldType;
+    private Slider amountOfCores;
+
+
 
     public void setController(fxmlController controller){
         this.controller = controller;
@@ -67,20 +68,12 @@ public class Singleton {
     public void setConsole(TextArea console){
         this.console = console;
     }
-    public String getMinecraftVersion(){
+    public MCVersion getMinecraftVersion(){
         return minecraftVersion;
     }
 
-    public void setMinecraftVersion(String minecraftVersion){
+    public void setMinecraftVersion(MCVersion minecraftVersion){
         this.minecraftVersion = minecraftVersion;
-    }
-
-    public TextField getMCPath(){
-        return mcPath;
-    }
-
-    public void setMCPath(TextField mcPath){
-        this.mcPath = mcPath;
     }
 
     public TextField getSeedCount(){
@@ -137,5 +130,69 @@ public class Singleton {
 
     public void setWorldType(ComboBox worldType) {
         this.worldType = worldType;
+    }
+
+    public Slider getAmountOfCores(){
+        return amountOfCores;
+    }
+
+    public void setAmountOfCores(Slider amountOfCores) {
+        this.amountOfCores = amountOfCores;
+    }
+
+    public TextField getIncrementer()  {
+        return incrementer;
+    }
+
+    public void setIncrementer(TextField incrementer){
+        this.incrementer = incrementer;
+    }
+
+    public CheckBox getShadowMode(){
+        return shadowMode;
+    }
+
+    public void setShadowMode(CheckBox shadowMode){
+        this.shadowMode = shadowMode;
+    }
+
+    public CheckBox getBedrockMode(){
+        return bedrockMode;
+    }
+
+    public void setBedrockMode(CheckBox bedrockMode){
+        this.bedrockMode = bedrockMode;
+    }
+
+    public Text getCoresAmount(){
+        return coresAmount;
+    }
+
+    public void setCoresAmount(Text coresAmount){
+        this.coresAmount = coresAmount;
+    }
+
+    public TextField getMinSeed()  {
+        return minSeed;
+    }
+
+    public void setMinSeed(TextField minSeed){
+        this.minSeed = minSeed;
+    }
+
+    public TextField getMaxSeed()  {
+        return maxSeed;
+    }
+
+    public void setMaxSeed(TextField maxSeed){
+        this.maxSeed = maxSeed;
+    }
+
+    public void setRandomSeed(CheckBox randomSeed){
+        this.randomSeed = randomSeed;
+    }
+
+    public CheckBox getRandomSeed(){
+        return randomSeed;
     }
 }
