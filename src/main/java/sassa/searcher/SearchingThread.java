@@ -124,7 +124,7 @@ public class SearchingThread extends Thread implements Runnable{
                         && bi.size() == 0 && bo.size() == 0 //
                         && ci.size() == 0 && co.size() == 0 && fxmlController.running == true) {
                     if(Singleton.getInstance().getShadowMode().isSelected()){
-                        util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + " )");
+                        util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + ")");
                     } else {
                         util.console(String.valueOf(randomSeed));
                     }
