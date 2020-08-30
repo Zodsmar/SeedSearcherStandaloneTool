@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Searcher {
 
-    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, String dimension, int incrementer, int biomePrecision) {
+    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, Dimension dimension, int incrementer, int biomePrecision) {
         Vec3i origin = new Vec3i(0, 0,0);
         ChunkRand rand = new ChunkRand();
         int totalStructures = sList.size();

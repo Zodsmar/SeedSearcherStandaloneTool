@@ -2,6 +2,7 @@ package sassa.searcher;
 
 import javafx.application.Platform;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
@@ -59,7 +60,7 @@ public class SearchingThread extends Thread implements Runnable{
         long randomSeed = 0;
         while ( Long.parseLong(sg.getSeedCount().getText()) > Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
 
-            
+
             if(!sg.getRandomSeed().isSelected() && startNotRandom == false){
                 randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 startNotRandom = true;
@@ -89,7 +90,7 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
             if(si.size() != 0 && sg.getRandomSeed().isSelected()) {
-                Searcher.searchRandomly(searchRadius, startSeedStructure, si, so, bi, bo, ci, co, "OVERWORLD", incrementer, 16);
+                Searcher.searchRandomly(searchRadius, startSeedStructure, si, so, bi, bo, ci, co, Dimension.OVERWORLD, incrementer, 16);
                 break;
             } else {
                 Variables.checkWorld(1);
