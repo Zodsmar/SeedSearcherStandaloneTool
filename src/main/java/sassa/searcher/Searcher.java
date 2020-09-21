@@ -7,6 +7,7 @@ import kaptainwutax.biomeutils.source.NetherBiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Searcher {
 
-    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, String dimension, int incrementer, int biomePrecision) {
+    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, Dimension dimension, int incrementer, int biomePrecision) {
         Vec3i origin = new Vec3i(0, 0,0);
         ChunkRand rand = new ChunkRand();
         int totalStructures = sList.size();
@@ -136,21 +137,21 @@ public class Searcher {
         }
     }
 
-    public static BiomeSource getBiomeSource(String dimension, long worldSeed) {
+    public static BiomeSource getBiomeSource(Dimension dimension, long worldSeed) {
         BiomeSource source = null;
 
         switch(dimension){
-            case "OVERWORLD":
+            case OVERWORLD:
                 if(Singleton.getInstance().getWorldType().getValue() == "LARGE BIOMES"){
                     source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed, 6 ,4);
                 } else {
                     source = new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 }
                 break;
-            case "NETHER":
+            case NETHER:
                 source = new NetherBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 break;
-            case "END":
+            case END:
                 source = new EndBiomeSource(Singleton.getInstance().getMinecraftVersion(), worldSeed);
                 break;
             default:
