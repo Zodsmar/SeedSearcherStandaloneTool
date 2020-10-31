@@ -1,4 +1,4 @@
-# SASSA 
+# SASSA
 
 > Stands for: StandAlone Seed Searcher Application
 
@@ -32,7 +32,7 @@ also hover over UI elements to get more information.
 
 - Built using Intellij and Java 11
 - Runs on Java 8 (1.8)
-- Using Gradle to build the project. I created a custom task called buildAll which 
+- Using Gradle to build the project. I created a custom task called buildAll which
 builds everything from .JAR, .EXE, .ZIP, and .TAR
 - If you have a feature to add create a pull request! Help is always nice.
 
@@ -53,7 +53,7 @@ gradle run
 
 ### Content Creators
 
-If you are a content creator and would like to make a video and showcase the tool please feel free. 
+If you are a content creator and would like to make a video and showcase the tool please feel free.
 Just some information regarding about myself and the plans of the tool.
 
 - Its pronounced Zods - mar (Zodz - mar)
