@@ -36,7 +36,20 @@ also hover over UI elements to get more information.
 builds everything from .JAR, .EXE, .ZIP, and .TAR
 - If you have a feature to add create a pull request! Help is always nice.
 
-> Apparently on v0.5.0 using OpenJDK on Linux the .jar will not run. User A4D4R posted about it and I have attached a wiki page for anyone wanting to know how he did it: https://github.com/Zodsmar/SeedSearcherStandaloneTool/wiki/Building-SASSA-for-Linux-(OpenJDK)---v0.5.0
+#### Gradle Build Instructions (any OS)
+
+The [`Gradle` wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) was built using `Gradle 6.7`.
+You can choose to use either your system's Gradle installation (note: package managers such as `apt` might not have the latest Gradle version available) or the local Gradle wrapper for the build (replace the `gradle` commands below with `./gradlew` or `gradlew.bat`).
+
+From the project root, run:
+
+```bash
+# build the project
+gradle build
+
+# run Sassa
+gradle run
+```
 
 ### Content Creators
 
