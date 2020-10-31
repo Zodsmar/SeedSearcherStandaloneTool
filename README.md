@@ -39,7 +39,24 @@ builds everything from .JAR, .EXE, .ZIP, and .TAR
 #### Gradle Build Instructions (any OS)
 
 The [`Gradle` wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) was built using `Gradle 6.7`.
-You can choose to use either your system's Gradle installation (note: package managers such as `apt` might not have the latest Gradle version available) or the local Gradle wrapper for the build (replace the `gradle` commands below with `./gradlew` or `gradlew.bat`).
+The [latest version of Gradle is recommended](https://gradle.org/install/), as older versions may throw errors, such as:
+
+
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+'org.gradle.api.Task org.gradle.api.tasks.TaskContainer.create(java.lang.String, java.lang.Class, java.lang.Object[])'
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+```
+
+Note, package managers such as `apt` might not have the latest Gradle version available.
+You can choose to use either your system's Gradle installation or the local Gradle wrapper for the build (replace the `gradle` commands below with `./gradlew` or `gradlew.bat`).
+The Gradle wrapper is provided to allow developers to get up and running quickly without having to have a system installation of Gradle.
 
 From the project root, run:
 
