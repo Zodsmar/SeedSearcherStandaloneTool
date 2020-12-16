@@ -23,8 +23,8 @@ public class Singleton {
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
     private TextField seedCount, incrementer, minSeed, maxSeed;
     private fxmlController controller;
-    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed;
-    private File outputFile;
+    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed, setSeed;
+    private File outputFile, seedFile;
     private ComboBox worldType;
     private Slider amountOfCores;
 
@@ -194,5 +194,21 @@ public class Singleton {
 
     public CheckBox getRandomSeed(){
         return randomSeed;
+    }
+
+    public void setSetSeed(CheckBox setSeed){
+        this.setSeed = setSeed;
+    }
+
+    public CheckBox getSetSeed(){
+        return setSeed;
+    }
+
+    public void setSeedFile(File seedFile) {
+        this.seedFile = seedFile;
+    }
+
+    public File getSeedFile() {
+        return seedFile;
     }
 }

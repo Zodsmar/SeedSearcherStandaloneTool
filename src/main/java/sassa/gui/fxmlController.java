@@ -85,6 +85,18 @@ public class fxmlController implements Initializable {
     private Pane randomSeedPane;
 
     @FXML
+    private CheckBox setSeed;
+
+    @FXML
+    private Pane setSeedPane;
+
+    @FXML
+    private Button seedFileBrowser;
+
+    @FXML
+    private Label seedFileText;
+
+    @FXML
     private Pane worldTypePane;
 
     @FXML
@@ -118,7 +130,7 @@ public class fxmlController implements Initializable {
     private CheckBox autoSaveConsole;
 
     @FXML
-    private Button directoryBrowser;
+    private Button outputFileBrowser;
 
     @FXML
     private Label outputFileText;
@@ -178,6 +190,7 @@ public class fxmlController implements Initializable {
         singleton.setMaxSeed(maxSeed);
         singleton.setMinSeed(minSeed);
         singleton.setRandomSeed(randomSeed);
+        singleton.setSetSeed(setSeed);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
@@ -191,9 +204,11 @@ public class fxmlController implements Initializable {
         clearBtn.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
         randomSeed.setOnAction(buttonHandler);
+        setSeed.setOnAction(buttonHandler);
+        seedFileBrowser.setOnAction(buttonHandler);
         devMode.setOnAction(buttonHandler);
         mcVersions.setOnAction(buttonHandler);
-        directoryBrowser.setOnAction(buttonHandler);
+        outputFileBrowser.setOnAction(buttonHandler);
         saveConsole.setOnAction(buttonHandler);
         resetUIBtn.setOnAction(buttonHandler);
 
@@ -225,6 +240,8 @@ public class fxmlController implements Initializable {
             } else if (e.getSource() == randomSeed) {
                 if(randomSeed.isSelected()){
                     randomSeedPane.setVisible(false);
+                    setSeed.setSelected(false);
+                    setSeedPane.setVisible(false);
                     amountOfCores.setDisable(false);
                 } else {
                     randomSeedPane.setVisible(true);
@@ -232,6 +249,17 @@ public class fxmlController implements Initializable {
                     amountOfCores.setDisable(true);
                 }
                 //RANDOM_SEEDS = !RANDOM_SEEDS;
+            } else if (e.getSource() == setSeed) {
+                if(setSeed.isSelected()){
+                    setSeedPane.setVisible(true);
+                    randomSeed.setSelected(false);
+                    randomSeedPane.setVisible(false);
+                    amountOfCores.setValue(1);
+                    amountOfCores.setDisable(true);
+                } else {
+                    setSeedPane.setVisible(false);
+                    amountOfCores.setDisable(false);
+                }
             } else if (e.getSource() == bedrockMode){
                 if(bedrockMode.isSelected()){
                     //BEDROCK = true;
@@ -267,8 +295,10 @@ public class fxmlController implements Initializable {
                 System.out.println("Version: "+selected+":"+mcVersions.getSelectionModel().getSelectedIndex());
                 rebuildUI(version);
 
-            } else if(e.getSource() == directoryBrowser){
-                util.chooseDirectory(outputFileText);
+            } else if(e.getSource() == outputFileBrowser) {
+                util.chooseDirectory(outputFileText, "output");
+            } else if(e.getSource() == seedFileBrowser) {
+                util.chooseDirectory(seedFileText, "seed");
             } else if(e.getSource() == saveConsole){
                 util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
             } else if (e.getSource() == resetUIBtn) {
@@ -304,7 +334,6 @@ public class fxmlController implements Initializable {
                 t.start();
                 currentThreads.add(t);
             }
-            System.out.println(currentThreads.size());
         }
     }
 
