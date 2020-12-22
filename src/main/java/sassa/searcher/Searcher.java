@@ -28,6 +28,10 @@ public class Searcher {
         ChunkRand rand = new ChunkRand();
         int totalStructures = sList.size();
 
+//        if(searchSize < 256) {
+//            searchSize += 256;
+//        }
+
         Map<StructureProvider, List<CPos>> structures = new HashMap<>();
         sList = sList.stream().distinct().collect(Collectors.toList());
         for(long structureSeed = startSeedStructure; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
