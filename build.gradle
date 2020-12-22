@@ -17,22 +17,22 @@ dependencies {
     implementation('com.github.KaptainWutax:BiomeUtils:master-SNAPSHOT')
             {
                 transitive = false;
-                changing = true;
+                //changing = true;
             }
     implementation('com.github.KaptainWutax:FeatureUtils:master-SNAPSHOT')
             {
                 transitive = false;
-                changing = true;
+                //changing = true;
             }
     implementation('com.github.KaptainWutax:SeedUtils:master-SNAPSHOT')
             {
                 transitive = false;
-                changing = true;
+                //changing = true;
             }
     implementation('com.github.KaptainWutax:MathUtils:master-SNAPSHOT')
             {
                 transitive = false;
-                changing = true;
+                //changing = true;
             }
 }
 
