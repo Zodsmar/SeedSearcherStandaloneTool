@@ -58,21 +58,33 @@ public class SearchingThread extends Thread implements Runnable{
         Util util = new Util();
         boolean startNotRandom = false, endOfRandoms = false;
         long randomSeed = 0;
+        ArrayList<String> seeds = new ArrayList<String>();
         while ( Long.parseLong(sg.getSeedCount().getText()) > Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
 
 
-            if(!sg.getRandomSeed().isSelected() && startNotRandom == false){
+            if(!sg.getRandomSeed().isSelected() && startNotRandom == false && !sg.getSetSeed().isSelected()){
                 randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 startNotRandom = true;
                 Variables.updateCurrentSeed(randomSeed);
-            } else if (!sg.getRandomSeed().isSelected() && startNotRandom == true){
+            } else if (!sg.getRandomSeed().isSelected() && startNotRandom == true && !sg.getSetSeed().isSelected()){
+                randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 if(randomSeed >= Long.parseLong(sg.getMaxSeed().getText())){
                     break;
                 }
 
                 randomSeed++;
                 Variables.updateCurrentSeed(randomSeed);
+            } else if (!sg.getRandomSeed().isSelected() && sg.getSetSeed().isSelected()) {
+                if (seeds.size() == 0) {
+                    seeds = util.readFromFile(sg.getSeedFile());
+                }
+                randomSeed = Long.parseLong(seeds.get(0));
+                seeds.remove(0);
+                if(randomSeed == -1){
+                    break;
+                }
             } else {
+                randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 if(sg.getBedrockMode().isSelected()){
                     randomSeed = new Random().nextInt();
                 } else {

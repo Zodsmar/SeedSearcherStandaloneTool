@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Util {
 
@@ -149,13 +150,17 @@ public class Util {
 //
 //	}
 
-	public void chooseDirectory(Label display){
+	public void chooseDirectory(Label display, String type){
         Stage stage = new Stage();
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(stage);
         if(file != null){
 			display.setText(file.getName());
-			Singleton.getInstance().setOutputFile(file);
+            if(type == "output"){
+			    Singleton.getInstance().setOutputFile(file);
+            } else if(type == "seed"){
+			    Singleton.getInstance().setSeedFile(file);
+            }
 		}
     }
 
@@ -168,6 +173,22 @@ public class Util {
         }
         Singleton.getInstance().setOutputFile(outputFile);
         return outputFile;
+    }
+
+    public static ArrayList<String> readFromFile(File file){
+        ArrayList<String> seeds = new ArrayList<String>();
+        String line;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while((line = br.readLine()) != null){
+                seeds.add(line);
+            }
+            seeds.add("-1");
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        return seeds;
     }
 
     public static void appendToFile(File file, String text){
