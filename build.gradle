@@ -13,20 +13,25 @@ plugins {
 
 dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation ('com.github.KaptainWutax:BiomeUtils:master-SNAPSHOT') {
+    implementation('com.github.KaptainWutax:BiomeUtils:master-SNAPSHOT') {
         transitive = false;
         changing = true;
     }
-    implementation ('com.github.KaptainWutax:FeatureUtils:master-SNAPSHOT')
-    {
-        transitive = false;
-        changing = true;
-    }
-    implementation ('com.github.KaptainWutax:SeedUtils:master-SNAPSHOT')
-    {
-        transitive = false;
-        changing = true;
-    }
+    implementation('com.github.KaptainWutax:FeatureUtils:master-SNAPSHOT')
+            {
+                transitive = false;
+                changing = true;
+            }
+    implementation('com.github.KaptainWutax:SeedUtils:master-SNAPSHOT')
+            {
+                transitive = false;
+                changing = true;
+            }
+    implementation('com.github.KaptainWutax:MathUtils:master-SNAPSHOT')
+            {
+                transitive = false;
+                changing = true;
+            }
 }
 
 
@@ -37,7 +42,7 @@ String stringVersion = version
 
 javafx {
     version = "11.0.2"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
 }
 
 application {

@@ -2,6 +2,7 @@ package sassa.searcher;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.util.Singleton;
 
@@ -15,9 +16,9 @@ public class BiomeSearcher {
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         //BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
         //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource(Dimension.NETHER, worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
@@ -42,9 +43,9 @@ public class BiomeSearcher {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome> biomesToFindCopy = new ArrayList<>(biomeToFind);
         //BiomeSource source = Searcher.getBiomeSource(dimension, worldSeed);
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource(Dimension.NETHER, worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
 
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
@@ -63,9 +64,9 @@ public class BiomeSearcher {
     public static ArrayList<Biome.Category> findBiomeFromCategory(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, int incrementer) {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource(Dimension.NETHER, worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {
@@ -85,9 +86,9 @@ public class BiomeSearcher {
     public static ArrayList<Biome.Category> findBiomeFromCategoryEx(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, int incrementer) {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
-        BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
-        BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
-        BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
+        BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+        BiomeSource source1 = Searcher.getBiomeSource(Dimension.NETHER, worldSeed);
+        BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
 
         for(int i = -searchSize; i < searchSize; i += incrementer) {
             for(int j = -searchSize; j < searchSize; j += incrementer) {

@@ -2,6 +2,7 @@ package sassa.util;
 
 import com.sun.jdi.InterfaceType;
 import kaptainwutax.featureutils.structure.*;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import sun.security.krb5.internal.crypto.Des;
 
@@ -13,10 +14,10 @@ public class StructureProvider {
 
     StructureSupplier structureSupplier;
     MCVersion version;
-    String dimension;
+    Dimension dimension;
     int minValue;
 
-    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, String dimension, int minValue){
+    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, Dimension dimension, int minValue){
         this.structureSupplier = structureSupplier;
         this.version = version;
         this.dimension = dimension;
@@ -31,7 +32,7 @@ public class StructureProvider {
         return this.version;
     }
 
-    public String getDimension() {
+    public Dimension getDimension() {
         return this.dimension;
     }
 
