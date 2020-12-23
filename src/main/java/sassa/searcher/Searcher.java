@@ -19,12 +19,14 @@ import sassa.util.StructureProvider;
 import sassa.util.Util;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Searcher {
 
-    public static void searchRandomly(int searchSize, long startSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, Dimension dimension, int incrementer, int biomePrecision) {
+    public static void searchRandomly(int searchSize, long startSeedStructure, long endSeedStructure, Collection<StructureProvider> sList, Collection<StructureProvider> soList, Collection<Biome> bList, Collection<Biome> boList, Collection<Biome.Category> cList, Collection<Biome.Category> coList, Dimension dimension, int incrementer, int biomePrecision) {
         Vec3i origin = new Vec3i(0, 0,0);
+        ThreadLocalRandom threadLocalRandomizer = ThreadLocalRandom.current();
         ChunkRand rand = new ChunkRand();
         int totalStructures = sList.size();
 
@@ -34,7 +36,8 @@ public class Searcher {
 
         Map<StructureProvider, List<CPos>> structures = new HashMap<>();
         sList = sList.stream().distinct().collect(Collectors.toList());
-        for(long structureSeed = startSeedStructure; structureSeed < 1L << 48; structureSeed++, structures.clear()) {
+        for(long structureSeedIncrementer = startSeedStructure; structureSeedIncrementer < endSeedStructure; structureSeedIncrementer++, structures.clear()) {
+            long structureSeed = threadLocalRandomizer.nextLong(startSeedStructure, endSeedStructure);
             for(StructureProvider searchProvider: sList) {
 
                 if(fxmlController.running == false  || Long.parseLong(Singleton.getInstance().getSeedCount().getText()) < Variables.acceptedWorlds()){

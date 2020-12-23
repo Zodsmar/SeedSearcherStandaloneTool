@@ -330,7 +330,8 @@ public class fxmlController implements Initializable {
         } else {
             for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
                 long startingStructureSeed = (long) Math.floor(Math.pow(2, 48)/singleton.getAmountOfCores().getValue() * i);
-                Thread t = new SearchingThread(startingStructureSeed, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+                long endStructureSeed = Math.min((long) Math.floor(Math.pow(2, 48)/singleton.getAmountOfCores().getValue() * (i+1)), 1L << 48);
+                Thread t = new SearchingThread(startingStructureSeed, endStructureSeed, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
                 t.start();
                 currentThreads.add(t);
             }
