@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Variables {
     private static AtomicLong checkedWorlds = new AtomicLong(0);
-    private static int acceptedWorlds = 0;
+    private static long acceptedWorlds = 0;
     private static AtomicLong worldsSinceAccepted = new AtomicLong(0);
     private static Singleton singleton = Singleton.getInstance();
 
@@ -25,7 +25,7 @@ public class Variables {
         return checkedWorlds;
     }
 
-    public static int acceptWorld(){
+    public static long acceptWorld(){
         worldsSinceAccepted.set(0);
         ++acceptedWorlds;
         return acceptedWorlds;
@@ -47,7 +47,7 @@ public class Variables {
         return checkedWorlds;
     }
 
-    public static int acceptedWorlds(){
+    public static long acceptedWorlds(){
         return acceptedWorlds;
     }
 
