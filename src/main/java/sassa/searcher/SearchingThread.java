@@ -94,6 +94,12 @@ public class SearchingThread extends Thread implements Runnable{
             }
 
             int incrementer = Integer.parseInt(sg.getIncrementer().getText());
+            int biomePrecision = Integer.parseInt(sg.getBiomePrecision().getText());
+            if(biomePrecision > 16) {
+                biomePrecision = 16;
+            } else if(biomePrecision < 0) {
+                biomePrecision = 0;
+            }
             //Make sure to create new copies everytime so it doesnt give false positives
             ArrayList<StructureProvider> si = new ArrayList<>(this.structuresIN);
             ArrayList<StructureProvider> so = new ArrayList<>(this.structuresOUT);
@@ -103,7 +109,7 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
 
             if(si.size() != 0 && sg.getRandomSeed().isSelected()) {
-                Searcher.searchRandomly(searchRadius, startSeedStructure, endSeedStructure, si, so, bi, bo, ci, co, Dimension.OVERWORLD, incrementer, 16);
+                Searcher.searchRandomly(searchRadius, startSeedStructure, endSeedStructure, si, so, bi, bo, ci, co, Dimension.OVERWORLD, incrementer, biomePrecision);
                 break;
             } else {
                 Variables.checkWorld(1);

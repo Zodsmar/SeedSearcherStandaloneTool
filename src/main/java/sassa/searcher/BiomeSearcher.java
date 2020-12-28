@@ -2,6 +2,7 @@ package sassa.searcher;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.util.Singleton;
@@ -26,7 +27,6 @@ public class BiomeSearcher {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j));
                 biomesToFindCopy.remove(source1.getBiome(i, 0, j));
                 biomesToFindCopy.remove(source2.getBiome(i, 0, j));
-
 
 
                 if(biomesToFindCopy.isEmpty()) {

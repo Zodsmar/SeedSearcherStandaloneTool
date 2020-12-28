@@ -21,7 +21,7 @@ public class Singleton {
     private TextArea console;
     private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
-    private TextField seedCount, incrementer, minSeed, maxSeed;
+    private TextField seedCount, incrementer, minSeed, maxSeed, biomePrecision;
     private fxmlController controller;
     private CheckBox autoSave, shadowMode, bedrockMode, randomSeed, setSeed;
     private File outputFile, seedFile;
@@ -146,6 +146,14 @@ public class Singleton {
 
     public void setIncrementer(TextField incrementer){
         this.incrementer = incrementer;
+    }
+
+    public TextField getBiomePrecision()  {
+        return biomePrecision;
+    }
+
+    public void setBiomePrecision(TextField biomePrecision){
+        this.biomePrecision = biomePrecision;
     }
 
     public CheckBox getShadowMode(){

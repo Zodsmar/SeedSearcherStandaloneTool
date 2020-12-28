@@ -158,6 +158,9 @@ public class fxmlController implements Initializable {
     private TextField incrementer;
 
     @FXML
+    private TextField biomePrecision;
+
+    @FXML
     private CheckBox shadowMode;
 
     @FXML
@@ -191,6 +194,7 @@ public class fxmlController implements Initializable {
         singleton.setMinSeed(minSeed);
         singleton.setRandomSeed(randomSeed);
         singleton.setSetSeed(setSeed);
+        singleton.setBiomePrecision(biomePrecision);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
@@ -381,6 +385,7 @@ public class fxmlController implements Initializable {
         searchRadius.setEditable(false);
         seedsToFind.setEditable(false);
         incrementer.setEditable(false);
+        biomePrecision.setEditable(false);
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
         running = true;
@@ -400,6 +405,7 @@ public class fxmlController implements Initializable {
         searchRadius.setEditable(true);
         seedsToFind.setEditable(true);
         incrementer.setEditable(true);
+        biomePrecision.setEditable(true);
         startBtn.setText("Start");
         notificationLabel.setText("Stopped");
         sequencedSeed.setText("0");
