@@ -183,7 +183,7 @@ public class fxmlController implements Initializable {
 
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
-    MCVersion defaultVersion = MCVersion.v1_16;
+    MCVersion defaultVersion = MCVersion.v1_16_4;
     Util util;
 
     @Override
