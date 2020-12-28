@@ -298,7 +298,6 @@ public class fxmlController implements Initializable {
                 } else {
                     setSeedPane.setVisible(false);
                     amountOfCores.setDisable(false);
-                    spawnPoint.setDisable(false);
                 }
             } else if (e.getSource() == bedrockMode){
                 if(bedrockMode.isSelected()){
