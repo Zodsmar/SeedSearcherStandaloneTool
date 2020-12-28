@@ -188,8 +188,8 @@
                            </children>
                         </Pane>
                         <Slider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0" />
-                        <Text layoutX="356.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Threads to use:" />
-                        <Text fx:id="coresAmount" layoutX="443.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
+                        <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores (Threads) to use:" />
+                        <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
                         <TextField fx:id="incrementer" layoutX="107.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
                            <tooltip>
                               <Tooltip text="How many blocks to skip while searching for biomes so check every X block" />
