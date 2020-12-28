@@ -97,7 +97,7 @@ public class Searcher {
                     StructureProvider structure = e.getKey();
                     List<CPos> starts = e.getValue();
                     BiomeSource source = Searcher.getBiomeSource(e.getKey().getDimension(), worldSeed);
-                    if(Singleton.getInstance().getSpawnPoint().isSelected()){
+                    if(Singleton.getInstance().getSpawnPoint().isSelected() && source.getDimension() == Dimension.OVERWORLD){
                         if(!checkSpawnPoint(source)){
                             validSpawn = false;
                             break;
@@ -107,6 +107,8 @@ public class Searcher {
                     RegionStructure<?,?> searchStructure = structure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
                     for(CPos start : starts) {
                         if(!searchStructure.canSpawn(start.getX(), start.getZ(), source))continue;
+                        System.out.println(  searchStructure.getName() + start.getX());
+                        System.out.println(start.getZ());
                         structureCount++;
                         if(structureCount >= structure.getMinimumValue()){
                             break;
@@ -187,20 +189,20 @@ public class Searcher {
         return source;
     }
 
-    public static boolean checkSpawnPoint(BiomeSource source){
-        if(source.getDimension() == Dimension.OVERWORLD) {
-            OverworldBiomeSource oSource = (OverworldBiomeSource) source;
-            BPos spawn = oSource.getSpawnPoint();
-            int x = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
-            int z = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            int margin = Integer.parseInt(Singleton.getInstance().getMarginOfError().getText());
-            int xM = (x + (x + margin)) / 2;
-            int zM = (z + (z + margin)) / 2;
+    public static boolean checkSpawnPoint(BiomeSource source) {
+        //if(source.getDimension() == Dimension.OVERWORLD) {
+        OverworldBiomeSource oSource = (OverworldBiomeSource) source;
+        BPos spawn = oSource.getSpawnPoint();
+        int x = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
+        int z = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
+        int margin = Integer.parseInt(Singleton.getInstance().getMarginOfError().getText());
+        int xM = (x + (x + margin)) / 2;
+        int zM = (z + (z + margin)) / 2;
 
-            if ((Math.abs(spawn.getX() - xM) <= (Math.abs(x - xM))) && (Math.abs(spawn.getZ() - zM) <= (Math.abs(z - zM)))) {
-                return true;
-            }
+        if ((Math.abs(spawn.getX() - xM) <= (Math.abs(x - xM))) && (Math.abs(spawn.getZ() - zM) <= (Math.abs(z - zM)))) {
+            return true;
         }
+    //}
         return false;
     }
 }
