@@ -1,5 +1,7 @@
 package sassa.util;
 
+import kaptainwutax.featureutils.decorator.DesertWell;
+import kaptainwutax.featureutils.decorator.EndGateway;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
@@ -30,5 +32,9 @@ public class Structures {
         STRUCTURE.put(Structure.getName(DesertPyramid.class), new StructureProvider(DesertPyramid::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(BuriedTreasure.class), new StructureProvider(BuriedTreasure::new, MCVersion.v1_13, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(BastionRemnant.class), new StructureProvider(BastionRemnant::new, MCVersion.v1_16, Dimension.NETHER, 1));
+        //STRUCTURE.put(Structure.getName(Mineshaft.class), new StructureProvider(Mineshaft::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
+        //STRUCTURE.put(Structure.getName(Stronghold.class), new StructureProvider(Stronghold::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
+        //STRUCTURE.put(Structure.getName(DesertWell.class), new StructureProvider(DesertWell::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
+        //STRUCTURE.put(Structure.getName(EndGateway.class), new StructureProvider(EndGateway::new, MCVersion.v1_8, Dimension.END, 1));
     }
 }

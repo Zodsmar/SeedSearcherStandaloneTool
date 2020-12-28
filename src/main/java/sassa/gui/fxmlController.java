@@ -166,6 +166,21 @@ public class fxmlController implements Initializable {
     @FXML
     private Button resetUIBtn;
 
+    @FXML
+    private Pane spawnPointPane;
+
+    @FXML
+    private CheckBox spawnPoint;
+
+    @FXML
+    private TextField xCoordSpawn;
+
+    @FXML
+    private TextField zCoordSpawn;
+
+    @FXML
+    private TextField marginOfError;
+
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
     MCVersion defaultVersion = MCVersion.v1_16;
@@ -195,6 +210,10 @@ public class fxmlController implements Initializable {
         singleton.setRandomSeed(randomSeed);
         singleton.setSetSeed(setSeed);
         singleton.setBiomePrecision(biomePrecision);
+        singleton.setSpawnPoint(spawnPoint);
+        singleton.setXCoordSpawn(xCoordSpawn);
+        singleton.setZCoordSpawn(zCoordSpawn);
+        singleton.setMarginOfError(marginOfError);
 
         amountOfCores.setMax(Runtime.getRuntime().availableProcessors());
         coresAmount.textProperty().bind(
@@ -208,6 +227,7 @@ public class fxmlController implements Initializable {
         clearBtn.setOnAction(buttonHandler);
         bedrockMode.setOnAction(buttonHandler);
         randomSeed.setOnAction(buttonHandler);
+        spawnPoint.setOnAction(buttonHandler);
         setSeed.setOnAction(buttonHandler);
         seedFileBrowser.setOnAction(buttonHandler);
         devMode.setOnAction(buttonHandler);
@@ -241,16 +261,28 @@ public class fxmlController implements Initializable {
             if (e.getSource() == devMode) {
 //                Main.DEV_MODE = !Main.DEV_MODE;
 
+            } else if (e.getSource() == spawnPoint) {
+                if(spawnPoint.isSelected()){
+                    spawnPointPane.setVisible(true);
+                } else {
+                    spawnPointPane.setVisible(false);
+                }
             } else if (e.getSource() == randomSeed) {
                 if(randomSeed.isSelected()){
                     randomSeedPane.setVisible(false);
                     setSeed.setSelected(false);
                     setSeedPane.setVisible(false);
                     amountOfCores.setDisable(false);
+                    spawnPoint.setDisable(false);
+                    biomePrecision.setDisable(false);
                 } else {
                     randomSeedPane.setVisible(true);
                     amountOfCores.setValue(1);
                     amountOfCores.setDisable(true);
+                    spawnPoint.setSelected(false);
+                    spawnPoint.setDisable(true);
+                    spawnPointPane.setVisible(false);
+                    biomePrecision.setDisable(true);
                 }
                 //RANDOM_SEEDS = !RANDOM_SEEDS;
             } else if (e.getSource() == setSeed) {
@@ -260,9 +292,13 @@ public class fxmlController implements Initializable {
                     randomSeedPane.setVisible(false);
                     amountOfCores.setValue(1);
                     amountOfCores.setDisable(true);
+                    spawnPoint.setSelected(false);
+                    spawnPoint.setDisable(true);
+                    spawnPointPane.setVisible(false);
                 } else {
                     setSeedPane.setVisible(false);
                     amountOfCores.setDisable(false);
+                    spawnPoint.setDisable(false);
                 }
             } else if (e.getSource() == bedrockMode){
                 if(bedrockMode.isSelected()){

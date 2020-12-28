@@ -21,9 +21,9 @@ public class Singleton {
     private TextArea console;
     private MCVersion minecraftVersion;
     private Text tRejSeed, cRejSeed, sequencedSeed, coresAmount;
-    private TextField seedCount, incrementer, minSeed, maxSeed, biomePrecision;
+    private TextField seedCount, incrementer, minSeed, maxSeed, biomePrecision, xCoordSpawn, zCoordSpawn, marginOfError;
     private fxmlController controller;
-    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed, setSeed;
+    private CheckBox autoSave, shadowMode, bedrockMode, randomSeed, setSeed, spawnPoint;
     private File outputFile, seedFile;
     private ComboBox worldType;
     private Slider amountOfCores;
@@ -218,5 +218,37 @@ public class Singleton {
 
     public File getSeedFile() {
         return seedFile;
+    }
+
+    public void setSpawnPoint(CheckBox spawnPoint){
+        this.spawnPoint = spawnPoint;
+    }
+
+    public CheckBox getSpawnPoint(){
+        return spawnPoint;
+    }
+
+    public TextField getXCoordSpawn()  {
+        return xCoordSpawn;
+    }
+
+    public void setXCoordSpawn(TextField xCoordSpawn){
+        this.xCoordSpawn = xCoordSpawn;
+    }
+
+    public TextField getZCoordSpawn()  {
+        return zCoordSpawn;
+    }
+
+    public void setZCoordSpawn(TextField zCoordSpawn){
+        this.zCoordSpawn = zCoordSpawn;
+    }
+
+    public TextField getMarginOfError()  {
+        return marginOfError;
+    }
+
+    public void setMarginOfError(TextField marginOfError){
+        this.marginOfError = marginOfError;
     }
 }

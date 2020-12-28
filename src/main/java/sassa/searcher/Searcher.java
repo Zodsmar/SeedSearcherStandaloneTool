@@ -8,6 +8,7 @@ import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.Dimension;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
@@ -45,8 +46,16 @@ public class Searcher {
                 }
 
                 RegionStructure<?,?> searchStructure = searchProvider.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
-                RegionStructure.Data<?> lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
-                RegionStructure.Data<?> upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
+                RegionStructure.Data<?> lowerBound;
+                RegionStructure.Data<?> upperBound;
+                if(Singleton.getInstance().getSpawnPoint().isSelected()){
+                   lowerBound = searchStructure.at(-searchSize + Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText()) >> 4, -searchSize + Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText()) >> 4);
+                   upperBound = searchStructure.at(searchSize + Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText()) >> 4, searchSize + Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText()) >> 4);
+                } else {
+                    lowerBound = searchStructure.at(-searchSize >> 4, -searchSize >> 4);
+                    upperBound = searchStructure.at(searchSize >> 4, searchSize >> 4);
+                }
+
 
                 List<CPos> foundStructures = new ArrayList<>();
 
@@ -82,11 +91,18 @@ public class Searcher {
 
 
                 int structureCount = 0;
+                boolean validSpawn = true;
 
                 for(Map.Entry<StructureProvider, List<CPos>> e : structures.entrySet()) {
                     StructureProvider structure = e.getKey();
                     List<CPos> starts = e.getValue();
                     BiomeSource source = Searcher.getBiomeSource(e.getKey().getDimension(), worldSeed);
+
+                    if(!checkSpawnPoint(source)){
+                        validSpawn = false;
+                        break;
+                    }
+
                     RegionStructure<?,?> searchStructure = structure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
                     for(CPos start : starts) {
                         if(!searchStructure.canSpawn(start.getX(), start.getZ(), source))continue;
@@ -96,6 +112,7 @@ public class Searcher {
                         }
                     }
                 }
+                if(validSpawn == false) continue;
                 if(structureCount != totalStructures)continue;
 
                 if (soList.size() != 0) {
@@ -167,5 +184,22 @@ public class Searcher {
         }
 
         return source;
+    }
+
+    public static boolean checkSpawnPoint(BiomeSource source){
+        if(source.getDimension() == Dimension.OVERWORLD && Singleton.getInstance().getSpawnPoint().isSelected()) {
+            OverworldBiomeSource oSource = (OverworldBiomeSource) source;
+            BPos spawn = oSource.getSpawnPoint();
+            int x = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
+            int z = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
+            int margin = Integer.parseInt(Singleton.getInstance().getMarginOfError().getText());
+            int xM = (x + (x + margin)) / 2;
+            int zM = (z + (z + margin)) / 2;
+
+            if ((Math.abs(spawn.getX() - xM) <= (Math.abs(x - xM))) && (Math.abs(spawn.getZ() - zM) <= (Math.abs(z - zM)))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

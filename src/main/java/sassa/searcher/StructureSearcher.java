@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
@@ -17,16 +18,29 @@ public class StructureSearcher {
 
     public static ArrayList<StructureProvider> findStructure(int searchSize, long worldSeed, ArrayList<StructureProvider> list) {
         ChunkRand rand = new ChunkRand();
-        //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
         // TODO: Add biome percision back in int biomePercision
         ArrayList<StructureProvider> listReturn = new ArrayList<>(list);
+
+        int xSize = 0;
+        int zSize = 0;
+        //Can probably still clean this up but it works...
+        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+            BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+            xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
+            zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
+            if(!Searcher.checkSpawnPoint(source)){
+                return listReturn;
+            }
+        }
+
         for(StructureProvider searchStructure: list) {
             RegionStructure<?,?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
 
-            RegionStructure.Data<?> lowerBound = struct.at(-searchSize >> 4, -searchSize >> 4);
-            RegionStructure.Data<?> upperBound = struct.at(searchSize >> 4, searchSize >> 4);
+            RegionStructure.Data<?> lowerBound = struct.at(-searchSize + xSize >> 4, -searchSize + zSize >> 4);
+            RegionStructure.Data<?> upperBound = struct.at(searchSize + xSize >> 4, searchSize + zSize >> 4);
 
             int howManyStructures = 0;
 
@@ -61,16 +75,28 @@ public class StructureSearcher {
 
     public static ArrayList<StructureProvider> findStructureEx(int searchSize, long worldSeed, ArrayList<StructureProvider> list) {
         ChunkRand rand = new ChunkRand();
-        //BiomeSource source = Searcher.getBiomeSource("OVERWORLD", worldSeed);
+
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
         // TODO: Add biome percision back in int biomePercision
         ArrayList<StructureProvider> listReturn = new ArrayList<>(list);
+
+        int xSize = 0;
+        int zSize = 0;
+        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+            BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
+            xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
+            zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
+            if(!Searcher.checkSpawnPoint(source)){
+                return listReturn;
+            }
+        }
+
         for(StructureProvider searchStructure: list) {
             RegionStructure<?,?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
 
-            RegionStructure.Data<?> lowerBound = struct.at(-searchSize >> 4, -searchSize >> 4);
-            RegionStructure.Data<?> upperBound = struct.at(searchSize >> 4, searchSize >> 4);
+            RegionStructure.Data<?> lowerBound = struct.at(-searchSize + xSize >> 4, -searchSize + zSize >> 4);
+            RegionStructure.Data<?> upperBound = struct.at(searchSize + xSize >> 4, searchSize + zSize >> 4);
 
             int howManyStructures = 0;
 
