@@ -12,10 +12,12 @@ also hover over UI elements to get more information.
 > - **Nether and End Dimension Searching (Structures and Biomes)**
 > - Search based on minecraft version (1.16.X - 1.7.10)
 > - Search in specific radius from spawn
-> - **Search based on how many structures minimum must exist**
+> - Search based on how many structures minimum must exist
 > - World Type (Default, Amplified, Large Biomes)
 > - Biomes, Biome Sets (OR function), and Structures
 > - Randomized Seeds (Or search from a seed range)
+> - *Search for a specific spawnpoint location*
+> - **Search a predefined list of seeds**
 
 
 ![SeedTool Image 1](https://imgur.com/WyPWotg.png)
@@ -29,7 +31,7 @@ also hover over UI elements to get more information.
 ![SeedTool Image 5](https://imgur.com/o9tsdYy.png)
 
 ### Developers
-
+##### Please do PR's to the Development branch NOT Master
 - Built using Intellij and Java 11
 - Runs on Java 8 (1.8)
 - Using Gradle to build the project. I created a custom task called buildAll which
@@ -107,6 +109,12 @@ YourCoalAlt - Updating to 1.14.3
 PaulW - Adding Seed Range Searching
 
 RedSparrow - Optimization and Bug fixes
+
+dylantknguyen - Predefined Seed Lists
+
+racinmat - Optimization and Bug fixes
+
+nnadeau - Updated Gradle Build
 
 #### Contact
 

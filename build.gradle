@@ -38,7 +38,7 @@ dependencies {
 
 
 group = 'sassa'
-version = 'v0.6.0'
+version = 'v0.6.1'
 sourceCompatibility = '1.8'
 String stringVersion = version
 
