@@ -449,6 +449,7 @@ public class fxmlController implements Initializable {
 
 
         util.console("---END OF SEARCH---");
+        System.gc();
     }
 
     private void reset() throws InterruptedException, IOException {

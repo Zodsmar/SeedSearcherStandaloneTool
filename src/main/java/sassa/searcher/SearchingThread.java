@@ -2,6 +2,8 @@ package sassa.searcher;
 
 import javafx.application.Platform;
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 import sassa.gui.Variables;
@@ -85,7 +87,7 @@ public class SearchingThread extends Thread implements Runnable{
                     break;
                 }
             } else {
-                randomSeed = Long.parseLong(sg.getMinSeed().getText());
+                //randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 if(sg.getBedrockMode().isSelected()){
                     randomSeed = new Random().nextInt();
                 } else {
@@ -113,6 +115,11 @@ public class SearchingThread extends Thread implements Runnable{
                 break;
             } else {
                 Variables.checkWorld(1);
+                if(Singleton.getInstance().getSpawnPoint().isSelected()){
+                    if(!Searcher.checkSpawnPoint(new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), randomSeed))){
+                        continue;
+                    }
+                }
 
                 if (si.size() != 0) {
                     si = StructureSearcher.findStructure(searchRadius, randomSeed, si);

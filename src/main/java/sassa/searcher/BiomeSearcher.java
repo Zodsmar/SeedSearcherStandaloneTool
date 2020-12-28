@@ -27,11 +27,7 @@ public class BiomeSearcher {
         if(Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
-                return biomesToFindCopy;
-            }
         }
-
         for(int x = -searchSize + xSize; x < searchSize + xSize; x += incrementer) {
             for(int z = -searchSize + zSize; z < searchSize + zSize; z += incrementer) {
 
@@ -61,9 +57,6 @@ public class BiomeSearcher {
         if(Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
-                return biomesToFindCopy;
-            }
         }
 
         for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
@@ -90,9 +83,6 @@ public class BiomeSearcher {
         if(Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
-                return biomesToFindCopy;
-            }
         }
 
         for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
@@ -121,9 +111,6 @@ public class BiomeSearcher {
         if(Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
-                return biomesToFindCopy;
-            }
         }
 
         for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {

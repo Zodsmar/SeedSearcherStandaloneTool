@@ -97,10 +97,11 @@ public class Searcher {
                     StructureProvider structure = e.getKey();
                     List<CPos> starts = e.getValue();
                     BiomeSource source = Searcher.getBiomeSource(e.getKey().getDimension(), worldSeed);
-
-                    if(!checkSpawnPoint(source)){
-                        validSpawn = false;
-                        break;
+                    if(Singleton.getInstance().getSpawnPoint().isSelected()){
+                        if(!checkSpawnPoint(source)){
+                            validSpawn = false;
+                            break;
+                        }
                     }
 
                     RegionStructure<?,?> searchStructure = structure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
@@ -187,7 +188,7 @@ public class Searcher {
     }
 
     public static boolean checkSpawnPoint(BiomeSource source){
-        if(source.getDimension() == Dimension.OVERWORLD && Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if(source.getDimension() == Dimension.OVERWORLD) {
             OverworldBiomeSource oSource = (OverworldBiomeSource) source;
             BPos spawn = oSource.getSpawnPoint();
             int x = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
