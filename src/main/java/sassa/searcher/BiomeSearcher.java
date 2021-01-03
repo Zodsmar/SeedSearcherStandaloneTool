@@ -75,6 +75,7 @@ public class BiomeSearcher {
     public static ArrayList<Biome.Category> findBiomeFromCategory(int searchSize, long worldSeed, Collection<Biome.Category> biomeToFind, int incrementer) {
         // Since I'm deleting out of the array to make sure we are checking everytime properly I am shallow copying the array
         ArrayList<Biome.Category> biomesToFindCopy = new ArrayList<>(biomeToFind);
+
         BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
         BiomeSource source1 = Searcher.getBiomeSource(Dimension.NETHER, worldSeed);
         BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
@@ -92,6 +93,7 @@ public class BiomeSearcher {
                 biomesToFindCopy.remove(source2.getBiome(i, 0, j).getCategory());
 
                 if(biomesToFindCopy.isEmpty()) {
+                    System.out.println("Found: "+ source.getBiome(i, 0, j).getCategory() + " At: " + i +"  "+ j);
                     return biomesToFindCopy;
                 }
             }
