@@ -1,7 +1,11 @@
 package sassa;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sassa.gui.UIController;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +16,7 @@ public class App extends Application {
 
     public static String VERSION;
     public static boolean DEV_MODE = false;
+    public static String fxmlFile = "/sassa/fxml/layout.fxml";
 
     public static void main(String... args){
 
@@ -21,16 +26,14 @@ public class App extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(Main.class.getResource("/sassa/fxml/layout.fxml"));
-//        BorderPane vbox = loader.load();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(fxmlFile));
+        BorderPane vbox = loader.load();
 
-//        Scene scene = new Scene(vbox);
+        Scene scene = new Scene(vbox);
         mainStage.setTitle("Sassa-" + VERSION);
-//        mainStage.setScene(scene);
+        mainStage.setScene(scene);
         mainStage.show();
-//        fxmlController fxml = new fxmlController();
-//        fxml.startSeedSearcher();
     }
 
 
