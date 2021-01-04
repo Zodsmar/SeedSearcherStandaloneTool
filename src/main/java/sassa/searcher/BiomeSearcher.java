@@ -1,8 +1,18 @@
 package sassa.searcher;
 
-public class BiomeSearcher extends  Searcher{
+import kaptainwutax.biomeutils.Biome;
 
-    public BiomeSearcher(int searchSize, long worldSeed) {
-        super(searchSize, worldSeed);
+import java.util.Collection;
+
+public class BiomeSearcher extends Searcher{
+
+    public BiomeSearcher(long worldSeed, Collection<Biome> collection) {
+        super(worldSeed, collection);
+    }
+
+    public boolean find(){
+
+        return true;
+
     }
 }
