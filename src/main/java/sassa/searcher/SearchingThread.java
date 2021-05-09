@@ -1,11 +1,12 @@
 package sassa.searcher;
 
 import javafx.application.Platform;
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
-import kaptainwutax.seedutils.mc.Dimension;
-import kaptainwutax.seedutils.mc.seed.WorldSeed;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.rand.seed.WorldSeed;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
 import sassa.util.Singleton;

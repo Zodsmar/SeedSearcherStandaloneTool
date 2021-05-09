@@ -16,9 +16,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.structure.*;
-import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.mcutils.version.MCVersion;
 import sassa.searcher.SearchingThread;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
@@ -470,7 +471,7 @@ public class fxmlController implements Initializable {
 
         ArrayList<String> validBiomes = new ArrayList<>();
 
-        Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+        Iterator regIt = Biomes.REGISTRY.entrySet().iterator();
         while(regIt.hasNext()){
             Map.Entry mapElement = (Map.Entry)regIt.next();
             Biome b = (Biome) mapElement.getValue();

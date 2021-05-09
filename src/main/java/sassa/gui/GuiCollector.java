@@ -5,7 +5,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import sassa.util.StructureProvider;
 import sassa.util.Structures;
 
@@ -67,7 +68,7 @@ public class GuiCollector {
         List<String> checkedTexts = comboBoxManager(pane, inORex);
         ArrayList<Biome> biomesList = new ArrayList<>();
         for (int i = 0; i < checkedTexts.size(); i++) {
-            Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+            Iterator regIt = Biomes.REGISTRY.entrySet().iterator();
             while(regIt.hasNext()){
                 Map.Entry mapElement = (Map.Entry)regIt.next();
                 Biome b = (Biome) mapElement.getValue();
@@ -84,7 +85,7 @@ public class GuiCollector {
         List<String> checkedTexts = comboBoxManager(pane, inORex);
         ArrayList<Biome.Category> categoryList = new ArrayList<>();
         for (int i = 0; i < checkedTexts.size(); i++) {
-            Iterator regIt = Biome.REGISTRY.entrySet().iterator();
+            Iterator regIt = Biomes.REGISTRY.entrySet().iterator();
             while(regIt.hasNext()){
                 Map.Entry mapElement = (Map.Entry)regIt.next();
                 Biome b = (Biome) mapElement.getValue();
