@@ -3,6 +3,7 @@ package sassa.gui;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.util.regex.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -342,6 +343,7 @@ public class fxmlController implements Initializable {
             } else if(e.getSource() == seedFileBrowser) {
                 util.chooseDirectory(seedFileText, "seed");
             } else if(e.getSource() == saveConsole){
+
                 util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
             } else if (e.getSource() == resetUIBtn) {
                 rebuildUI(singleton.getMinecraftVersion());

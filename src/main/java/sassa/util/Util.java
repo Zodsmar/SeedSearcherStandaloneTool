@@ -12,6 +12,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
 
@@ -192,6 +194,13 @@ public class Util {
     }
 
     public static void appendToFile(File file, String text){
+		Pattern r = Pattern.compile("(?s)^-?[0-9]*$", Pattern.MULTILINE);
+		Matcher m = r.matcher(text);
+		int count = 0;
+		String onlySeeds = "";
+		while(m.find()){
+			onlySeeds += m.group(count) + "\n";
+		}
         FileWriter fr = null;
         try {
             // Below constructor argument decides whether to append or override
@@ -199,7 +208,7 @@ public class Util {
                 file = createDefaultOutputFile();
             }
             fr = new FileWriter(file, true);
-            fr.write(text + "\n");
+            fr.write(onlySeeds);
 
         } catch (IOException e) {
             e.printStackTrace();
