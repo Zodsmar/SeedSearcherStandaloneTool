@@ -1,6 +1,8 @@
 package sassa.gui;
 
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -61,7 +63,7 @@ public class fxmlController implements Initializable {
     private Text timeElapsed;
 
     @FXML
-    private ComboBox<String> mcVersions;
+    private JFXComboBox<String> mcVersions;
 
 
     @FXML
@@ -137,7 +139,7 @@ public class fxmlController implements Initializable {
     private Label outputFileText;
 
     @FXML
-    private ComboBox<String> worldType;
+    private JFXComboBox<String> worldType;
 
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
@@ -184,7 +186,7 @@ public class fxmlController implements Initializable {
 
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
-    MCVersion defaultVersion = MCVersion.v1_16_4;
+    MCVersion defaultVersion = MCVersion.v1_16_5;
     Util util;
 
     @Override
@@ -523,13 +525,13 @@ public class fxmlController implements Initializable {
                     grid.add(tempGrid, j, i);
 
                     Text tempText = new Text(searchList.get(k));
-                    ComboBox<String> temp = new ComboBox<String>(FXCollections
+                    JFXComboBox<String> temp = new JFXComboBox<String>(FXCollections
                             .observableArrayList(include_exclude_txt));
                     tempGrid.getChildren().add(tempText);
                     tempGrid.getChildren().add(temp);
                     if(textField == true) {
 
-                        TextField tempField = new TextField();
+                        JFXTextField tempField = new JFXTextField();
                         tempField.setMaxWidth(50);
                         tempField.setTooltip(new Tooltip("How many structures do you want to have? (Default if blank is 1 and its a minimum value)"));
                         tempGrid.getChildren().add(tempField);

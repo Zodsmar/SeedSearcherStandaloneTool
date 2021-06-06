@@ -46,6 +46,7 @@ public class mainApp extends Application {
 //        }
 
         Scene scene = new Scene(vbox);
+        scene.getStylesheets().add("/sassa/ui.css");
         mainStage.setTitle("Sassa-" + VERSION);
         mainStage.setScene(scene);
         mainStage.show();

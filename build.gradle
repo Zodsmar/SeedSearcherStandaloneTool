@@ -46,6 +46,9 @@ dependencies {
                 transitive = false
                 //changing = true
             }
+
+    compile 'com.jfoenix:jfoenix:9.0.10'
+
 }
 
 

@@ -30,6 +30,12 @@ also hover over UI elements to get more information.
 
 ![SeedTool Image 5](https://imgur.com/o9tsdYy.png)
 
+#### LINUX USERS
+
+Please check the wiki if you are having trouble running the app.
+https://github.com/Zodsmar/SeedSearcherStandaloneTool/wiki/Building-for-Arch-Linux-(v0.6-Java-14).
+If this does not work please open a ticket with the specific issues you have.
+
 ### Developers
 ##### Please do PR's to the Development branch NOT Master
 - Built using Intellij and Java 11
