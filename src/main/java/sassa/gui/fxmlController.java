@@ -41,6 +41,8 @@ public class fxmlController implements Initializable {
 
     private static long startTime; // TODO use this in the future to tell user when they started
     private static long elapsedTime;
+    private static long elapsedTimeSinceLastSuccess;
+    private static long prevWorldAccepted = 0;
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
 
@@ -62,6 +64,9 @@ public class fxmlController implements Initializable {
 
     @FXML
     private Text timeElapsed;
+
+    @FXML
+    private Text timeElapsedSinceLast;
 
     @FXML
     private JFXComboBox<String> mcVersions;
@@ -189,6 +194,8 @@ public class fxmlController implements Initializable {
     Singleton singleton = Singleton.getInstance();
     MCVersion defaultVersion = MCVersion.v1_16_5;
     Util util;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -397,8 +404,16 @@ public class fxmlController implements Initializable {
         Platform.runLater(() -> {
             if (running) {
                 timeElapsed.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTime));
-                notificationLabel.setText("Running");
 
+                //Time since last accepted
+                timeElapsedSinceLast.setText(util.getElapsedTimeHoursMinutesFromMilliseconds(System.currentTimeMillis() - elapsedTimeSinceLastSuccess));
+
+                notificationLabel.setText("Running");
+                System.out.println(prevWorldAccepted != Variables.acceptedWorlds());
+                if(prevWorldAccepted != Variables.acceptedWorlds()) {
+                    elapsedTimeSinceLastSuccess = System.currentTimeMillis();
+                    prevWorldAccepted = Variables.acceptedWorlds();
+                }
                 if (cRejSeedCount != null) cRejSeedCount.setText("" + Variables.worldsSinceAccepted());
                 if (tRejSeedCount != null) tRejSeedCount.setText("" + Variables.checkedWorlds());
             }
@@ -428,6 +443,7 @@ public class fxmlController implements Initializable {
         biomePrecision.setEditable(false);
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
+        elapsedTimeSinceLastSuccess = System.currentTimeMillis();
         running = true;
         initTimer();
         createNewThreads();
@@ -462,6 +478,7 @@ public class fxmlController implements Initializable {
         stop();
         util.consoleWipe();
         timeElapsed.setText("00:00:00");
+        timeElapsedSinceLast.setText("00:00:00");
         startTime = System.currentTimeMillis();
         elapsedTime = System.currentTimeMillis();
         cRejSeedCount.setText("0");

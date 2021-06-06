@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -17,13 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import com.jfoenix.controls.JFXTextField?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
    <center>
       <JFXTabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -95,40 +95,40 @@
                <content>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
+                        <Text layoutX="15.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text fx:id="cRejSeedCount" layoutX="182.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                        <Text fx:id="cRejSeedCount" layoutX="185.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="14.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
+                        <Text layoutX="15.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text fx:id="tRejSeedCount" layoutX="168.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                        <Text fx:id="tRejSeedCount" layoutX="170.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Elapsed:" wrappingWidth="90.13671875">
+                        <Text layoutX="15.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Time Elapsed:" wrappingWidth="111.13671875">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <Text fx:id="timeElapsed" layoutX="95.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
+                        <Text fx:id="timeElapsed" layoutX="130.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
                         <JFXComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
                         <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
-                        <JFXTextField fx:id="seedsToFind" layoutX="107.0" layoutY="129.0" prefHeight="25.0" prefWidth="70.0" text="10" />
-                        <JFXTextField fx:id="searchRadius" layoutX="107.0" layoutY="161.0" prefHeight="25.0" prefWidth="70.0" text="512" >
+                        <JFXTextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0" prefWidth="70.0" text="10" />
+                        <JFXTextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0" prefWidth="70.0" text="512">
                            <tooltip>
                               <Tooltip text="Search radius for blocks. so 10x10 starting at 0,0 would be -10,-10 out to 10,10. So in each direction how many blocks" />
                            </tooltip>
@@ -194,15 +194,15 @@
                         <JFXSlider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0" />
                         <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores (Threads) to use:" />
                         <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
-                        <JFXTextField fx:id="incrementer" layoutX="107.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
+                        <JFXTextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
                            <tooltip>
                               <Tooltip text="How many blocks to skip while searching for biomes so check every X block" />
                            </tooltip></JFXTextField>
                         <Text layoutX="15.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementer" />
                         <JFXCheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false" text="Shadow Seeds" />
                         <JFXButton fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false" text="Reset GUI" />
-                        <Text layoutX="17.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biome Precision" />
-                        <JFXTextField fx:id="biomePrecision" layoutX="108.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="16">
+                        <Text layoutX="15.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biome Precision" />
+                        <JFXTextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="16">
                            <tooltip>
                               <Tooltip text="If you notice structures are all in the same location, lower this value." />
                            </tooltip>
@@ -223,6 +223,16 @@
                               </JFXTextField>
                            </children>
                         </Pane>
+                        <Text fx:id="timeElapsedSinceLast" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="15.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Since Last Accepted World:" wrappingWidth="157.13671875">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
                      </children>
                   </Pane>
                </content></Tab>
@@ -336,11 +346,11 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton id="startBtn" fx:id="startBtn" layoutX="118.0" layoutY="2.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
+                  <JFXButton id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
                      <tooltip>
                         <Tooltip text="Start and Stop the seed searcher" />
-                     </tooltip></JFXButton >
-                  <JFXButton fx:id="clearBtn" layoutX="169.0" layoutY="2.0" mnemonicParsing="false" text="Clear" />
+                     </tooltip></JFXButton>
+                  <JFXButton fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear" />
                </children>
             </Pane>
          </center>
