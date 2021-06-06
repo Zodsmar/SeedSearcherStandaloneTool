@@ -1,3 +1,14 @@
+@font-face {
+    font-family: Montserrat;
+    src: url('fonts/Montserrat-Regular.ttf');
+}
+
+/*
+.root {
+    -fx-font-family: Montserrat;
+}
+*/
+
 .jfx-button {
      -jfx-button-type: RAISED;
      -fx-background-color: #4059A9;
