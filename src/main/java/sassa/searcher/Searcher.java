@@ -1,18 +1,18 @@
 package sassa.searcher;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.EndBiomeSource;
 import kaptainwutax.biomeutils.source.NetherBiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.*;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.Dimension;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.mc.seed.WorldSeed;
-import kaptainwutax.seedutils.util.math.DistanceMetric;
-import kaptainwutax.seedutils.util.math.Vec3i;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
+import kaptainwutax.mcutils.rand.seed.WorldSeed;
+import kaptainwutax.mcutils.util.math.DistanceMetric;
+import kaptainwutax.mcutils.util.math.Vec3i;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
 import sassa.util.Singleton;

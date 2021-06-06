@@ -3,9 +3,9 @@ package sassa.util;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import kaptainwutax.seedutils.mc.MCVersion;
 import sassa.gui.fxmlController;
-
+import kaptainwutax.mcutils.version.MCVersion;
+    
 import java.io.File;
 
 //Might rename this to Global Config in the next version (That's basically what it is)
