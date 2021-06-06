@@ -18,8 +18,8 @@ public class Structures {
         STRUCTURE.put(Structure.getName(Village.class), new StructureProvider(Village::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(SwampHut.class), new StructureProvider(SwampHut::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(Shipwreck.class), new StructureProvider(Shipwreck::new, MCVersion.v1_13, Dimension.OVERWORLD, 1));
-        STRUCTURE.put(Structure.getName(RuinedPortal.class) + "_overworld", new StructureProvider(RuinedPortal::new, MCVersion.v1_16, Dimension.OVERWORLD, 1));
-        STRUCTURE.put(Structure.getName(RuinedPortal.class) + "_nether", new StructureProvider(RuinedPortal::new, MCVersion.v1_16, Dimension.NETHER, 1));
+        STRUCTURE.put(Structure.getName(RuinedPortal.class) + "_overworld", new StructureProvider(v -> new RuinedPortal(Dimension.OVERWORLD, v), MCVersion.v1_16, Dimension.OVERWORLD, 1));
+        STRUCTURE.put(Structure.getName(RuinedPortal.class) + "_nether", new StructureProvider(v -> new RuinedPortal(Dimension.OVERWORLD, v), MCVersion.v1_16, Dimension.NETHER, 1));
         STRUCTURE.put(Structure.getName(PillagerOutpost.class), new StructureProvider(PillagerOutpost::new, MCVersion.v1_14, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(OceanRuin.class), new StructureProvider(OceanRuin::new, MCVersion.v1_13, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(NetherFossil.class), new StructureProvider(NetherFossil::new, MCVersion.v1_16, Dimension.NETHER, 1));
