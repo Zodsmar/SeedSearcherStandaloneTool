@@ -82,7 +82,12 @@ public class SearchingThread extends Thread implements Runnable{
                 if (seeds.size() == 0) {
                     seeds = util.readFromFile(sg.getSeedFile());
                 }
-                randomSeed = Long.parseLong(seeds.get(0));
+                try {
+                    randomSeed = Long.parseLong(seeds.get(0));
+                } catch (NumberFormatException e) {
+                    randomSeed = seeds.get(0).hashCode();
+                }
+                //randomSeed = Long.parseLong(seeds.get(0));
                 seeds.remove(0);
                 if(randomSeed == -1){
                     break;
