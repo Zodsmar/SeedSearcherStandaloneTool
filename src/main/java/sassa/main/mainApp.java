@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class mainApp extends Application {
 
-    public static final String VERSION = "v0.6.1";
+    public static final String VERSION = "v0.6.2";
     public static boolean DEV_MODE = false;
 
 	/*
