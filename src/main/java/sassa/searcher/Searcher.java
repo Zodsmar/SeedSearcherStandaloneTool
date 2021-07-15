@@ -5,6 +5,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.EndBiomeSource;
 import kaptainwutax.biomeutils.source.NetherBiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
+import kaptainwutax.featureutils.misc.SpawnPoint;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -13,6 +14,7 @@ import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.rand.seed.WorldSeed;
 import kaptainwutax.mcutils.util.math.DistanceMetric;
 import kaptainwutax.mcutils.util.math.Vec3i;
+import kaptainwutax.terrainutils.terrain.OverworldTerrainGenerator;
 import sassa.gui.Variables;
 import sassa.gui.fxmlController;
 import sassa.util.Singleton;
@@ -191,8 +193,8 @@ public class Searcher {
 
     public static boolean checkSpawnPoint(BiomeSource source) {
         //if(source.getDimension() == Dimension.OVERWORLD) {
-        OverworldBiomeSource oSource = (OverworldBiomeSource) source;
-        BPos spawn = oSource.getSpawnPoint();
+        //OverworldBiomeSource oSource = (OverworldBiomeSource) source;
+        BPos spawn = new SpawnPoint().getSpawnPoint(new OverworldTerrainGenerator(source));
         int x = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
         int z = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
         int margin = Integer.parseInt(Singleton.getInstance().getMarginOfError().getText());

@@ -1,8 +1,8 @@
 package sassa.gui;
 
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+//import com.jfoenix.controls.JFXComboBox;
+//import com.jfoenix.controls.JFXTextField;
 import java.util.regex.*;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -69,7 +69,7 @@ public class fxmlController implements Initializable {
     private Text timeElapsedSinceLast;
 
     @FXML
-    private JFXComboBox<String> mcVersions;
+    private ComboBox<String> mcVersions;
 
 
     @FXML
@@ -145,7 +145,7 @@ public class fxmlController implements Initializable {
     private Label outputFileText;
 
     @FXML
-    private JFXComboBox<String> worldType;
+    private ComboBox<String> worldType;
 
     //Get the grid in Biomes tab to dynamically build it.
     @FXML
@@ -544,13 +544,13 @@ public class fxmlController implements Initializable {
                     grid.add(tempGrid, j, i);
 
                     Text tempText = new Text(searchList.get(k));
-                    JFXComboBox<String> temp = new JFXComboBox<String>(FXCollections
+                    ComboBox<String> temp = new ComboBox<String>(FXCollections
                             .observableArrayList(include_exclude_txt));
                     tempGrid.getChildren().add(tempText);
                     tempGrid.getChildren().add(temp);
                     if(textField == true) {
 
-                        JFXTextField tempField = new JFXTextField();
+                        TextField tempField = new TextField();
                         tempField.setMaxWidth(50);
                         tempField.setTooltip(new Tooltip("How many structures do you want to have? (Default if blank is 1 and its a minimum value)"));
                         tempGrid.getChildren().add(tempField);

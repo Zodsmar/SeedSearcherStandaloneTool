@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -23,9 +17,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Slider?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
    <center>
-      <JFXTabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Info">
                <content>
@@ -125,28 +125,28 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Text>
-                        <JFXComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
+                        <ComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
                         <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
-                        <JFXTextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0" prefWidth="70.0" text="10" />
-                        <JFXTextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0" prefWidth="70.0" text="512">
+                        <TextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0" prefWidth="70.0" text="10" />
+                        <TextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0" prefWidth="70.0" text="512">
                            <tooltip>
                               <Tooltip text="Search radius for blocks. so 10x10 starting at 0,0 would be -10,-10 out to 10,10. So in each direction how many blocks" />
                            </tooltip>
-                        </JFXTextField>
+                        </TextField>
                         <Text layoutX="15.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
                         <Text layoutX="15.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" />
-                        <JFXCheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false" text="Bedrock Mode" />
-                        <JFXCheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds">
+                        <CheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false" text="Bedrock Mode" />
+                        <CheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds">
                            <tooltip>
                               <Tooltip text="If you are just searching keep this on. If you have a specific seed range you would like to search through incrementally by 1 each time then turn this off and put in your seeds" />
-                           </tooltip></JFXCheckBox>
-                        <JFXCheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
+                           </tooltip></CheckBox>
+                        <CheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
                         <Pane fx:id="randomSeedPane" layoutX="210.0" layoutY="138.0" prefHeight="71.0" prefWidth="411.0" visible="false">
                            <children>
                               <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimum Seed" wrappingWidth="80.12109375" />
                               <Text layoutX="208.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximum Seed" wrappingWidth="82.037109375" />
-                              <JFXTextField fx:id="minSeed" layoutY="18.0" text="-128" />
-                              <JFXTextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128" />
+                              <TextField fx:id="minSeed" layoutY="18.0" text="-128" />
+                              <TextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128" />
                               <Text layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Sequenced Seed being Checked: " wrappingWidth="232.13671875">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
@@ -159,14 +159,14 @@
                               </Text>
                            </children>
                         </Pane>
-                        <JFXCheckBox fx:id="setSeed" layoutX="13.0" layoutY="339.0" mnemonicParsing="false" text="Set Seeds">
+                        <CheckBox fx:id="setSeed" layoutX="13.0" layoutY="339.0" mnemonicParsing="false" text="Set Seeds">
                            <tooltip>
                               <Tooltip text="If you wish to search through a specific set of seeds, turn this option on and choose the text file to read from" />
-                           </tooltip></JFXCheckBox>
+                           </tooltip></CheckBox>
                         <Pane fx:id="setSeedPane" layoutX="100.0" layoutY="330.0" prefHeight="35.0" prefWidth="277.0" visible="false">
                            <children>
                               <Label fx:id="seedFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="39.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="No file selected" textAlignment="RIGHT" />
-                              <JFXButton fx:id="seedFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="-1.0" layoutY="5.0" mnemonicParsing="false">
+                              <Button fx:id="seedFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="-1.0" layoutY="5.0" mnemonicParsing="false">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -177,7 +177,7 @@
                                  <tooltip>
                                     <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)" />
                                  </tooltip>
-                              </JFXButton>
+                              </Button>
                           </children>
                         </Pane>
                         <Text fx:id="bedrockWarning" layoutX="127.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Warning: With how searching works BEDROCK mode is not 100% accurate)" visible="false" wrappingWidth="216.13671875">
@@ -187,40 +187,40 @@
                         </Text>
                         <Pane fx:id="worldTypePane" layoutX="134.0" layoutY="464.0" prefHeight="54.0" prefWidth="135.0">
                            <children>
-                              <JFXComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0" prefWidth="150.0" />
+                              <ComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0" prefWidth="150.0" />
                               <Text layoutX="55.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World Type" />
                            </children>
                         </Pane>
-                        <JFXSlider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0" />
+                        <Slider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0" />
                         <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores (Threads) to use:" />
                         <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
-                        <JFXTextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
+                        <TextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
                            <tooltip>
                               <Tooltip text="How many blocks to skip while searching for biomes so check every X block" />
-                           </tooltip></JFXTextField>
+                           </tooltip></TextField>
                         <Text layoutX="15.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementer" />
-                        <JFXCheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false" text="Shadow Seeds" />
-                        <JFXButton fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false" text="Reset GUI" />
+                        <CheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false" text="Shadow Seeds" />
+                        <Button fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false" text="Reset GUI" />
                         <Text layoutX="15.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biome Precision" />
-                        <JFXTextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="16">
+                        <TextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="16">
                            <tooltip>
                               <Tooltip text="If you notice structures are all in the same location, lower this value." />
                            </tooltip>
-                        </JFXTextField>
+                        </TextField>
                         <Text layoutX="182.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(0 - 16)" />
-                        <JFXCheckBox fx:id="spawnPoint" layoutX="13.0" layoutY="389.0" mnemonicParsing="false" text="Spawn Point" />
+                        <CheckBox fx:id="spawnPoint" layoutX="13.0" layoutY="389.0" mnemonicParsing="false" text="Spawn Point" />
                         <Pane fx:id="spawnPointPane" layoutX="107.0" layoutY="389.0" prefHeight="48.0" prefWidth="314.0" visible="false">
                            <children>
                               <Text layoutX="22.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Coord" wrappingWidth="47.12109375" />
                               <Text layoutX="134.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Z Coord" wrappingWidth="46.037109375" />
-                              <JFXTextField layoutY="18.0" prefHeight="25.0" prefWidth="91.0" text="0" fx:id="xCoordSpawn" />
-                              <JFXTextField fx:id="zCoordSpawn" layoutX="111.0" layoutY="17.0" prefHeight="25.0" prefWidth="86.0" text="0" />
+                              <TextField layoutY="18.0" prefHeight="25.0" prefWidth="91.0" text="0" fx:id="xCoordSpawn" />
+                              <TextField fx:id="zCoordSpawn" layoutX="111.0" layoutY="17.0" prefHeight="25.0" prefWidth="86.0" text="0" />
                               <Text layoutX="220.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Margin of Error" wrappingWidth="82.037109375" />
-                              <JFXTextField fx:id="marginOfError" layoutX="218.0" layoutY="16.0" prefHeight="25.0" prefWidth="86.0" text="0">
+                              <TextField fx:id="marginOfError" layoutX="218.0" layoutY="16.0" prefHeight="25.0" prefWidth="86.0" text="0">
                                  <tooltip>
                                     <Tooltip text="How many blocks away can a valid spawn still be? (Even at 0, there is a small margin of error)" />
                                  </tooltip>
-                              </JFXTextField>
+                              </TextField>
                            </children>
                         </Pane>
                         <Text fx:id="timeElapsedSinceLast" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
@@ -287,7 +287,7 @@
                </content>
             </Tab>
         </tabs>
-      </JFXTabPane>
+      </TabPane>
    </center>
    <left>
       <BorderPane prefHeight="528.0" prefWidth="344.0" BorderPane.alignment="CENTER">
@@ -319,15 +319,15 @@
          <left>
             <Pane prefHeight="24.0" prefWidth="343.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false" text="Save Output">
+                  <Button fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false" text="Save Output">
                      <tooltip>
                         <Tooltip text="Manually save the entire console to a file" />
-                     </tooltip></JFXButton>
-                  <JFXCheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false" text="Auto Save">
+                     </tooltip></Button>
+                  <CheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false" text="Auto Save">
                      <tooltip>
                         <Tooltip text="This will automatically save any new text in the console" />
-                     </tooltip></JFXCheckBox>
-                  <JFXButton fx:id="outputFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0" mnemonicParsing="false">
+                     </tooltip></CheckBox>
+                  <Button fx:id="outputFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0" mnemonicParsing="false">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -338,7 +338,7 @@
                      <tooltip>
                         <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)" />
                      </tooltip>
-                  </JFXButton>
+                  </Button>
                   <Label fx:id="logFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="202.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="sassa_output.txt" textAlignment="RIGHT" />
                </children>
             </Pane>
@@ -346,11 +346,11 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
+                  <Button id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
                      <tooltip>
                         <Tooltip text="Start and Stop the seed searcher" />
-                     </tooltip></JFXButton>
-                  <JFXButton fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear" />
+                     </tooltip></Button>
+                  <Button fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear" />
                </children>
             </Pane>
          </center>

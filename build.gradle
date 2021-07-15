@@ -10,6 +10,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'edu.sc.seis.launch4j' version '2.4.6'
 }
+apply plugin: 'application'
+applicationDefaultJvmArgs = ["--illegal-access=permit"]
 
 dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
@@ -40,20 +42,24 @@ dependencies {
                 transitive = false;
                 //changing = true;
             }
-
+    implementation('com.github.KaptainWutax:TerrainUtils:main-SNAPSHOT')
+            {
+                transitive = false;
+                //changing = true;
+            }
     implementation('com.github.KaptainWutax:NoiseUtils:main-SNAPSHOT')
             {
                 transitive = false
                 //changing = true
             }
 
-    compile 'com.jfoenix:jfoenix:9.0.10'
+    //compile 'com.jfoenix:jfoenix:9.0.10'
 
 }
 
 
 group = 'sassa'
-version = 'v0.6.2'
+version = 'v0.6.3'
 sourceCompatibility = '1.8'
 String stringVersion = version
 
