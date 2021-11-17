@@ -1,13 +1,13 @@
-@font-face {
-    font-family: Montserrat;
+/*@font-face {
+    font-family: Montserrat Regular;
     src: url('fonts/Montserrat-Regular.ttf');
+}*/
+
+
+.root {
+    -fx-font-family: Montserrat Regular;
 }
 
-/*
-.root {
-    -fx-font-family: Montserrat;
-}
-*/
 
 .jfx-button {
      -jfx-button-type: RAISED;

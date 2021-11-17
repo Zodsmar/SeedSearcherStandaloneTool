@@ -7,7 +7,7 @@ plugins {
     id 'application'
     id 'java'
     id 'maven-publish'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    //id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'edu.sc.seis.launch4j' version '2.4.6'
 }
 apply plugin: 'application'
@@ -18,41 +18,41 @@ dependencies {
 
     implementation('com.github.KaptainWutax:BiomeUtils:-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
     implementation('com.github.KaptainWutax:FeatureUtils:-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
     implementation('com.github.KaptainWutax:SeedUtils:-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
     implementation('com.github.KaptainWutax:MathUtils:-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
 
     implementation('com.github.KaptainWutax:MCUtils:-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
     implementation('com.github.KaptainWutax:TerrainUtils:main-SNAPSHOT')
             {
-                transitive = false;
-                //changing = true;
+                transitive = false
             }
     implementation('com.github.KaptainWutax:NoiseUtils:main-SNAPSHOT')
             {
                 transitive = false
-                //changing = true
-            }
 
+            }
+    implementation('com.seedfinding:mc_core:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_math:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_seed:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_biome:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_feature:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_noise:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_terrain:LATEST') { transitive = false }
     //compile 'com.jfoenix:jfoenix:9.0.10'
 
 }
@@ -63,10 +63,10 @@ version = 'v0.6.3'
 sourceCompatibility = '1.8'
 String stringVersion = version
 
-javafx {
-    version = "11.0.2"
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
-}
+//javafx {
+//    version = "11.0.2"
+//    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
+//}
 
 application {
     mainClassName = 'sassa.main.Main'
@@ -96,6 +96,9 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2')
     }
+
+    ///maven { url "https://maven-snapshots.seedfinding.com" }
+    maven { url "https://maven.seedfinding.com" }
 }
 
 task buildAll(type: GradleBuild) {

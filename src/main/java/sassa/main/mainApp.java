@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 import sassa.gui.fxmlController;
@@ -46,6 +47,8 @@ public class mainApp extends Application {
 //        }
 
         Scene scene = new Scene(vbox);
+        // To load a font without errors
+        Font.loadFont(getClass().getResourceAsStream("/sassa/fonts/Montserrat-Regular.ttf"),12);
         scene.getStylesheets().add("/sassa/ui.css");
         mainStage.setTitle("Sassa-" + VERSION);
         mainStage.setScene(scene);
