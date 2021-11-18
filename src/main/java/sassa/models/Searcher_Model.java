@@ -2,11 +2,14 @@ package sassa.models;
 
 
 import com.seedfinding.mccore.version.MCVersion;
+import com.seedfinding.mcfeature.Feature;
 import sassa.enums.SearchType;
 import sassa.enums.SpawnType;
 import sassa.enums.WorldType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Searcher_Model implements Cloneable, Serializable {
@@ -25,19 +28,26 @@ public class Searcher_Model implements Cloneable, Serializable {
     private SpawnType spawnType;
 
     private BiomeList_Model biomeList;
-
-
     private BiomeSetList_Model biomeSetList;
-    //List<Structures> includedFeatures;
+
+    //This first list is strings for the features you want to search
+    private FeatureList_Model includedFeatures;
+
+    /*
+        This list is of the generated features for that version. Cause of the way features work, they have to be generated on the version you are searching
+        so this is done before we create the threads but we need to make sure we can have a copy in the threads.
+        This is never stored nor should it have any values when the searcher is loaded. This is a runtime variable only
+         */
+    private List<Feature> featureList;
     //List<Features> excludedFeatures;
 
     //Defaults for configs
     public Searcher_Model() {
         this.configName = "default";
         this.seedsToFind = 5;
-        this.searchRadius = 10;
-        this.incrementer = 1;
-        this.biomePrecision = 16;
+        this.searchRadius = 50;
+        this.incrementer = 10;
+        this.biomePrecision = 1;
         this.searchType = SearchType.RANDOM_SEARCH;
         this.selectedVersion = MCVersion.latest();
         this.worldType = WorldType.DEFAULT;
@@ -45,9 +55,10 @@ public class Searcher_Model implements Cloneable, Serializable {
         this.spawnType = SpawnType.ZERO_ZERO;
         this.biomeList = new BiomeList_Model();
         this.biomeSetList = new BiomeSetList_Model();
+        this.includedFeatures = new FeatureList_Model();
     }
 
-    public Searcher_Model(String configName, int seedsToFind, int searchRadius, int incrementer, int biomePrecision, SearchType searchType, MCVersion selectedVersion, WorldType worldType, int threadsToUse, boolean shouldSearchAroundSpawnPoint, BiomeList_Model biomeList, BiomeSetList_Model biomeSetList) {
+    public Searcher_Model(String configName, int seedsToFind, int searchRadius, int incrementer, int biomePrecision, SearchType searchType, MCVersion selectedVersion, WorldType worldType, int threadsToUse, SpawnType spawnType, BiomeList_Model biomeList, BiomeSetList_Model biomeSetList, FeatureList_Model includedFeatures) {
         this.configName = configName;
         this.seedsToFind = seedsToFind;
         this.searchRadius = searchRadius;
@@ -60,6 +71,7 @@ public class Searcher_Model implements Cloneable, Serializable {
         this.spawnType = spawnType;
         this.biomeList = biomeList;
         this.biomeSetList = biomeSetList;
+        this.includedFeatures = includedFeatures;
     }
 
     @Override
@@ -71,6 +83,8 @@ public class Searcher_Model implements Cloneable, Serializable {
                 searcher_model.biomeList = (BiomeList_Model) biomeList.clone();
             if (biomeSetList != null)
                 searcher_model.biomeSetList = (BiomeSetList_Model) biomeSetList.clone();
+            if (featureList != null)
+                featureList = new ArrayList<>(featureList);
         } catch (CloneNotSupportedException e) { // this should never happen
             System.out.println("CloneNotSupportedException thrown " + e);
             return null;
@@ -173,5 +187,22 @@ public class Searcher_Model implements Cloneable, Serializable {
     public void setBiomeSetList(BiomeSetList_Model biomeSetList) {
         this.biomeSetList = biomeSetList;
     }
+
+    public FeatureList_Model getIncludedFeatures() {
+        return includedFeatures;
+    }
+
+    public void setIncludedFeatures(FeatureList_Model includedFeatures) {
+        this.includedFeatures = includedFeatures;
+    }
+
+    public List<Feature> getFeatureList() {
+        return featureList;
+    }
+
+    public void setFeatureList(List<Feature> featureList) {
+        this.featureList = featureList;
+    }
+
 
 }

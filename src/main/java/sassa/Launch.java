@@ -4,6 +4,7 @@ import com.seedfinding.mcbiome.biome.Biomes;
 import sassa.enums.BiomeListType;
 import sassa.models.BiomeSet_Model;
 import sassa.models.Searcher_Model;
+import sassa.models.features.Feature_Registry;
 import sassa.searcher.Searching_Thread;
 import sassa.util.ConfigParser;
 
@@ -31,7 +32,12 @@ public class Launch {
         }
 
         defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.ICE_PLAINS_SPIKES), BiomeListType.INCLUDED);
+        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(Feature_Registry.VILLAGE));
+        //configParser.WriteConfigFile(defaultModel);
         if (preliminaryChecks(defaultModel)) {
+            //This call is to create the features for the current version you are searching and is strickly a runtime variable
+            defaultModel.setFeatureList(defaultModel.getIncludedFeatures().getCreatedFeatureListFromVersion(defaultModel.getSelectedVersion()));
+
             createNewThreads(defaultModel);
         }
 
@@ -48,7 +54,8 @@ public class Launch {
     static boolean preliminaryChecks(Searcher_Model model) {
         if (!model.getBiomeList().getIncludedBiomes().isEmpty() ||
                 !model.getBiomeList().getExcludedBiomes().isEmpty() ||
-                !model.getBiomeSetList().getIncludedBiomeSet().isEmpty()) {
+                !model.getBiomeSetList().getIncludedBiomeSet().isEmpty() ||
+                !model.getIncludedFeatures().getFeatureList().isEmpty()) {
             return true;
         }
         System.out.println("Please make sure you have at least a biome or biome set selected!");
@@ -59,7 +66,12 @@ public class Launch {
 
         for (int i = 0; i < model.getThreadsToUse(); i++) {
 
-            Thread t = new Searching_Thread(model, i);
+            //Since it is multithreaded, we want to make sure that each thread starts at different seeds and goes up sequentially
+            //TODO this needs to change when I start bringing in static searches, need to look into that
+            long startFeatureSeed = (long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * i);
+            long endFeatureSeed = Math.min((long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * (i + 1)), 1L << 48);
+
+            Thread t = new Searching_Thread(model, startFeatureSeed, endFeatureSeed);
             t.start();
             System.out.format("%d Thread Running \n", i);
             currentThreads.add(t);

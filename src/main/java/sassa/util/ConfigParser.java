@@ -2,6 +2,10 @@ package sassa.util;
 
 import com.seedfinding.mcbiome.biome.Biome;
 import com.seedfinding.mcbiome.biome.Biomes;
+import com.seedfinding.mccore.version.MCVersion;
+import sassa.enums.SearchType;
+import sassa.enums.SpawnType;
+import sassa.enums.WorldType;
 import sassa.models.BiomeSet_Model;
 import sassa.models.Searcher_Model;
 
@@ -31,6 +35,7 @@ public class ConfigParser {
             prop.setProperty("biomeListExcluded", createBiomesAsStringList(model.getBiomeList().getExcludedBiomes()));
             prop.setProperty("biomeSetListIncluded", createBiomeSetAsStringList(model.getBiomeSetList().getIncludedBiomeSet()));
             prop.setProperty("biomeSetListExcluded", createBiomeSetAsStringList(model.getBiomeSetList().getExcludedBiomeSet()));
+            prop.setProperty("includedFeatureList", createFeaturesAsStringList(model.getIncludedFeatures().getFeatureList()));
             //save properties to project root folder
             prop.store(new FileOutputStream(model.getConfigName() + ".sassa"), "Sassa Config");
 
@@ -51,11 +56,20 @@ public class ConfigParser {
 
 
             searcher_model.setConfigName(props.getProperty("name"));
+            searcher_model.setSelectedVersion(MCVersion.fromString(props.getProperty("mcVersion")));
             searcher_model.setSeedsToFind(Integer.parseInt(props.getProperty("amountOfSeedsToFind")));
+            searcher_model.setSearchRadius(Integer.parseInt(props.getProperty("searchRadius")));
+            searcher_model.setSearchType(SearchType.valueOf(props.getProperty("searchType")));
+            searcher_model.setWorldType(WorldType.valueOf(props.getProperty("worldType")));
+            searcher_model.setIncrementer(Integer.parseInt(props.getProperty("incrementer")));
+            searcher_model.setBiomePrecision(Integer.parseInt(props.getProperty("biomePrecision")));
+            searcher_model.setThreadsToUse(Integer.parseInt(props.getProperty("threadsToUse")));
+            searcher_model.setSpawnType(SpawnType.valueOf(props.getProperty("spawnType")));
             searcher_model.getBiomeList().setIncludedBiomes(readStringListAsBiomes(props.getProperty("biomeListIncluded")));
             searcher_model.getBiomeList().setExcludedBiomes(readStringListAsBiomes(props.getProperty("biomeListExcluded")));
             searcher_model.getBiomeSetList().setIncludedBiomeSet(readStringListAsBiomeSet(props.getProperty("biomeSetListIncluded")));
             searcher_model.getBiomeSetList().setExcludedBiomeSet(readStringListAsBiomeSet(props.getProperty("biomeSetListExcluded")));
+            searcher_model.getIncludedFeatures().setFeatureList(readStringListAsFeatures(props.getProperty("includedFeatureList")));
 
 
             reader.close();
@@ -113,5 +127,25 @@ public class ConfigParser {
 
         }
         return biomesListAsString;
+    }
+
+    String createFeaturesAsStringList(List<String> featureList) {
+        String featureListAsString = "";
+        for (String f : featureList) {
+            featureListAsString += f + ",";
+        }
+        return featureListAsString;
+    }
+
+    List<String> readStringListAsFeatures(String featureList) {
+        List<String> featureListAsString = new ArrayList<>();
+        String[] individualFeatures = featureList.split(",");
+        for (String f : individualFeatures) {
+            if (!f.isEmpty()) {
+                featureListAsString.add(f);
+            }
+
+        }
+        return featureListAsString;
     }
 }

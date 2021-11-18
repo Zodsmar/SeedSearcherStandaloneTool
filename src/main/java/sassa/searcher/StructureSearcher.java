@@ -2,17 +2,19 @@ package sassa.searcher;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
-import kaptainwutax.featureutils.structure.*;
+import kaptainwutax.featureutils.structure.Mineshaft;
+import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
-import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.util.math.DistanceMetric;
 import kaptainwutax.mcutils.util.math.Vec3i;
+import kaptainwutax.mcutils.util.pos.CPos;
+import kaptainwutax.mcutils.version.MCVersion;
 import sassa.util.Singleton;
 import sassa.util.StructureProvider;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class StructureSearcher {
 
@@ -21,23 +23,23 @@ public class StructureSearcher {
 
         //BiomeSource source1 = Searcher.getBiomeSource("NETHER", worldSeed);
         //BiomeSource source2 = Searcher.getBiomeSource("END", worldSeed);
-        // TODO: Add biome percision back in int biomePercision
+        // TODO: Add biome precision back in int biomePrecision
         ArrayList<StructureProvider> listReturn = new ArrayList<>(list);
 
         int xSize = 0;
         int zSize = 0;
         //Can probably still clean this up but it works...
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
+            if (!Searcher.checkSpawnPoint(source)) {
                 return listReturn;
             }
         }
 
-        for(StructureProvider searchStructure: list) {
-            RegionStructure<?,?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
+        for (StructureProvider searchStructure : list) {
+            RegionStructure<?, ?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
 
             RegionStructure.Data<?> lowerBound = struct.at(-searchSize + xSize >> 4, -searchSize + zSize >> 4);
             RegionStructure.Data<?> upperBound = struct.at(searchSize + xSize >> 4, searchSize + zSize >> 4);
@@ -50,19 +52,23 @@ public class StructureSearcher {
 
                     if (structs == null) continue;
                     if (structs.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > searchSize >> 4) continue;
-                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed))) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
+                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed)))
+                        continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
 
+
+                    //this is for checking multiple sturctures
                     howManyStructures++;
-                    if(howManyStructures >= Collections.frequency(listReturn, searchStructure)){
-                        for(StructureProvider ss: list){
-                            if(ss == searchStructure){
+                    if (howManyStructures >= Collections.frequency(listReturn, searchStructure)) {
+                        for (StructureProvider ss : list) {
+
+                            if (ss == searchStructure) {
                                 listReturn.remove(searchStructure);
                             }
                         }
                     }
 
                     //System.out.println(list.size());
-                    if(listReturn.size() == 0) {
+                    if (listReturn.size() == 0) {
                         return listReturn;
                     }
                     //System.out.println("Found world seed " + worldSeed + " with structure seed " + structureSeed);
@@ -83,17 +89,17 @@ public class StructureSearcher {
 
         int xSize = 0;
         int zSize = 0;
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             BiomeSource source = Searcher.getBiomeSource(Dimension.OVERWORLD, worldSeed);
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
-            if(!Searcher.checkSpawnPoint(source)){
+            if (!Searcher.checkSpawnPoint(source)) {
                 return listReturn;
             }
         }
 
-        for(StructureProvider searchStructure: list) {
-            RegionStructure<?,?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
+        for (StructureProvider searchStructure : list) {
+            RegionStructure<?, ?> struct = searchStructure.getStructureSupplier().create(Singleton.getInstance().getMinecraftVersion());
 
             RegionStructure.Data<?> lowerBound = struct.at(-searchSize + xSize >> 4, -searchSize + zSize >> 4);
             RegionStructure.Data<?> upperBound = struct.at(searchSize + xSize >> 4, searchSize + zSize >> 4);
@@ -106,10 +112,11 @@ public class StructureSearcher {
 
                     if (structs == null) continue;
                     if (structs.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > searchSize >> 4) continue;
-                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed))) continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
+                    if (!struct.canSpawn(structs.getX(), structs.getZ(), Searcher.getBiomeSource(searchStructure.getDimension(), worldSeed)))
+                        continue; // || !struct.canSpawn(structs.getX(), structs.getZ(), source1) || !struct.canSpawn(structs.getX(), structs.getZ(), source2)
 
                     howManyStructures++;
-                    if(howManyStructures >= Collections.frequency(listReturn, searchStructure)){
+                    if (howManyStructures >= Collections.frequency(listReturn, searchStructure)) {
                         return list;
                     }
 
@@ -126,12 +133,12 @@ public class StructureSearcher {
         ChunkRand rand = new ChunkRand();
         int count = 0;
 
-        for(int chunkX = -searchSize >> 4; chunkX < searchSize >> 4; chunkX++){
-            for(int chunkZ = -searchSize >> 4; chunkZ < searchSize >> 4; chunkZ++){
+        for (int chunkX = -searchSize >> 4; chunkX < searchSize >> 4; chunkX++) {
+            for (int chunkZ = -searchSize >> 4; chunkZ < searchSize >> 4; chunkZ++) {
                 Mineshaft.Data<?> mineshaftData = mineshaft.at(chunkX, chunkZ);
-                if(!mineshaftData.testStart(worldSeed, rand))continue;
+                if (!mineshaftData.testStart(worldSeed, rand)) continue;
                 OverworldBiomeSource source = new OverworldBiomeSource(MCVersion.v1_15, worldSeed);
-                if(!mineshaftData.testBiome(source))continue;
+                if (!mineshaftData.testBiome(source)) continue;
                 count++;
             }
         }

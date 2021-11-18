@@ -49,7 +49,7 @@ dependencies {
     implementation('com.seedfinding:mc_core:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_math:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_seed:LATEST') { transitive = false }
-    implementation('com.seedfinding:mc_biome:LATEST') { transitive = false }
+    implementation('com.seedfinding:mc_biome:533cdb5ed955ff1c3106f9901aea6aa5b08fd781') { transitive = false }
     implementation('com.seedfinding:mc_feature:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_noise:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_terrain:LATEST') { transitive = false }
@@ -97,8 +97,8 @@ repositories {
         url = uri('https://repo.maven.apache.org/maven2')
     }
 
-    ///maven { url "https://maven-snapshots.seedfinding.com" }
-    maven { url "https://maven.seedfinding.com" }
+    maven { url "https://maven-snapshots.seedfinding.com" }
+    //maven { url "https://maven.seedfinding.com" }
 }
 
 task buildAll(type: GradleBuild) {

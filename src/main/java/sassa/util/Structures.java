@@ -1,7 +1,5 @@
 package sassa.util;
 
-import kaptainwutax.featureutils.decorator.DesertWell;
-import kaptainwutax.featureutils.decorator.EndGateway;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -15,6 +13,7 @@ public class Structures {
 
     static {
         //TODO: Mineshafts and Strongholds
+
         STRUCTURE.put(Structure.getName(Village.class), new StructureProvider(Village::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(SwampHut.class), new StructureProvider(SwampHut::new, MCVersion.v1_8, Dimension.OVERWORLD, 1));
         STRUCTURE.put(Structure.getName(Shipwreck.class), new StructureProvider(Shipwreck::new, MCVersion.v1_13, Dimension.OVERWORLD, 1));
