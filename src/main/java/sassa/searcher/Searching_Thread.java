@@ -6,14 +6,17 @@ import com.seedfinding.mcbiome.source.NetherBiomeSource;
 import com.seedfinding.mcbiome.source.OverworldBiomeSource;
 import com.seedfinding.mccore.rand.ChunkRand;
 import com.seedfinding.mccore.state.Dimension;
+import com.seedfinding.mccore.util.data.SpiralIterator;
 import com.seedfinding.mccore.util.math.DistanceMetric;
 import com.seedfinding.mccore.util.math.Vec3i;
 import com.seedfinding.mccore.util.pos.BPos;
 import com.seedfinding.mccore.util.pos.CPos;
+import com.seedfinding.mccore.util.pos.RPos;
 import com.seedfinding.mcfeature.Feature;
 import com.seedfinding.mcfeature.GenerationContext;
 import com.seedfinding.mcfeature.misc.SpawnPoint;
 import com.seedfinding.mcfeature.structure.RegionStructure;
+import com.seedfinding.mcfeature.structure.Stronghold;
 import com.seedfinding.mcterrain.terrain.OverworldTerrainGenerator;
 import sassa.Launch;
 import sassa.enums.WorldType;
@@ -42,14 +45,11 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
     private void searching() throws IOException, InterruptedException, CloneNotSupportedException {
-        while (model.getSeedsToFind() - 1 >= currentSeedCount.get()) {
-            if (Thread.currentThread().isInterrupted()) {
-                break;
-            }
 
-            //Clone the model every time we search to make sure we have proper data for each search
-            randomSearching((Searcher_Model) model.clone());
-        }
+
+        //Clone the model every time we search to make sure we have proper data for each search
+        randomSearching(model);
+
     }
 
     void randomSearching(Searcher_Model model) throws InterruptedException {
@@ -82,13 +82,17 @@ public class Searching_Thread extends Thread implements Runnable {
         for (long structureSeedIncrementer = startFeatureSeed; structureSeedIncrementer < endFeatureSeed; structureSeedIncrementer++) {
             start:
             {
+                if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+                    return;
+                }
+
                 //TODO This call can have duplicates, ideally we want to get the next random seed and make sure its not a duplicate
                 // tried above but the call is way to expensive need to look back into this.
                 long structureSeed = threadLocalRandomizer.nextLong(startFeatureSeed, endFeatureSeed);
 
                 //Do the feature search and if the features we wanted exists it will return true along with all the chunk positions
                 // if it returns false then the remaining code is passed, and it will start a new seed
-                HashMap<Boolean, HashMap<Feature, List<CPos>>> checkingFeatures = featureSearch(featureList, structureSeed, rand);
+                HashMap<Boolean, HashMap<Feature, List<CPos>>> checkingFeatures = featureSearch(featureList, BPos.ORIGIN, structureSeed, rand);
                 boolean shouldContinue = checkingFeatures.containsKey(true);
 
                 //Validate that all the structures we want to spawn are possible first or if no structures are wanted just continue to biomes
@@ -139,7 +143,8 @@ public class Searching_Thread extends Thread implements Runnable {
 
                             //This is a check again to make sure we are working with structures not decorators
                             RegionStructure structure;
-                            if ((structure = (RegionStructure) feature.getKey()) instanceof RegionStructure) {
+                            if (feature.getKey() instanceof RegionStructure) {
+                                structure = (RegionStructure) feature.getKey();
                                 for (CPos chunkPos : feature.getValue()) {
 
                                     if (!structure.canSpawn(chunkPos, sourceO) && !structure.canSpawn(chunkPos, sourceN) && !structure.canSpawn(chunkPos, sourceE))
@@ -148,6 +153,21 @@ public class Searching_Thread extends Thread implements Runnable {
                                     //TODO For now this is only checking if 1 structure exists, need to bring back multi searching
                                     spawnedFeatures.add(structure);
                                     break;
+                                }
+                            }
+
+                            Stronghold stronghold;
+                            if (feature.getKey() instanceof Stronghold) {
+                                stronghold = (Stronghold) feature.getKey();
+                                int c = 3;
+                                CPos[] cposes = new CPos[0];
+                                while (true) {
+                                    if (c > stronghold.getCount()) break;
+                                    cposes = stronghold.getStarts(sourceO, c, rand);
+                                    if (cposes[cposes.length - 1].distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > model.getSearchRadius() >> 4)
+                                        break;
+                                    spawnedFeatures.add(stronghold);
+                                    c += stronghold.getSpread();
                                 }
                             }
                         }
@@ -204,7 +224,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
                                 //Allowed to validate if no excluded biomes were passed in
                                 if (bModel.getExcludedBiomes().isEmpty() && validateSeed(worldSeed, foundIncludedBiomes, foundIncludedBiomeSets, spawnedFeatures)) {
-                                    return;
+                                    break start;
                                 }
                             }
                         }
@@ -218,20 +238,41 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    HashMap<Boolean, HashMap<Feature, List<CPos>>> featureSearch(List<Feature> featureList, long structureSeed, ChunkRand rand) {
+    HashMap<Boolean, HashMap<Feature, List<CPos>>> featureSearch(List<Feature> featureList, BPos origin, long structureSeed, ChunkRand rand) {
         HashMap<Boolean, HashMap<Feature, List<CPos>>> data = new HashMap<>();
 
         //This is a list of the features that were found. This should match the model of features you want to find once we finish the for loop
         HashMap<Feature, List<CPos>> foundFeatures = new HashMap<>();
-        for (Feature feature : model.getFeatureList()) {
+        for (Feature feature : featureList) {
 
             RegionStructure structure;
-            //Structure strongholdData;
             // Checks if we are looking at a structure or a decorator
 
-            if ((structure = (RegionStructure) feature) instanceof RegionStructure) {
-                //Get the lower and upperbound of the chunks possible
+            if (feature instanceof RegionStructure) {
+                structure = (RegionStructure) feature;
 
+                //Get the lower and upperbound of the chunks possible
+                List<CPos> possibleChunks = new ArrayList<>();
+
+                int chunkInRegion = structure.getSpacing();
+                int regionSize = chunkInRegion * 16;
+                SpiralIterator<RPos> spiralIterator = new SpiralIterator<>(
+                        new RPos(origin.toRegionPos(regionSize).getX(), origin.toRegionPos(regionSize).getZ(), regionSize),
+                        new BPos(-model.getSearchRadius(), 0, -model.getSearchRadius()).toRegionPos(regionSize), new BPos(model.getSearchRadius(), 0, model.getSearchRadius()).toRegionPos(regionSize),
+                        1, (x, y, z) -> new RPos(x, z, regionSize)
+                );
+                spiralIterator.forEach(rPos -> {
+                    CPos cpos = structure.getInRegion(structureSeed, rPos.getX(), rPos.getZ(), rand);
+                    //TODO pass back data instead
+                    //Feature.Data<RegionStructure> featureData = new RegionStructure.Data<>(structure, cpos.getX(), cpos.getY());
+                    if (cpos != null && cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) <= model.getSearchRadius() >> 4) {
+                        //The structure can spawn here need to check against biomes
+                        possibleChunks.add(cpos);
+                    }
+                });
+
+
+                /*
                 //It is not possible to get the spawn location off of a structure seed. There will be a small chance the structures are a little outside the search radius
                 RegionStructure.Data<?> lowerBound = structure.at(-model.getSearchRadius() >> 4, -model.getSearchRadius() >> 4);
                 RegionStructure.Data<?> upperBound = structure.at(model.getSearchRadius() >> 4, model.getSearchRadius() >> 4);
@@ -255,14 +296,17 @@ public class Searching_Thread extends Thread implements Runnable {
                     }
                 }
 
+*/
+
                 //At this point if we found no possible structures, break back to the structure seed and start again
                 if (possibleChunks.isEmpty()) break;
                 foundFeatures.put(feature, possibleChunks);
             }
+            if (feature instanceof Stronghold) {
 
-//            if ((strongholdData = (Structure) feature) instanceof Structure) {
-//
-//            }
+                foundFeatures.put(feature, new ArrayList<>());
+            }
+
         }
 
         //At this point if the features we found are not the same size and the features we want to find break and go to the next seed
