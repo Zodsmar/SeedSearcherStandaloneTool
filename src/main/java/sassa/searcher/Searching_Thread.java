@@ -89,7 +89,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
             //Validate that all the structures we want to spawn are possible first or if no structures are wanted just continue to biomes
             //TODO if the featurelist is empty we shouldn't even do structure seed searching... no point
-            Result<PassType, HashMap<Feature, List<Feature.Data<?>>>> checkingFeatures = featureSearch(featureList, BPos.ORIGIN, structureSeed, rand);
+            Result<PassType, HashMap<Feature, List<CPos>>> checkingFeatures = featureSearch(featureList, BPos.ORIGIN, structureSeed, rand);
             if (checkingFeatures.isFailure()) {
                 continue;
             }
@@ -121,18 +121,19 @@ public class Searching_Thread extends Thread implements Runnable {
 
     }
 
-    boolean featuresCanSpawn(Map<Feature, List<Feature.Data<?>>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
+    boolean featuresCanSpawn(Map<Feature, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
 
         List<Feature> spawnedFeatures = new ArrayList<>();
-        for (HashMap.Entry<Feature, List<Feature.Data<?>>> feature : featurePossibleSpawn.entrySet()) {
+        for (HashMap.Entry<Feature, List<CPos>> feature : featurePossibleSpawn.entrySet()) {
             Feature curFeature = feature.getKey();
 
             //If we are a regionStructure or a Decorator
             if (curFeature instanceof RegionStructure || curFeature instanceof Decorator) {
+                RegionStructure regionStructure = (RegionStructure) curFeature;
                 //TODO check Stronghold vs regionstructure with data
-                for (Feature.Data<?> data : feature.getValue()) {
+                for (CPos cpos : feature.getValue()) {
 
-                    if (!curFeature.canSpawn(data, biomeSources.getOverworldBiomeSource()) && !curFeature.canSpawn(data, biomeSources.getNetherBiomeSource()) && !curFeature.canSpawn(data, biomeSources.getEndBiomeSource()))
+                    if (!regionStructure.canSpawn(cpos, biomeSources.getOverworldBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getNetherBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getEndBiomeSource()))
                         continue;
 
                     //TODO For now this is only checking if 1 structure exists, need to bring back multi searching
@@ -243,11 +244,11 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    Result<PassType, HashMap<Feature, List<Feature.Data<?>>>> featureSearch(List<Feature> featureList, BPos origin, long seed, ChunkRand rand) {
-        Result<PassType, HashMap<Feature, List<Feature.Data<?>>>> data = new Result<>();
+    Result<PassType, HashMap<Feature, List<CPos>>> featureSearch(List<Feature> featureList, BPos origin, long seed, ChunkRand rand) {
+        Result<PassType, HashMap<Feature, List<CPos>>> data = new Result<>();
 
         //This is a list of the features that were found. This should match the model of features you want to find once we finish the for loop
-        HashMap<Feature, List<Feature.Data<?>>> foundFeatures = new HashMap<>();
+        HashMap<Feature, List<CPos>> foundFeatures = new HashMap<>();
         for (Feature feature : featureList) {
 
             // Checks if we are looking at a structure or a decorator
@@ -256,7 +257,7 @@ public class Searching_Thread extends Thread implements Runnable {
                 RegionStructure structure = (RegionStructure) feature;
 
                 //Get the lower and upperbound of the chunks possible
-                List<Feature.Data<?>> possibleChunks = new ArrayList<>();
+                List<CPos> possibleChunks = new ArrayList<>();
 
                 int chunkInRegion = structure.getSpacing();
                 int regionSize = chunkInRegion * 16;
@@ -272,9 +273,9 @@ public class Searching_Thread extends Thread implements Runnable {
                     if (cpos == null || cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > model.getSearchRadius() >> 4) {
                         return;
                     }
-                    Feature.Data<?> featureData = new RegionStructure.Data<>(structure, cpos.getX(), cpos.getY());
+                    //Feature.Data<?> featureData = new RegionStructure.Data<>(structure, cpos.getX(), cpos.getY());
                     //The structure can spawn here need to check against biomes
-                    possibleChunks.add(featureData);
+                    possibleChunks.add(cpos);
 
                 });
 
