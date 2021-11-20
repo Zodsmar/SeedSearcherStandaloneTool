@@ -45,8 +45,8 @@ public class Searcher_Model implements Cloneable, Serializable {
     public Searcher_Model() {
         this.configName = "default";
         this.seedsToFind = 5;
-        this.searchRadius = 50;
-        this.incrementer = 10;
+        this.searchRadius = 75;
+        this.incrementer = 5;
         this.biomePrecision = 1;
         this.searchType = SearchType.RANDOM_SEARCH;
         this.selectedVersion = MCVersion.latest();
@@ -90,6 +90,13 @@ public class Searcher_Model implements Cloneable, Serializable {
             return null;
         }
         return searcher_model;
+    }
+
+    public boolean isAllBiomeEmpty() {
+        if (biomeList.isEmpty() && biomeSetList.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     public String getConfigName() {

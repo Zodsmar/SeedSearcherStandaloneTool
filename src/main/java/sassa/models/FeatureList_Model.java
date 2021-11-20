@@ -24,6 +24,13 @@ public class FeatureList_Model {
         featureList.add(feature);
     }
 
+    public boolean isEmpty() {
+        if (featureList.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public void addFeatures(List<String> features) {
         features.forEach(featureFactory -> addFeature(featureFactory));
     }

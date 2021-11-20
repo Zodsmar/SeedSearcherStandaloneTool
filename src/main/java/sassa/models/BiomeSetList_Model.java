@@ -36,6 +36,13 @@ public class BiomeSetList_Model implements Cloneable, Serializable {
         return biomeSetList_model;
     }
 
+    public boolean isEmpty() {
+        if (includedBiomeSet.isEmpty() && excludedBiomeSet.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public void addBiomeSetList(BiomeSet_Model biomeSet, BiomeListType type) {
         if (type == BiomeListType.INCLUDED) {
             includedBiomeSet.add(biomeSet);
