@@ -33,6 +33,13 @@ public class BiomeList_Model implements Cloneable, Serializable {
         }
     }
 
+    public boolean isEmpty() {
+        if (includedBiomes.isEmpty() && excludedBiomes.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         BiomeList_Model biomeList_model;

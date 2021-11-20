@@ -41,13 +41,97 @@ public class Feature_Registry {
         if (feature instanceof Decorator<?, ?>) {
 
         }
+
         //structure.canSpawn();
         Decorator<?, ?> decorator = (Decorator<?, ?>) feature;
+
+        //feature.canSpawn();
         //decorator.canSpawn();
+        Stronghold stronghold = (Stronghold) feature;
+
 
         RegionStructure<?, ?> regionStructure = (RegionStructure<?, ?>) feature;
         Village village = (Village) regionStructure;
+
         feature.getValidDimension();
+//
+//        List<CPos> possibleChunks = new ArrayList<>();
+//        BPos center = new BPos(0, 0, 0); //This is origin (0,0)
+//        int chunkInRegion = regionStructure.getSpacing();
+//        int regionSize = chunkInRegion * 16;
+//        SpiralIterator<RPos> spiralIterator = new SpiralIterator<>(
+//                new RPos(center.toRegionPos(regionSize).getX(), center.toRegionPos(regionSize).getZ(), regionSize),
+//                new BPos(-searchRadius.x, 0, -searchRadius.z).toRegionPos(regionSize), new BPos(searchRadius.x, 0, searchRadius.z).toRegionPos(regionSize),
+//                1, (x, y, z) -> new RPos(x, z, regionSize)
+//        );
+//        spiralIterator.forEach(rPos -> {
+//            CPos cpos = structure.getInRegion(terrainGenerator.getWorldSeed(), rPos.getX(), rPos.getZ(), chunkRand);
+//            if (cpos == null) {
+//                //do something
+//            }
+//            // TODO Why is this line needed
+//            if (struct.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > model.getSearchRadius() >> 4) {
+//                //do something
+//            }
+//
+//            //The structure can spawn here need to check against biomes
+//            possibleChunks.add(struct);
+//        });
+//
+//        regionStructure.getInRegion(seed, RPos.getX(), RPos.getZ(), chunkRand);
+
+//        public static void desertPyramid(MCVersion version, long worldSeed) {
+//            // For optimization we ask you to create the chunkRand, this should be done per thread
+//            ChunkRand rand = new ChunkRand();
+//            // Create my structure
+//            DesertPyramid desertPyramid = new DesertPyramid(version);
+//            // Create my factory
+//            Generator.GeneratorFactory<?> generatorFactory = Generators.get(desertPyramid.getClass());
+//            assert generatorFactory != null;
+//            // Create my generator
+//            Generator structureGenerator = generatorFactory.create(version);
+//            assert structureGenerator instanceof DesertPyramidGenerator;
+//            // Generate my biome source
+//            BiomeSource source = BiomeSource.of(Dimension.OVERWORLD, version, worldSeed);
+//            // Generate my TerrainGenerator
+//            TerrainGenerator terrainGenerator = TerrainGenerator.of(Dimension.OVERWORLD, source);
+//
+//            // Choose a valid chunk position for my structure
+//            // here we chose 24 and 49 as the region coordinates, remember region are structure dependant
+//            // so use structure#getSpacing() to change base
+//            // getInRegion guarantee that in that region that structure canStart
+//            CPos pos = desertPyramid.getInRegion(worldSeed, 24, 49, rand);
+//            assertTrue(pos.toRegionPos(desertPyramid.getSpacing()).equals(new RPos(24, 49, desertPyramid.getSpacing())));
+//            // Alternatively you can get the data at a specific chunk position, however you will need to check canStart then
+//            // We don't recommend this as you usually never know the chunk position beforehand...
+//            @SuppressWarnings("unchecked")
+//            RegionStructure.Data<DesertPyramid> data = (RegionStructure.Data<DesertPyramid>)desertPyramid.at(782, 1584);
+//            assertTrue(desertPyramid.canStart(data, worldSeed, rand));
+//
+//            // Verify that this chunk position is a valid spot to spawn
+//            assertTrue(desertPyramid.canSpawn(pos, source));
+//            // Alternatively if you had a data
+//            assertTrue(desertPyramid.canSpawn(data, source));
+//
+//            // Verify that this chunk position is a valid spot to generate terrain wise
+//            // (not all structure have this check, desert pyramid doesn't need it for instance)
+//            assertTrue(desertPyramid.canGenerate(pos, terrainGenerator));
+//            // Alternatively if you had a data
+//            assertTrue(desertPyramid.canGenerate(data, terrainGenerator));
+//
+//            // Generate the chest position for that structure at that valid chunk position (rand is optional but encouraged)
+//            assertTrue(structureGenerator.generate(terrainGenerator, pos, rand));
+//            // Alternatively if you had a data
+//            assertTrue(structureGenerator.generate(terrainGenerator, data.chunkX, data.chunkZ, rand));
+//
+//            // You can chest the chest positions here
+//            System.out.println(structureGenerator.getChestsPos());
+//            assertTrue(structureGenerator.getChestsPos().size() == 4);
+//
+//            // Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
+//            List<ChestContent> chests = desertPyramid.getLoot(worldSeed, structureGenerator, rand, false);
+//            // the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
+//            // with a list of chest content attached to each.
     }
 
     public static <T extends Feature<?, ?>> String register(String clazz, FeatureFactory<T> factory) {

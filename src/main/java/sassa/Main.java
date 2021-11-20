@@ -13,15 +13,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 // The New MAIN FILE. This will get renamed later
-public class Launch {
+public class Main {
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
+    public static Searcher_Model defaultModel;
 
     //This is going to be the new starting file will rename to Main after the refactor is complete
     public static void main(String[] args) throws CloneNotSupportedException, IOException, InterruptedException {
         ConfigParser configParser = new ConfigParser();
 
-        Searcher_Model defaultModel;
+
         if (args.length > 0) {
             //TODO I need to make this path not hardcoded
             defaultModel = configParser.ReadConfigFile(args[0]);
@@ -31,8 +32,9 @@ public class Launch {
             defaultModel = new Searcher_Model();
         }
 
-        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.ICE_PLAINS_SPIKES), BiomeListType.INCLUDED);
-        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(Feature_Registry.VILLAGE));
+        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.DESERT, Biomes.SAVANNA, Biomes.MESA), BiomeListType.INCLUDED);
+        //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST, Biomes.PLAINS, Biomes.JUNGLE, Biomes.DESERT), BiomeListType.EXCLUDED);
+        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(Feature_Registry.VILLAGE, Feature_Registry.DESERTPYRAMID));
         //configParser.WriteConfigFile(defaultModel);
         if (preliminaryChecks(defaultModel)) {
             //This call is to create the features for the current version you are searching and is strickly a runtime variable

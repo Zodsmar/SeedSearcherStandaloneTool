@@ -15,37 +15,7 @@ applicationDefaultJvmArgs = ["--illegal-access=permit"]
 
 dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-
-    implementation('com.github.KaptainWutax:BiomeUtils:-SNAPSHOT')
-            {
-                transitive = false
-            }
-    implementation('com.github.KaptainWutax:FeatureUtils:-SNAPSHOT')
-            {
-                transitive = false
-            }
-    implementation('com.github.KaptainWutax:SeedUtils:-SNAPSHOT')
-            {
-                transitive = false
-            }
-    implementation('com.github.KaptainWutax:MathUtils:-SNAPSHOT')
-            {
-                transitive = false
-            }
-
-    implementation('com.github.KaptainWutax:MCUtils:-SNAPSHOT')
-            {
-                transitive = false
-            }
-    implementation('com.github.KaptainWutax:TerrainUtils:main-SNAPSHOT')
-            {
-                transitive = false
-            }
-    implementation('com.github.KaptainWutax:NoiseUtils:main-SNAPSHOT')
-            {
-                transitive = false
-
-            }
+    
     implementation('com.seedfinding:mc_core:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_math:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_seed:LATEST') { transitive = false }

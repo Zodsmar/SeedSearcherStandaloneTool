@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.gui.fxmlController">
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0"
+            prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="old_files.fxmlController">
     <center>
         <JFXTabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
@@ -31,239 +16,320 @@
                     <content>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints maxHeight="134.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="317.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="382.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="421.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="334.0" minHeight="0.0" prefHeight="63.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="161.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="134.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="317.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="382.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="421.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="334.0" minHeight="0.0" prefHeight="63.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="161.0"
+                                                vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To SASSA" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To SASSA"
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="System Bold" size="20.0" />
+                                        <Font name="System Bold" size="20.0"/>
                                     </font>
                                 </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Stand Alone Seed Searcher App)" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. To get started please select a biome(s) from the biomes tab" GridPane.rowIndex="2">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Stand Alone Seed Searcher App)"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="1. To get started please select a biome(s) from the biomes tab"
+                                      GridPane.rowIndex="2">
                                     <GridPane.margin>
-                                        <Insets left="25.0" />
+                                        <Insets left="25.0"/>
                                     </GridPane.margin>
                                 </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Set the search size within the Data Tab" GridPane.rowIndex="3">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="2. Set the search size within the Data Tab" GridPane.rowIndex="3">
                                     <GridPane.margin>
-                                        <Insets left="25.0" />
+                                        <Insets left="25.0"/>
                                     </GridPane.margin>
                                 </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Choose how many seeds to find before the program stops searching" GridPane.rowIndex="4">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="3. Choose how many seeds to find before the program stops searching"
+                                      GridPane.rowIndex="4">
                                     <GridPane.margin>
-                                        <Insets left="25.0" />
+                                        <Insets left="25.0"/>
                                     </GridPane.margin>
                                 </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left.!" GridPane.rowIndex="5">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left.!"
+                                      GridPane.rowIndex="5">
                                     <GridPane.margin>
-                                        <Insets left="25.0" />
+                                        <Insets left="25.0"/>
                                     </GridPane.margin>
                                 </Text>
-                                <ImageView fx:id="paypalDonate" fitHeight="68.0" fitWidth="121.0" onMouseClicked="#donate" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                                <ImageView fx:id="paypalDonate" fitHeight="68.0" fitWidth="121.0"
+                                           onMouseClicked="#donate" pickOnBounds="true" preserveRatio="true"
+                                           GridPane.halignment="CENTER" GridPane.rowIndex="6">
                                     <image>
-                                        <Image url="@../button-PayPal-donate.png" />
+                                        <Image url="@../button-PayPal-donate.png"/>
                                     </image>
                                     <cursor>
-                                        <Cursor fx:constant="HAND" />
+                                        <Cursor fx:constant="HAND"/>
                                     </cursor>
                                 </ImageView>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Like the tool?" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Like the tool?"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP">
                                     <font>
-                                        <Font name="System Bold" size="14.0" />
+                                        <Font name="System Bold" size="14.0"/>
                                     </font>
                                 </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="If you would like more information on specific features hover over them for a better description" GridPane.rowIndex="7">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="If you would like more information on specific features hover over them for a better description"
+                                      GridPane.rowIndex="7">
                                     <GridPane.margin>
-                                        <Insets left="25.0" />
+                                        <Insets left="25.0"/>
                                     </GridPane.margin>
                                 </Text>
                             </children>
                         </GridPane>
-                    </content></Tab>
+                    </content>
+                </Tab>
                 <Tab text="Data">
                     <content>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <Text layoutX="15.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
+                                <Text layoutX="15.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text fx:id="cRejSeedCount" layoutX="185.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                <Text fx:id="cRejSeedCount" layoutX="185.0" layoutY="25.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="0">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text layoutX="15.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
+                                <Text layoutX="15.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text fx:id="tRejSeedCount" layoutX="170.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                <Text fx:id="tRejSeedCount" layoutX="170.0" layoutY="45.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="0">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text layoutX="15.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Time Elapsed:" wrappingWidth="111.13671875">
+                                <Text layoutX="15.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Total Time Elapsed:" wrappingWidth="111.13671875">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text fx:id="timeElapsed" layoutX="130.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
+                                <Text fx:id="timeElapsed" layoutX="130.0" layoutY="65.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="00:00:00">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <JFXComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0" prefWidth="91.0" />
-                                <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minecraft Versions" />
-                                <JFXTextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0" prefWidth="70.0" text="10" />
-                                <JFXTextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0" prefWidth="70.0" text="512">
+                                <JFXComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0"
+                                             prefWidth="91.0"/>
+                                <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Minecraft Versions"/>
+                                <JFXTextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0"
+                                              prefWidth="70.0" text="10"/>
+                                <JFXTextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0"
+                                              prefWidth="70.0" text="512">
                                     <tooltip>
-                                        <Tooltip text="Search radius for blocks. so 10x10 starting at 0,0 would be -10,-10 out to 10,10. So in each direction how many blocks" />
+                                        <Tooltip
+                                                text="Search radius for blocks. so 10x10 starting at 0,0 would be -10,-10 out to 10,10. So in each direction how many blocks"/>
                                     </tooltip>
                                 </JFXTextField>
-                                <Text layoutX="15.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seeds to Find" />
-                                <Text layoutX="15.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" />
-                                <JFXCheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false" text="Bedrock Mode" />
-                                <JFXCheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false" selected="true" text="Randomized Seeds">
+                                <Text layoutX="15.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Seeds to Find"/>
+                                <Text layoutX="15.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Search Radius"/>
+                                <JFXCheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false"
+                                             text="Bedrock Mode"/>
+                                <JFXCheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false"
+                                             selected="true" text="Randomized Seeds">
                                     <tooltip>
-                                        <Tooltip text="If you are just searching keep this on. If you have a specific seed range you would like to search through incrementally by 1 each time then turn this off and put in your seeds" />
-                                    </tooltip></JFXCheckBox>
-                                <JFXCheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0" mnemonicParsing="false" text="Dev Mode" />
-                                <Pane fx:id="randomSeedPane" layoutX="210.0" layoutY="138.0" prefHeight="71.0" prefWidth="411.0" visible="false">
+                                        <Tooltip
+                                                text="If you are just searching keep this on. If you have a specific seed range you would like to search through incrementally by 1 each time then turn this off and put in your seeds"/>
+                                    </tooltip>
+                                </JFXCheckBox>
+                                <JFXCheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0"
+                                             mnemonicParsing="false" text="Dev Mode"/>
+                                <Pane fx:id="randomSeedPane" layoutX="210.0" layoutY="138.0" prefHeight="71.0"
+                                      prefWidth="411.0" visible="false">
                                     <children>
-                                        <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimum Seed" wrappingWidth="80.12109375" />
-                                        <Text layoutX="208.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximum Seed" wrappingWidth="82.037109375" />
-                                        <JFXTextField fx:id="minSeed" layoutY="18.0" text="-128" />
-                                        <JFXTextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128" />
-                                        <Text layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Sequenced Seed being Checked: " wrappingWidth="232.13671875">
+                                        <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Minimum Seed" wrappingWidth="80.12109375"/>
+                                        <Text layoutX="208.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Maximum Seed" wrappingWidth="82.037109375"/>
+                                        <JFXTextField fx:id="minSeed" layoutY="18.0" text="-128"/>
+                                        <JFXTextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128"/>
+                                        <Text layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Current Sequenced Seed being Checked: "
+                                              wrappingWidth="232.13671875">
                                             <font>
-                                                <Font name="System Bold" size="12.0" />
+                                                <Font name="System Bold" size="12.0"/>
                                             </font>
                                         </Text>
-                                        <Text fx:id="sequencedSeed" layoutX="236.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="175.90234375">
+                                        <Text fx:id="sequencedSeed" layoutX="236.0" layoutY="62.0" strokeType="OUTSIDE"
+                                              strokeWidth="0.0" text="0" wrappingWidth="175.90234375">
                                             <font>
-                                                <Font name="System Bold" size="12.0" />
+                                                <Font name="System Bold" size="12.0"/>
                                             </font>
                                         </Text>
                                     </children>
                                 </Pane>
-                                <JFXCheckBox fx:id="setSeed" layoutX="13.0" layoutY="339.0" mnemonicParsing="false" text="Set Seeds">
+                                <JFXCheckBox fx:id="setSeed" layoutX="13.0" layoutY="339.0" mnemonicParsing="false"
+                                             text="Set Seeds">
                                     <tooltip>
-                                        <Tooltip text="If you wish to search through a specific set of seeds, turn this option on and choose the text file to read from" />
-                                    </tooltip></JFXCheckBox>
-                                <Pane fx:id="setSeedPane" layoutX="100.0" layoutY="330.0" prefHeight="35.0" prefWidth="277.0" visible="false">
+                                        <Tooltip
+                                                text="If you wish to search through a specific set of seeds, turn this option on and choose the text file to read from"/>
+                                    </tooltip>
+                                </JFXCheckBox>
+                                <Pane fx:id="setSeedPane" layoutX="100.0" layoutY="330.0" prefHeight="35.0"
+                                      prefWidth="277.0" visible="false">
                                     <children>
-                                        <Label fx:id="seedFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="39.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="No file selected" textAlignment="RIGHT" />
-                                        <JFXButton fx:id="seedFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="-1.0" layoutY="5.0" mnemonicParsing="false">
+                                        <Label fx:id="seedFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
+                                               layoutX="39.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0"
+                                               text="No file selected" textAlignment="RIGHT"/>
+                                        <JFXButton fx:id="seedFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="-1.0"
+                                                   layoutY="5.0" mnemonicParsing="false">
                                             <graphic>
-                                                <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
+                                                           preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../folder.png" />
+                                                        <Image url="@../folder.png"/>
                                                     </image>
                                                 </ImageView>
                                             </graphic>
                                             <tooltip>
-                                                <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)" />
+                                                <Tooltip
+                                                        text="Choose a file to save too! (If no file is chosen the default is shown)"/>
                                             </tooltip>
                                         </JFXButton>
                                     </children>
                                 </Pane>
-                                <Text fx:id="bedrockWarning" layoutX="127.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Warning: With how searching works BEDROCK mode is not 100% accurate)" visible="false" wrappingWidth="216.13671875">
+                                <Text fx:id="bedrockWarning" layoutX="127.0" layoutY="295.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0"
+                                      text="(Warning: With how searching works BEDROCK mode is not 100% accurate)"
+                                      visible="false" wrappingWidth="216.13671875">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Pane fx:id="worldTypePane" layoutX="134.0" layoutY="464.0" prefHeight="54.0" prefWidth="135.0">
+                                <Pane fx:id="worldTypePane" layoutX="134.0" layoutY="464.0" prefHeight="54.0"
+                                      prefWidth="135.0">
                                     <children>
-                                        <JFXComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0" prefWidth="150.0" />
-                                        <Text layoutX="55.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World Type" />
+                                        <JFXComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0"
+                                                     prefWidth="150.0"/>
+                                        <Text layoutX="55.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="World Type"/>
                                     </children>
                                 </Pane>
-                                <JFXSlider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0" />
-                                <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cores (Threads) to use:" />
-                                <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
-                                <JFXTextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0" prefWidth="70.0" text="50">
+                                <JFXSlider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0"/>
+                                <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Cores (Threads) to use:"/>
+                                <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="1"/>
+                                <JFXTextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0"
+                                              prefWidth="70.0" text="50">
                                     <tooltip>
-                                        <Tooltip text="How many blocks to skip while searching for biomes so check every X block" />
-                                    </tooltip></JFXTextField>
-                                <Text layoutX="15.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementer" />
-                                <JFXCheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false" text="Shadow Seeds" />
-                                <JFXButton fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false" text="Reset GUI" />
-                                <Text layoutX="15.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biome Precision" />
-                                <JFXTextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0" prefWidth="70.0" text="16">
-                                    <tooltip>
-                                        <Tooltip text="If you notice structures are all in the same location, lower this value." />
+                                        <Tooltip
+                                                text="How many blocks to skip while searching for biomes so check every X block"/>
                                     </tooltip>
                                 </JFXTextField>
-                                <Text layoutX="182.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(0 - 16)" />
-                                <JFXCheckBox fx:id="spawnPoint" layoutX="13.0" layoutY="389.0" mnemonicParsing="false" text="Spawn Point" />
-                                <Pane fx:id="spawnPointPane" layoutX="107.0" layoutY="389.0" prefHeight="48.0" prefWidth="314.0" visible="false">
+                                <Text layoutX="15.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Incrementer"/>
+                                <JFXCheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false"
+                                             text="Shadow Seeds"/>
+                                <JFXButton fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false"
+                                           text="Reset GUI"/>
+                                <Text layoutX="15.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Biome Precision"/>
+                                <JFXTextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0"
+                                              prefWidth="70.0" text="16">
+                                    <tooltip>
+                                        <Tooltip
+                                                text="If you notice structures are all in the same location, lower this value."/>
+                                    </tooltip>
+                                </JFXTextField>
+                                <Text layoutX="182.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="(0 - 16)"/>
+                                <JFXCheckBox fx:id="spawnPoint" layoutX="13.0" layoutY="389.0" mnemonicParsing="false"
+                                             text="Spawn Point"/>
+                                <Pane fx:id="spawnPointPane" layoutX="107.0" layoutY="389.0" prefHeight="48.0"
+                                      prefWidth="314.0" visible="false">
                                     <children>
-                                        <Text layoutX="22.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Coord" wrappingWidth="47.12109375" />
-                                        <Text layoutX="134.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Z Coord" wrappingWidth="46.037109375" />
-                                        <JFXTextField layoutY="18.0" prefHeight="25.0" prefWidth="91.0" text="0" fx:id="xCoordSpawn" />
-                                        <JFXTextField fx:id="zCoordSpawn" layoutX="111.0" layoutY="17.0" prefHeight="25.0" prefWidth="86.0" text="0" />
-                                        <Text layoutX="220.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Margin of Error" wrappingWidth="82.037109375" />
-                                        <JFXTextField fx:id="marginOfError" layoutX="218.0" layoutY="16.0" prefHeight="25.0" prefWidth="86.0" text="0">
+                                        <Text layoutX="22.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="X Coord" wrappingWidth="47.12109375"/>
+                                        <Text layoutX="134.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Z Coord" wrappingWidth="46.037109375"/>
+                                        <JFXTextField layoutY="18.0" prefHeight="25.0" prefWidth="91.0" text="0"
+                                                      fx:id="xCoordSpawn"/>
+                                        <JFXTextField fx:id="zCoordSpawn" layoutX="111.0" layoutY="17.0"
+                                                      prefHeight="25.0" prefWidth="86.0" text="0"/>
+                                        <Text layoutX="220.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Margin of Error" wrappingWidth="82.037109375"/>
+                                        <JFXTextField fx:id="marginOfError" layoutX="218.0" layoutY="16.0"
+                                                      prefHeight="25.0" prefWidth="86.0" text="0">
                                             <tooltip>
-                                                <Tooltip text="How many blocks away can a valid spawn still be? (Even at 0, there is a small margin of error)" />
+                                                <Tooltip
+                                                        text="How many blocks away can a valid spawn still be? (Even at 0, there is a small margin of error)"/>
                                             </tooltip>
                                         </JFXTextField>
                                     </children>
                                 </Pane>
-                                <Text fx:id="timeElapsedSinceLast" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:00">
+                                <Text fx:id="timeElapsedSinceLast" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="00:00:00">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
-                                <Text layoutX="15.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Since Last Accepted World:" wrappingWidth="157.13671875">
+                                <Text layoutX="15.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Since Last Accepted World:" wrappingWidth="157.13671875">
                                     <font>
-                                        <Font name="System Bold" size="12.0" />
+                                        <Font name="System Bold" size="12.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </Pane>
-                    </content></Tab>
+                    </content>
+                </Tab>
                 <Tab fx:id="biomesTab" text="Biomes">
                     <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="488.0" prefWidth="656.0">
                             <content>
-                                <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0">
+                                <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity"
+                                          minWidth="-Infinity" vgap="10.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                     <padding>
-                                        <Insets top="25.0" />
+                                        <Insets top="25.0"/>
                                     </padding>
                                 </GridPane>
                             </content>
                         </ScrollPane>
-                    </content></Tab>
+                    </content>
+                </Tab>
                 <Tab fx:id="biomeSetTab" text="Biome Sets">
                     <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                             <content>
                                 <GridPane fx:id="biomeSetsGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                 </GridPane>
                             </content>
@@ -276,10 +342,10 @@
                             <content>
                                 <GridPane fx:id="structuresGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                 </GridPane>
                             </content>
@@ -294,14 +360,16 @@
             <top>
                 <Pane prefHeight="29.0" prefWidth="344.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text layoutX="130.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console Output" />
+                        <Text layoutX="130.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Console Output"/>
                     </children>
                 </Pane>
             </top>
             <center>
-                <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="492.0" prefWidth="344.0" BorderPane.alignment="CENTER">
+                <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="492.0" prefWidth="344.0"
+                            BorderPane.alignment="CENTER">
                     <content>
-                        <TextArea fx:id="console" editable="false" prefHeight="528.0" prefWidth="341.0" />
+                        <TextArea fx:id="console" editable="false" prefHeight="528.0" prefWidth="341.0"/>
                     </content>
                 </ScrollPane>
             </center>
@@ -310,47 +378,57 @@
     <bottom>
         <BorderPane prefHeight="34.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <right>
-                <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline" BorderPane.alignment="CENTER">
+                <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline"
+                      BorderPane.alignment="CENTER">
                     <BorderPane.margin>
-                        <Insets right="20.0" />
+                        <Insets right="20.0"/>
                     </BorderPane.margin>
                 </Text>
             </right>
             <left>
                 <Pane prefHeight="24.0" prefWidth="343.0" BorderPane.alignment="CENTER">
                     <children>
-                        <JFXButton fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false" text="Save Output">
+                        <JFXButton fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false"
+                                   text="Save Output">
                             <tooltip>
-                                <Tooltip text="Manually save the entire console to a file" />
-                            </tooltip></JFXButton>
-                        <JFXCheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false" text="Auto Save">
+                                <Tooltip text="Manually save the entire console to a file"/>
+                            </tooltip>
+                        </JFXButton>
+                        <JFXCheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false"
+                                     text="Auto Save">
                             <tooltip>
-                                <Tooltip text="This will automatically save any new text in the console" />
-                            </tooltip></JFXCheckBox>
-                        <JFXButton fx:id="outputFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0" mnemonicParsing="false">
+                                <Tooltip text="This will automatically save any new text in the console"/>
+                            </tooltip>
+                        </JFXCheckBox>
+                        <JFXButton fx:id="outputFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0"
+                                   mnemonicParsing="false">
                             <graphic>
                                 <ImageView fitHeight="18.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../folder.png" />
+                                        <Image url="@../folder.png"/>
                                     </image>
                                 </ImageView>
                             </graphic>
                             <tooltip>
-                                <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)" />
+                                <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)"/>
                             </tooltip>
                         </JFXButton>
-                        <Label fx:id="logFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="202.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="sassa_output.txt" textAlignment="RIGHT" />
+                        <Label fx:id="logFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="202.0"
+                               layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="sassa_output.txt"
+                               textAlignment="RIGHT"/>
                     </children>
                 </Pane>
             </left>
             <center>
                 <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <children>
-                        <JFXButton id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false" prefWidth="41.0" text="Start">
+                        <JFXButton id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false"
+                                   prefWidth="41.0" text="Start">
                             <tooltip>
-                                <Tooltip text="Start and Stop the seed searcher" />
-                            </tooltip></JFXButton>
-                        <JFXButton fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear" />
+                                <Tooltip text="Start and Stop the seed searcher"/>
+                            </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear"/>
                     </children>
                 </Pane>
             </center>
