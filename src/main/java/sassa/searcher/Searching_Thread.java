@@ -18,10 +18,7 @@ import com.seedfinding.mcterrain.terrain.OverworldTerrainGenerator;
 import sassa.Main;
 import sassa.enums.BiomeListType;
 import sassa.enums.PassType;
-import sassa.models.BiomeList_Model;
-import sassa.models.BiomeSetList_Model;
-import sassa.models.BiomeSet_Model;
-import sassa.models.Searcher_Model;
+import sassa.models.*;
 import sassa.util.BiomeSources;
 import sassa.util.Result;
 
@@ -37,6 +34,10 @@ public class Searching_Thread extends Thread implements Runnable {
 
     long startFeatureSeed;
     long endFeatureSeed;
+
+    public Searching_Thread(Searcher_Model model) {
+        this.model = model;
+    }
 
     public Searching_Thread(Searcher_Model model, long startFeatureSeed, long endFeatureSeed) {
         this.model = model;
@@ -62,7 +63,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
 
         ///////////// Features ////////////////
-        List<Feature> featureList = model.getFeatureList();
+        List<Feature_Model> featureList = model.getFeatureList();
 
         ///////////// Checking World ////////////////
 
@@ -89,7 +90,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
             //Validate that all the structures we want to spawn are possible first or if no structures are wanted just continue to biomes
             //TODO if the featurelist is empty we shouldn't even do structure seed searching... no point
-            Result<PassType, HashMap<Feature, List<CPos>>> checkingFeatures = featureSearch(featureList, BPos.ORIGIN, structureSeed, rand);
+            Result<PassType, HashMap<Feature_Model, List<CPos>>> checkingFeatures = featureSearch(featureList, BPos.ORIGIN, structureSeed, rand);
             if (checkingFeatures.isFailure()) {
                 continue;
             }
@@ -121,33 +122,36 @@ public class Searching_Thread extends Thread implements Runnable {
 
     }
 
-    boolean featuresCanSpawn(Map<Feature, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
+    boolean featuresCanSpawn(Map<Feature_Model, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
 
         List<Feature> spawnedFeatures = new ArrayList<>();
-        for (HashMap.Entry<Feature, List<CPos>> feature : featurePossibleSpawn.entrySet()) {
-            Feature curFeature = feature.getKey();
+        for (HashMap.Entry<Feature_Model, List<CPos>> feature : featurePossibleSpawn.entrySet()) {
+            Feature curFeature = feature.getKey().getFeature();
 
             //If we are a regionStructure or a Decorator
             if (curFeature instanceof RegionStructure || curFeature instanceof Decorator) {
                 RegionStructure regionStructure = (RegionStructure) curFeature;
-                //TODO check Stronghold vs regionstructure with data
+                int spawnable = 0;
                 for (CPos cpos : feature.getValue()) {
 
                     if (!regionStructure.canSpawn(cpos, biomeSources.getOverworldBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getNetherBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getEndBiomeSource()))
                         continue;
 
-                    //TODO For now this is only checking if 1 structure exists, need to bring back multi searching
-                    spawnedFeatures.add(feature.getKey());
-                    break;
+                    spawnable++;
+                    if (spawnable >= feature.getKey().getAmount()) {
+                        spawnedFeatures.add(curFeature);
+                    }
+                    //break;
                 }
             }
 
             //If we are a stronghold. This is a special catch case
-            if (feature.getKey() instanceof Stronghold) {
+            //TODO make strongholds work with multiple amounts
+            if (curFeature instanceof Stronghold) {
                 Stronghold stronghold;
                 stronghold = (Stronghold) curFeature;
                 int c = 3;
-                CPos[] cposes = new CPos[0];
+                CPos[] cposes;
                 while (true) {
                     if (c > stronghold.getCount()) break;
                     cposes = stronghold.getStarts(biomeSources.getOverworldBiomeSource(), c, rand);
@@ -244,13 +248,13 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    Result<PassType, HashMap<Feature, List<CPos>>> featureSearch(List<Feature> featureList, BPos origin, long seed, ChunkRand rand) {
-        Result<PassType, HashMap<Feature, List<CPos>>> data = new Result<>();
+    public Result<PassType, HashMap<Feature_Model, List<CPos>>> featureSearch(List<Feature_Model> featureList, BPos origin, long seed, ChunkRand rand) {
+        Result<PassType, HashMap<Feature_Model, List<CPos>>> data = new Result<>();
 
         //This is a list of the features that were found. This should match the model of features you want to find once we finish the for loop
-        HashMap<Feature, List<CPos>> foundFeatures = new HashMap<>();
-        for (Feature feature : featureList) {
-
+        HashMap<Feature_Model, List<CPos>> foundFeatures = new HashMap<>();
+        for (Feature_Model featureModel : featureList) {
+            Feature feature = featureModel.getFeature();
             // Checks if we are looking at a structure or a decorator
 
             if (feature instanceof RegionStructure) {
@@ -261,19 +265,18 @@ public class Searching_Thread extends Thread implements Runnable {
 
                 int chunkInRegion = structure.getSpacing();
                 int regionSize = chunkInRegion * 16;
+                //TODO figure out why *4 is needed to work... it fixes multi searching but makes no sense as to why lol
                 SpiralIterator<RPos> spiralIterator = new SpiralIterator<>(
                         new RPos(origin.toRegionPos(regionSize).getX(), origin.toRegionPos(regionSize).getZ(), regionSize),
-                        new BPos(-model.getSearchRadius(), 0, -model.getSearchRadius()).toRegionPos(regionSize), new BPos(model.getSearchRadius(), 0, model.getSearchRadius()).toRegionPos(regionSize),
+                        new BPos(-model.getSearchRadius(), 0, -model.getSearchRadius()).toRegionPos(regionSize), new BPos(model.getSearchRadius() * 4, 0, model.getSearchRadius() * 4).toRegionPos(regionSize),
                         1, (x, y, z) -> new RPos(x, z, regionSize)
                 );
                 spiralIterator.forEach(rPos -> {
                     CPos cpos = structure.getInRegion(seed, rPos.getX(), rPos.getZ(), rand);
-                    //TODO pass back data instead
 
                     if (cpos == null || cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > model.getSearchRadius() >> 4) {
                         return;
                     }
-                    //Feature.Data<?> featureData = new RegionStructure.Data<>(structure, cpos.getX(), cpos.getY());
                     //The structure can spawn here need to check against biomes
                     possibleChunks.add(cpos);
 
@@ -281,11 +284,15 @@ public class Searching_Thread extends Thread implements Runnable {
 
                 //At this point if we found no possible structures, break back to the structure seed and start again
                 if (possibleChunks.isEmpty()) break;
-                foundFeatures.put(feature, possibleChunks);
+
+                //Check if there are enough possible chunk positions for the structure to spawn. (ex. if we want 2 structures and only 1 location
+                //is possible for it to spawn then we know the seed isn't valid)
+                if (possibleChunks.size() < featureModel.getAmount()) break;
+                foundFeatures.put(featureModel, possibleChunks);
             }
             if (feature instanceof Stronghold) {
 
-                foundFeatures.put(feature, new ArrayList<>());
+                foundFeatures.put(featureModel, new ArrayList<>());
             }
 
         }

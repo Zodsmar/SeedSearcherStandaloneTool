@@ -2,7 +2,6 @@ package sassa.models;
 
 
 import com.seedfinding.mccore.version.MCVersion;
-import com.seedfinding.mcfeature.Feature;
 import sassa.models.features.Feature_Registry;
 
 import java.util.ArrayList;
@@ -10,9 +9,9 @@ import java.util.List;
 
 public class FeatureList_Model {
 
-    List<String> featureList;
+    List<Feature_Model> featureList;
 
-    public FeatureList_Model(List<String> featureList) {
+    public FeatureList_Model(List<Feature_Model> featureList) {
         this.featureList = featureList;
     }
 
@@ -20,7 +19,7 @@ public class FeatureList_Model {
         this.featureList = new ArrayList<>();
     }
 
-    public void addFeature(String feature) {
+    public void addFeature(Feature_Model feature) {
         featureList.add(feature);
     }
 
@@ -31,24 +30,24 @@ public class FeatureList_Model {
         return false;
     }
 
-    public void addFeatures(List<String> features) {
+    public void addFeatures(List<Feature_Model> features) {
         features.forEach(featureFactory -> addFeature(featureFactory));
     }
 
-    public List<Feature> getCreatedFeatureListFromVersion(MCVersion version) {
-        List<Feature> createdFeatures = new ArrayList<>();
+    public List<Feature_Model> getCreatedFeatureListFromVersion(MCVersion version) {
+        List<Feature_Model> createdFeatures = new ArrayList<>();
         this.featureList.forEach(feature -> {
-            Feature_Registry.FeatureFactory<?> featureFactory = Feature_Registry.REGISTRY.get(feature);
-            createdFeatures.add(featureFactory.create(version));
+            Feature_Registry.FeatureFactory<?> featureFactory = Feature_Registry.REGISTRY.get(feature.getFeatureAsString());
+            createdFeatures.add(new Feature_Model(featureFactory.create(version), feature.getAmount()));
         });
         return createdFeatures;
     }
 
-    public List<String> getFeatureList() {
+    public List<Feature_Model> getFeatureList() {
         return featureList;
     }
 
-    public void setFeatureList(List<String> featureList) {
+    public void setFeatureList(List<Feature_Model> featureList) {
         this.featureList = featureList;
     }
 

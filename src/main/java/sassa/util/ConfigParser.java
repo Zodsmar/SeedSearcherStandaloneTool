@@ -7,6 +7,7 @@ import sassa.enums.SearchType;
 import sassa.enums.SpawnType;
 import sassa.enums.WorldType;
 import sassa.models.BiomeSet_Model;
+import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
 
 import java.io.*;
@@ -129,23 +130,33 @@ public class ConfigParser {
         return biomesListAsString;
     }
 
-    String createFeaturesAsStringList(List<String> featureList) {
+    String createFeaturesAsStringList(List<Feature_Model> featureList) {
         String featureListAsString = "";
-        for (String f : featureList) {
-            featureListAsString += f + ",";
-        }
-        return featureListAsString;
-    }
-
-    List<String> readStringListAsFeatures(String featureList) {
-        List<String> featureListAsString = new ArrayList<>();
-        String[] individualFeatures = featureList.split(",");
-        for (String f : individualFeatures) {
-            if (!f.isEmpty()) {
-                featureListAsString.add(f);
+        for (Feature_Model f : featureList) {
+            if (f.getAmount() != 1) {
+                featureListAsString += f.getFeatureAsString() + "," + f.getAmount() + ";";
+            } else {
+                featureListAsString += f.getFeatureAsString() + ";";
             }
 
         }
         return featureListAsString;
+    }
+
+    List<Feature_Model> readStringListAsFeatures(String featureList) {
+        List<Feature_Model> stringListAsFeature = new ArrayList<>();
+        String[] individualFeatures = featureList.split(";");
+        for (String f : individualFeatures) {
+            if (!f.isEmpty()) {
+                String[] splitForAmount = f.split(",");
+                if (splitForAmount.length == 1) {
+                    stringListAsFeature.add(new Feature_Model(splitForAmount[0]));
+                } else {
+                    stringListAsFeature.add(new Feature_Model(splitForAmount[0], Integer.parseInt(splitForAmount[1])));
+                }
+            }
+
+        }
+        return stringListAsFeature;
     }
 }

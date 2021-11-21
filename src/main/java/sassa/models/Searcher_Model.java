@@ -2,7 +2,6 @@ package sassa.models;
 
 
 import com.seedfinding.mccore.version.MCVersion;
-import com.seedfinding.mcfeature.Feature;
 import sassa.enums.SearchType;
 import sassa.enums.SpawnType;
 import sassa.enums.WorldType;
@@ -38,16 +37,16 @@ public class Searcher_Model implements Cloneable, Serializable {
         so this is done before we create the threads but we need to make sure we can have a copy in the threads.
         This is never stored nor should it have any values when the searcher is loaded. This is a runtime variable only
          */
-    private List<Feature> featureList;
+    private List<Feature_Model> featureList;
     //List<Features> excludedFeatures;
 
     //Defaults for configs
     public Searcher_Model() {
         this.configName = "default";
         this.seedsToFind = 5;
-        this.searchRadius = 75;
-        this.incrementer = 5;
-        this.biomePrecision = 1;
+        this.searchRadius = 150;
+        this.incrementer = 25;
+        this.biomePrecision = 0;
         this.searchType = SearchType.RANDOM_SEARCH;
         this.selectedVersion = MCVersion.latest();
         this.worldType = WorldType.DEFAULT;
@@ -203,11 +202,11 @@ public class Searcher_Model implements Cloneable, Serializable {
         this.includedFeatures = includedFeatures;
     }
 
-    public List<Feature> getFeatureList() {
+    public List<Feature_Model> getFeatureList() {
         return featureList;
     }
 
-    public void setFeatureList(List<Feature> featureList) {
+    public void setFeatureList(List<Feature_Model> featureList) {
         this.featureList = featureList;
     }
 

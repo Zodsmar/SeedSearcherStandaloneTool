@@ -3,6 +3,7 @@ package sassa;
 import com.seedfinding.mcbiome.biome.Biomes;
 import sassa.enums.BiomeListType;
 import sassa.models.BiomeSet_Model;
+import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
 import sassa.models.features.Feature_Registry;
 import sassa.searcher.Searching_Thread;
@@ -32,9 +33,10 @@ public class Main {
             defaultModel = new Searcher_Model();
         }
 
-        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.DESERT, Biomes.SAVANNA, Biomes.MESA), BiomeListType.INCLUDED);
+        //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FLOWER_FOREST, Biomes.PLAINS), BiomeListType.INCLUDED);
         //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST, Biomes.PLAINS, Biomes.JUNGLE, Biomes.DESERT), BiomeListType.EXCLUDED);
-        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(Feature_Registry.VILLAGE, Feature_Registry.DESERTPYRAMID));
+        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 4), new Feature_Model(Feature_Registry.OWRUINEDPORTAL), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
+        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL)));
         //configParser.WriteConfigFile(defaultModel);
         if (preliminaryChecks(defaultModel)) {
             //This call is to create the features for the current version you are searching and is strickly a runtime variable

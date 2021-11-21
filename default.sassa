@@ -1,17 +1,17 @@
 #Sassa Config
-#Wed Nov 17 21:53:01 EST 2021
+#Sat Nov 20 21:51:46 EST 2021
 threadsToUse=3
-searchRadius=10
+searchRadius=200
 name=default
-biomePrecision=16
+biomePrecision=1
 spawnType=ZERO_ZERO
-biomeListIncluded=140,
+biomeListIncluded=132,1,
 mcVersion=1.17.1
 biomeListExcluded=
 biomeSetListIncluded=
 amountOfSeedsToFind=5
 searchType=RANDOM_SEARCH
 biomeSetListExcluded=
-includedFeatureList=Village,Mansion,
+includedFeatureList=Village,4;OWRuinedPortal;PillagerOutpost;
 worldType=DEFAULT
-incrementer=1
+incrementer=25
