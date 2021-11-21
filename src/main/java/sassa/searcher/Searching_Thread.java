@@ -3,7 +3,6 @@ package sassa.searcher;
 import com.seedfinding.mcbiome.biome.Biome;
 import com.seedfinding.mcbiome.source.OverworldBiomeSource;
 import com.seedfinding.mccore.rand.ChunkRand;
-import com.seedfinding.mccore.util.data.SpiralIterator;
 import com.seedfinding.mccore.util.math.DistanceMetric;
 import com.seedfinding.mccore.util.math.Vec3i;
 import com.seedfinding.mccore.util.pos.BPos;
@@ -12,15 +11,20 @@ import com.seedfinding.mccore.util.pos.RPos;
 import com.seedfinding.mcfeature.Feature;
 import com.seedfinding.mcfeature.decorator.Decorator;
 import com.seedfinding.mcfeature.misc.SpawnPoint;
+import com.seedfinding.mcfeature.structure.Igloo;
 import com.seedfinding.mcfeature.structure.RegionStructure;
 import com.seedfinding.mcfeature.structure.Stronghold;
+import com.seedfinding.mcfeature.structure.Village;
 import com.seedfinding.mcterrain.terrain.OverworldTerrainGenerator;
 import sassa.Main;
 import sassa.enums.BiomeListType;
 import sassa.enums.PassType;
 import sassa.models.*;
+import sassa.models.features.NERuinedPortal;
+import sassa.models.features.OWRuinedPortal;
 import sassa.util.BiomeSources;
 import sassa.util.Result;
+import sassa.util.StructureHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -122,7 +126,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
     }
 
-    boolean featuresCanSpawn(Map<Feature_Model, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
+    public boolean featuresCanSpawn(Map<Feature_Model, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
 
         List<Feature> spawnedFeatures = new ArrayList<>();
         for (HashMap.Entry<Feature_Model, List<CPos>> feature : featurePossibleSpawn.entrySet()) {
@@ -130,18 +134,41 @@ public class Searching_Thread extends Thread implements Runnable {
 
             //If we are a regionStructure or a Decorator
             if (curFeature instanceof RegionStructure || curFeature instanceof Decorator) {
-                RegionStructure regionStructure = (RegionStructure) curFeature;
+                RegionStructure<?, ?> regionStructure = (RegionStructure) curFeature;
                 int spawnable = 0;
                 for (CPos cpos : feature.getValue()) {
-
+                    //First check if the structure can spawn
                     if (!regionStructure.canSpawn(cpos, biomeSources.getOverworldBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getNetherBiomeSource()) && !regionStructure.canSpawn(cpos, biomeSources.getEndBiomeSource()))
                         continue;
+                    //Ruined Portals can spawn but sometimes wont generate so we need a catch case for it
+                    if (regionStructure instanceof OWRuinedPortal) {
+                        OWRuinedPortal portal = (OWRuinedPortal) regionStructure;
+                        if (!portal.canGenerate(cpos, biomeSources.getOverworldTerrainGenerator()))
+                            continue;
+                    }
+
+                    if (regionStructure instanceof NERuinedPortal) {
+                        NERuinedPortal portal = (NERuinedPortal) regionStructure;
+                        if (!portal.canGenerate(cpos, biomeSources.getNetherTerrainGenerator()))
+                            continue;
+                    }
+
+                    //TODO zombie villages work but if you look for villages and zombie villages, zombie villages also count as normal villages
+                    if (feature.getKey().getFeatureAsString().equals("ZombieVillage")) {
+                        Village village = (Village) feature.getKey().getFeature();
+                        if (!village.isZombieVillage(biomeSources.getWorldSeed(), cpos, rand)) continue;
+                    }
+                    //TODO same problem as zombie villages
+                    if (feature.getKey().getFeatureAsString().equals("IglooBasement")) {
+                        Igloo igloo = (Igloo) feature.getKey().getFeature();
+                        if (!igloo.hasBasement(biomeSources.getWorldSeed(), cpos, rand)) continue;
+                    }
 
                     spawnable++;
                     if (spawnable >= feature.getKey().getAmount()) {
                         spawnedFeatures.add(curFeature);
+                        break;
                     }
-                    //break;
                 }
             }
 
@@ -161,34 +188,37 @@ public class Searching_Thread extends Thread implements Runnable {
                     c += stronghold.getSpread();
                 }
             }
-            //TODO if all structures are found we can break out faster (same as biomes) need to add the check
+            //if all structures are found we can break out faster (same as biomes)
+            if (spawnedFeatures.size() == this.model.getFeatureList().size()) {
+                return true;
+            }
         }
 
         //If we missed even one feature from our list the seed is invalid and start a new seed
-        if (spawnedFeatures.size() != Main.defaultModel.getFeatureList().size()) {
+        if (spawnedFeatures.size() != this.model.getFeatureList().size()) {
             return false;
         }
         return true;
     }
 
     //TODO Do I want to be passing the model in for testing?
-    boolean biomeSearch(BiomeSources biomeSources, BPos spawnPoint) {
+    public boolean biomeSearch(BiomeSources biomeSources, BPos spawnPoint) {
         BiomeList_Model foundBiomes = new BiomeList_Model();
         BiomeSetList_Model foundBiomeSets = new BiomeSetList_Model();
 
 
         ///////////// Biome Models ////////////////
-        BiomeList_Model bModel = Main.defaultModel.getBiomeList();
-        BiomeSetList_Model bsModel = Main.defaultModel.getBiomeSetList();
+        BiomeList_Model bModel = this.model.getBiomeList();
+        BiomeSetList_Model bsModel = this.model.getBiomeSetList();
 
         //If no biomes were selected aka only structure searching, kickout before even checking, because the seed is valid
-        if (Main.defaultModel.isAllBiomeEmpty()) {
+        if (this.model.isAllBiomeEmpty()) {
             return true;
         }
 
         ///////////// Checking Biomes ////////////////
-        for (int x = -Main.defaultModel.getSearchRadius() + spawnPoint.getX(); x < Main.defaultModel.getSearchRadius() + spawnPoint.getX(); x += Main.defaultModel.getIncrementer()) {
-            for (int z = -Main.defaultModel.getSearchRadius() + spawnPoint.getZ(); z < Main.defaultModel.getSearchRadius() + spawnPoint.getZ(); z += Main.defaultModel.getIncrementer()) {
+        for (int x = -this.model.getSearchRadius() + spawnPoint.getX(); x < this.model.getSearchRadius() + spawnPoint.getX(); x += this.model.getIncrementer()) {
+            for (int z = -this.model.getSearchRadius() + spawnPoint.getZ(); z < this.model.getSearchRadius() + spawnPoint.getZ(); z += this.model.getIncrementer()) {
 
                 //Takes all 3 world source objects (Overworld, Nether and End) and gets the biome at X and Z location for each world individually
                 List<Biome> foundInWorlds = Arrays.asList(biomeSources.getOverworldBiomeSource().getBiome(x, 0, z), biomeSources.getNetherBiomeSource().getBiome(x, 0, z), biomeSources.getEndBiomeSource().getBiome(x, 0, z));
@@ -223,7 +253,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
                 //Todo write my own containsAny function
                 foundInWorlds.forEach(biome -> {
-                    if (Main.defaultModel.getBiomeList().getIncludedBiomes().contains(biome) && !foundBiomes.getIncludedBiomes().contains(biome)) {
+                    if (this.model.getBiomeList().getIncludedBiomes().contains(biome) && !foundBiomes.getIncludedBiomes().contains(biome)) {
                         foundBiomes.addBiome(biome, BiomeListType.INCLUDED);
                     }
                 });
@@ -239,8 +269,8 @@ public class Searching_Thread extends Thread implements Runnable {
 
     boolean validateBiome(BiomeList_Model foundBiomes, BiomeSetList_Model foundBiomeSets) {
         if (foundBiomes.getExcludedBiomes().isEmpty() &&
-                foundBiomes.getIncludedBiomes().size() == Main.defaultModel.getBiomeList().getIncludedBiomes().size() &&
-                foundBiomeSets.getIncludedBiomeSet().size() == model.getBiomeSetList().getIncludedBiomeSet().size()) {
+                foundBiomes.getIncludedBiomes().size() == this.model.getBiomeList().getIncludedBiomes().size() &&
+                foundBiomeSets.getIncludedBiomeSet().size() == this.model.getBiomeSetList().getIncludedBiomeSet().size()) {
             return true;
         }
 
@@ -265,18 +295,21 @@ public class Searching_Thread extends Thread implements Runnable {
 
                 int chunkInRegion = structure.getSpacing();
                 int regionSize = chunkInRegion * 16;
-                //TODO figure out why *4 is needed to work... it fixes multi searching but makes no sense as to why lol
-                SpiralIterator<RPos> spiralIterator = new SpiralIterator<>(
-                        new RPos(origin.toRegionPos(regionSize).getX(), origin.toRegionPos(regionSize).getZ(), regionSize),
-                        new BPos(-model.getSearchRadius(), 0, -model.getSearchRadius()).toRegionPos(regionSize), new BPos(model.getSearchRadius() * 4, 0, model.getSearchRadius() * 4).toRegionPos(regionSize),
-                        1, (x, y, z) -> new RPos(x, z, regionSize)
+                RPos regionOrigin = origin.toRegionPos(regionSize);
+                RPos lowerBound = new BPos(-this.model.getSearchRadius(), 0, -this.model.getSearchRadius()).toRegionPos(regionSize);
+                RPos upperBound = new BPos(this.model.getSearchRadius(), 0, this.model.getSearchRadius()).toRegionPos(regionSize);
+                StructureHelper.SpiralIterator spiralIterator = new StructureHelper.SpiralIterator(
+                        regionOrigin,
+                        lowerBound,
+                        upperBound
                 );
                 spiralIterator.forEach(rPos -> {
                     CPos cpos = structure.getInRegion(seed, rPos.getX(), rPos.getZ(), rand);
 
-                    if (cpos == null || cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > model.getSearchRadius() >> 4) {
+                    if (cpos == null || cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > this.model.getSearchRadius() >> 4) {
                         return;
                     }
+
                     //The structure can spawn here need to check against biomes
                     possibleChunks.add(cpos);
 
@@ -290,6 +323,11 @@ public class Searching_Thread extends Thread implements Runnable {
                 if (possibleChunks.size() < featureModel.getAmount()) break;
                 foundFeatures.put(featureModel, possibleChunks);
             }
+
+            if (feature instanceof Decorator) {
+
+            }
+
             if (feature instanceof Stronghold) {
 
                 foundFeatures.put(featureModel, new ArrayList<>());
@@ -309,7 +347,7 @@ public class Searching_Thread extends Thread implements Runnable {
         return data;
     }
 
-    BPos getSpawnPoint(long worldSeed, OverworldBiomeSource overworldBiomeSource) {
+    public BPos getSpawnPoint(long worldSeed, OverworldBiomeSource overworldBiomeSource) {
 
         BPos spawnPoint;
         switch (model.getSpawnType()) {

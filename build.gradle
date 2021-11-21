@@ -15,7 +15,7 @@ applicationDefaultJvmArgs = ["--illegal-access=permit"]
 
 dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    
+
     implementation('com.seedfinding:mc_core:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_math:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_seed:LATEST') { transitive = false }
@@ -23,6 +23,7 @@ dependencies {
     implementation('com.seedfinding:mc_feature:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_noise:LATEST') { transitive = false }
     implementation('com.seedfinding:mc_terrain:LATEST') { transitive = false }
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     //compile 'com.jfoenix:jfoenix:9.0.10'
 
 }

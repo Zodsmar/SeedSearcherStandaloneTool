@@ -20,8 +20,9 @@ public class Feature_Model {
         this.amount = amount;
     }
 
-    public Feature_Model(Feature feature, int amount) {
+    public Feature_Model(Feature feature, String featureAsString, int amount) {
         this.feature = feature;
+        this.featureAsString = featureAsString;
         this.amount = amount;
     }
 

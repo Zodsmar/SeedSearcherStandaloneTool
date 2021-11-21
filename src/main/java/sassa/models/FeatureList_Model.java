@@ -38,7 +38,7 @@ public class FeatureList_Model {
         List<Feature_Model> createdFeatures = new ArrayList<>();
         this.featureList.forEach(feature -> {
             Feature_Registry.FeatureFactory<?> featureFactory = Feature_Registry.REGISTRY.get(feature.getFeatureAsString());
-            createdFeatures.add(new Feature_Model(featureFactory.create(version), feature.getAmount()));
+            createdFeatures.add(new Feature_Model(featureFactory.create(version), feature.getFeatureAsString(), feature.getAmount()));
         });
         return createdFeatures;
     }
