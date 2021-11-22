@@ -13,7 +13,7 @@ import java.util.List;
 
 public class StructureSearchingTest {
     Searcher_Model model = new Searcher_Model();
-    Searching_Thread searching_thread = new Searching_Thread(model);
+    Searching_Thread searching_thread = new Searching_Thread(model, 0);
     ChunkRand rand = new ChunkRand();
 
     @ParameterizedTest

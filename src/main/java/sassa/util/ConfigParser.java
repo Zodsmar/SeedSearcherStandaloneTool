@@ -37,6 +37,9 @@ public class ConfigParser {
             prop.setProperty("biomeSetListIncluded", createBiomeSetAsStringList(model.getBiomeSetList().getIncludedBiomeSet()));
             prop.setProperty("biomeSetListExcluded", createBiomeSetAsStringList(model.getBiomeSetList().getExcludedBiomeSet()));
             prop.setProperty("includedFeatureList", createFeaturesAsStringList(model.getIncludedFeatures().getFeatureList()));
+            prop.setProperty("startRange", String.valueOf(model.getStartRange()));
+            prop.setProperty("endRange", String.valueOf(model.getEndRange()));
+            prop.setProperty("setSeedFile", model.getSeedFile());
             //save properties to project root folder
             prop.store(new FileOutputStream(model.getConfigName() + ".sassa"), "Sassa Config");
 
@@ -71,7 +74,9 @@ public class ConfigParser {
             searcher_model.getBiomeSetList().setIncludedBiomeSet(readStringListAsBiomeSet(props.getProperty("biomeSetListIncluded")));
             searcher_model.getBiomeSetList().setExcludedBiomeSet(readStringListAsBiomeSet(props.getProperty("biomeSetListExcluded")));
             searcher_model.getIncludedFeatures().setFeatureList(readStringListAsFeatures(props.getProperty("includedFeatureList")));
-
+            searcher_model.setStartRange(Long.parseLong(props.getProperty("startRange")));
+            searcher_model.setEndRange(Long.parseLong(props.getProperty("endRange")));
+            searcher_model.setSeedFile(props.getProperty("setSeedFile"));
 
             reader.close();
         } catch (FileNotFoundException ex) {

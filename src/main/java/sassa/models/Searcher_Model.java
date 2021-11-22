@@ -25,6 +25,9 @@ public class Searcher_Model implements Cloneable, Serializable {
     private WorldType worldType;
     private int threadsToUse;
     private SpawnType spawnType;
+    private long startRange;
+    private long endRange;
+    private String seedFile;
 
     private BiomeList_Model biomeList;
     private BiomeSetList_Model biomeSetList;
@@ -44,20 +47,23 @@ public class Searcher_Model implements Cloneable, Serializable {
     public Searcher_Model() {
         this.configName = "default";
         this.seedsToFind = 10;
-        this.searchRadius = 512;
+        this.searchRadius = 300;
         this.incrementer = 50;
         this.biomePrecision = 16;
         this.searchType = SearchType.RANDOM_SEARCH;
         this.selectedVersion = MCVersion.latest();
         this.worldType = WorldType.DEFAULT;
-        this.threadsToUse = 1;
+        this.threadsToUse = 5;
         this.spawnType = SpawnType.ZERO_ZERO;
         this.biomeList = new BiomeList_Model();
         this.biomeSetList = new BiomeSetList_Model();
         this.includedFeatures = new FeatureList_Model();
+        this.startRange = 0;
+        this.endRange = 0;
+        this.seedFile = "";
     }
 
-    public Searcher_Model(String configName, int seedsToFind, int searchRadius, int incrementer, int biomePrecision, SearchType searchType, MCVersion selectedVersion, WorldType worldType, int threadsToUse, SpawnType spawnType, BiomeList_Model biomeList, BiomeSetList_Model biomeSetList, FeatureList_Model includedFeatures) {
+    public Searcher_Model(String configName, int seedsToFind, int searchRadius, int incrementer, int biomePrecision, SearchType searchType, MCVersion selectedVersion, WorldType worldType, int threadsToUse, SpawnType spawnType, BiomeList_Model biomeList, BiomeSetList_Model biomeSetList, FeatureList_Model includedFeatures, long startRange, long endRange, String seedFile) {
         this.configName = configName;
         this.seedsToFind = seedsToFind;
         this.searchRadius = searchRadius;
@@ -71,6 +77,9 @@ public class Searcher_Model implements Cloneable, Serializable {
         this.biomeList = biomeList;
         this.biomeSetList = biomeSetList;
         this.includedFeatures = includedFeatures;
+        this.startRange = startRange;
+        this.endRange = endRange;
+        this.seedFile = seedFile;
     }
 
     @Override
@@ -210,5 +219,29 @@ public class Searcher_Model implements Cloneable, Serializable {
         this.featureList = featureList;
     }
 
+
+    public long getStartRange() {
+        return startRange;
+    }
+
+    public void setStartRange(long startRange) {
+        this.startRange = startRange;
+    }
+
+    public long getEndRange() {
+        return endRange;
+    }
+
+    public void setEndRange(long endRange) {
+        this.endRange = endRange;
+    }
+
+    public String getSeedFile() {
+        return seedFile;
+    }
+
+    public void setSeedFile(String seedFile) {
+        this.seedFile = seedFile;
+    }
 
 }

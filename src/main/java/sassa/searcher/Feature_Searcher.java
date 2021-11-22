@@ -36,7 +36,14 @@ public class Feature_Searcher {
 
     public boolean featuresCanSpawn(Map<Feature_Model, List<CPos>> featurePossibleSpawn, BiomeSources biomeSources, ChunkRand rand) {
 
+        //If we have no features to search then return true
+        if (model.getFeatureList().isEmpty()) {
+            return true;
+        }
+
         List<Feature> spawnedFeatures = new ArrayList<>();
+
+
         for (HashMap.Entry<Feature_Model, List<CPos>> feature : featurePossibleSpawn.entrySet()) {
             Feature curFeature = feature.getKey().getFeature();
 
@@ -110,9 +117,16 @@ public class Feature_Searcher {
     }
 
 
-    public Result<PassType, HashMap<Feature_Model, List<CPos>>> featureSearch(List<Feature_Model> featureList, BPos origin, long seed, ChunkRand rand) {
-        Result<PassType, HashMap<Feature_Model, List<CPos>>> data = new Result<>();
+    public Result<PassType, HashMap<Feature_Model, List<CPos>>> featureSearch(BPos origin, long seed, ChunkRand rand) {
 
+        Result<PassType, HashMap<Feature_Model, List<CPos>>> data = new Result<>();
+        //If we have no features to search then return true
+        if (model.getFeatureList().isEmpty()) {
+            data.set(PassType.SUCCESS, new HashMap<>());
+            return data;
+        }
+
+        List<Feature_Model> featureList = model.getFeatureList();
         //This is a list of the features that were found. This should match the model of features you want to find once we finish the for loop
         HashMap<Feature_Model, List<CPos>> foundFeatures = new HashMap<>();
         for (Feature_Model featureModel : featureList) {

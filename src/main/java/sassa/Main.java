@@ -31,10 +31,20 @@ public class Main {
             defaultModel = new Searcher_Model();
         }
 
-        //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FLOWER_FOREST, Biomes.PLAINS), BiomeListType.INCLUDED);
+
+//        for (long i = startId, j = 0; j < defaultModel.getThreadsToUse(); i += range, j++) {
+//            if (j == defaultModel.getThreadsToUse() - 1) {
+//                System.out.println("Start: " + i + " End: " + (endId));
+//            } else {
+//                System.out.println("Start: " + i + " End: " + (i + range));
+//            }
+//        }
+
+
+        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FLOWER_FOREST, Biomes.ICE_PLAINS_SPIKES), BiomeListType.INCLUDED);
         //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST, Biomes.PLAINS, Biomes.JUNGLE, Biomes.DESERT), BiomeListType.EXCLUDED);
-        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.ZOMBIEVILLAGE, 1), new Feature_Model(Feature_Registry.IGLOOBASEMENT, 1)));
-        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 4), new Feature_Model(Feature_Registry.OWRUINEDPORTAL), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
+        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.ZOMBIEVILLAGE, 2)));
+        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 4), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2)));
         //configParser.WriteConfigFile(defaultModel);
         if (preliminaryChecks(defaultModel)) {
@@ -70,11 +80,8 @@ public class Main {
         for (int i = 0; i < model.getThreadsToUse(); i++) {
 
             //Since it is multithreaded, we want to make sure that each thread starts at different seeds and goes up sequentially
-            //TODO this needs to change when I start bringing in static searches, need to look into that
-            long startFeatureSeed = (long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * i);
-            long endFeatureSeed = Math.min((long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * (i + 1)), 1L << 48);
 
-            Thread t = new Searching_Thread(model, startFeatureSeed, endFeatureSeed);
+            Thread t = new Searching_Thread(model, i);
             t.start();
             System.out.format("%d Thread Running \n", i);
             currentThreads.add(t);
