@@ -142,8 +142,10 @@ public class Feature_Searcher {
                 int chunkInRegion = structure.getSpacing();
                 int regionSize = chunkInRegion * 16;
                 RPos regionOrigin = origin.toRegionPos(regionSize);
-                RPos lowerBound = new BPos(-this.model.getSearchRadius(), 0, -this.model.getSearchRadius()).toRegionPos(regionSize);
-                RPos upperBound = new BPos(this.model.getSearchRadius(), 0, this.model.getSearchRadius()).toRegionPos(regionSize);
+
+
+                RPos lowerBound = new BPos(-this.model.getSearchRadius() + origin.getX(), 0, -this.model.getSearchRadius() + origin.getZ()).toRegionPos(regionSize);
+                RPos upperBound = new BPos(this.model.getSearchRadius() + origin.getX(), 0, this.model.getSearchRadius() + origin.getZ()).toRegionPos(regionSize);
                 StructureHelper.SpiralIterator spiralIterator = new StructureHelper.SpiralIterator(
                         regionOrigin,
                         lowerBound,
@@ -152,7 +154,7 @@ public class Feature_Searcher {
                 spiralIterator.forEach(rPos -> {
                     CPos cpos = structure.getInRegion(seed, rPos.getX(), rPos.getZ(), rand);
 
-                    if (cpos == null || cpos.distanceTo(Vec3i.ZERO, DistanceMetric.CHEBYSHEV) > this.model.getSearchRadius() >> 4) {
+                    if (cpos == null || cpos.distanceTo(origin.toChunkPos(), DistanceMetric.CHEBYSHEV) > this.model.getSearchRadius() >> 4) {
                         return;
                     }
 

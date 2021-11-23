@@ -12,7 +12,6 @@ import sassa.enums.SpawnType;
 import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
 import sassa.util.BiomeSources;
-import sassa.util.FileHelper;
 import sassa.util.Result;
 
 import java.io.IOException;
@@ -23,6 +22,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Searching_Thread extends Thread implements Runnable {
     Searcher_Model model;
+    Biome_Searcher biome_searcher;
+    Feature_Searcher feature_searcher;
+    ThreadLocalRandom threadLocalRandomizer = ThreadLocalRandom.current();
+    ChunkRand rand = new ChunkRand();
+
+
+    List<Long> seeds;
 
     static AtomicInteger currentSeedCount = new AtomicInteger(0);
 
@@ -33,30 +39,37 @@ public class Searching_Thread extends Thread implements Runnable {
         this.id = id;
     }
 
+    public Searching_Thread(Searcher_Model model, int id, List<Long> seeds) {
+        this.model = model;
+        this.id = id;
+        this.seeds = seeds;
+    }
+
 
     private void searching() throws IOException, InterruptedException, CloneNotSupportedException {
 
+        biome_searcher = new Biome_Searcher(model);
+        feature_searcher = new Feature_Searcher(model);
 
         //Clone the model every time we search to make sure we have proper data for each search
         switch (model.getSearchType()) {
             case RANDOM_SEARCH:
                 if (!model.getFeatureList().isEmpty()) {
                     if (model.getSpawnType() == SpawnType.ZERO_ZERO) {
-                        randomSearchingWithFeature(model);
+                        randomSearchingWithFeature();
                     } else {
-                        //TODO Add randomSearchingWithFeatureAndSpawn this will be slower sadly as we can't use structure seeds
-
+                        randomSearchingWithFeatureAndSpawn();
                     }
 
                 } else {
-                    randomSearching(model);
+                    randomSearching();
                 }
                 break;
             case SET_SEED_SEARCH:
-                setSeedSearch(model);
+                setSeedSearch();
                 break;
             case RANGE_SEARCH:
-                rangeSearch(model);
+                rangeSearch();
                 break;
         }
 
@@ -64,16 +77,12 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    void randomSearchingWithFeature(Searcher_Model model) {
-        //This is required for feature searching
-        ChunkRand rand = new ChunkRand();
-        ThreadLocalRandom threadLocalRandomizer = ThreadLocalRandom.current();
+    void randomSearchingWithFeature() {
 
         long startFeatureSeed = (long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * id);
         long endFeatureSeed = Math.min((long) Math.floor(Math.pow(2, 48) / model.getThreadsToUse() * (id + 1)), 1L << 48);
 
         ///////////// Checking World ////////////////
-
 
         //TODO This is way to expensive of a call
         //Create a list of all possible structure seeds for this thread
@@ -96,7 +105,7 @@ public class Searching_Thread extends Thread implements Runnable {
             // if it returns false then the remaining code is passed, and it will start a new seed
             //Validate that all the structures we want to spawn are possible first or if no structures are wanted just continue to biomes
 
-            Feature_Searcher feature_searcher = new Feature_Searcher(model);
+
             Result<PassType, HashMap<Feature_Model, List<CPos>>> checkingFeatures = feature_searcher.featureSearch(BPos.ORIGIN, structureSeed, rand);
             if (checkingFeatures.isFailure()) {
                 continue;
@@ -114,13 +123,13 @@ public class Searching_Thread extends Thread implements Runnable {
 
                 BiomeSources biomeSources = new BiomeSources(worldSeed);
                 ///////////// SpawnPoint Checking ////////////////
-                BPos spawnPoint = getSpawnPoint(worldSeed, biomeSources.getOverworldBiomeSource());
+                BPos spawnPoint = getSpawnPoint(biomeSources.getOverworldBiomeSource());
 
                 if (!feature_searcher.featuresCanSpawn(checkingFeatures.getData(), biomeSources, rand)) {
                     continue;
                 }
 
-                Biome_Searcher biome_searcher = new Biome_Searcher(model);
+
                 //Here we do a biome search, this can be done without structure searching
                 if (!biome_searcher.biomeSearch(biomeSources, spawnPoint)) {
                     continue;
@@ -136,15 +145,8 @@ public class Searching_Thread extends Thread implements Runnable {
 
     }
 
-    void randomSearching(Searcher_Model model) {
 
-        ThreadLocalRandom threadLocalRandomizer = ThreadLocalRandom.current();
-//        long startSeed = (long) Math.floor(Math.pow(2, 64) / model.getThreadsToUse() * id);
-//        long endSeed = Math.min((long) Math.floor(Math.pow(2, 64) / model.getThreadsToUse() * (id + 1)), 1L << 64);
-
-        //System.out.println(startSeed + "     " + endSeed);
-        ///////////// Checking World ////////////////
-
+    void randomSearchingWithFeatureAndSpawn() {
 
         long startId = -Long.MAX_VALUE;
         long endId = Long.MAX_VALUE;
@@ -165,13 +167,73 @@ public class Searching_Thread extends Thread implements Runnable {
                 return;
             }
 
-            long worldSeed = threadLocalRandomizer.nextLong(-Long.MAX_VALUE, Long.MAX_VALUE);
+            long worldSeed = threadLocalRandomizer.nextLong(startSeed, endSeed);
+
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+                return;
+            }
+            BiomeSources biomeSources = new BiomeSources(worldSeed);
+            ///////////// SpawnPoint Checking ////////////////
+            BPos spawnPoint = getSpawnPoint(biomeSources.getOverworldBiomeSource());
+
+
+            Result<PassType, HashMap<Feature_Model, List<CPos>>> checkingFeatures = feature_searcher.featureSearch(spawnPoint, worldSeed, rand);
+            if (checkingFeatures.isFailure()) {
+                continue;
+            }
+
+            if (!feature_searcher.featuresCanSpawn(checkingFeatures.getData(), biomeSources, rand)) {
+                continue;
+            }
+
+            //Here we do a biome search, this can be done without structure searching
+            if (!biome_searcher.biomeSearch(biomeSources, spawnPoint)) {
+                continue;
+            }
+
+            //Once we get here the seed should be valid at no point should it make it here if its not valid
+
+            // Validate the seed after it has finished all loops
+            outputSeed(worldSeed);
+        }
+
+
+    }
+
+    void randomSearching() {
+
+//        long startSeed = (long) Math.floor(Math.pow(2, 64) / model.getThreadsToUse() * id);
+//        long endSeed = Math.min((long) Math.floor(Math.pow(2, 64) / model.getThreadsToUse() * (id + 1)), 1L << 64);
+
+        //System.out.println(startSeed + "     " + endSeed);
+        ///////////// Checking World ////////////////
+
+        //This could be done once and passed into the threads
+        long startId = -Long.MAX_VALUE;
+        long endId = Long.MAX_VALUE;
+        long range = Math.abs((long) ((endId) / ((double) model.getThreadsToUse() / 2))) + 1;
+        long startSeed = startId + range * id;
+        long endSeed;
+        if (id == model.getThreadsToUse() - 1) {
+            endSeed = endId;
+        } else {
+            endSeed = startId + range * (id + 1);
+        }
+
+        // For now this will loop within the range to make sure we stay within the range for this thread
+        //TODO pass in the ranges which the world seed can be in for now its duplicate
+        for (long seedIncrementer = startSeed; seedIncrementer < endSeed; seedIncrementer++) {
+
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+                return;
+            }
+
+            long worldSeed = threadLocalRandomizer.nextLong(startSeed, endSeed);
 
             BiomeSources biomeSources = new BiomeSources(worldSeed);
             ///////////// SpawnPoint Checking ////////////////
-            BPos spawnPoint = getSpawnPoint(worldSeed, biomeSources.getOverworldBiomeSource());
+            BPos spawnPoint = getSpawnPoint(biomeSources.getOverworldBiomeSource());
 
-            Biome_Searcher biome_searcher = new Biome_Searcher(model);
             //Here we do a biome search, this can be done without structure searching
             if (!biome_searcher.biomeSearch(biomeSources, spawnPoint)) {
                 continue;
@@ -184,14 +246,7 @@ public class Searching_Thread extends Thread implements Runnable {
         }
     }
 
-    void rangeSearch(Searcher_Model model) {
-        //This is required for feature searching
-        ChunkRand rand = new ChunkRand();
-
-        //TODO Add threading to this. Right now all the threads will search the exact same seeds.
-        ThreadLocalRandom threadLocalRandomizer = ThreadLocalRandom.current();
-
-        ///////////// Checking World ////////////////
+    void rangeSearch() {
 
         // For now this will loop within the range to make sure we stay within the range for this thread
         for (long currentSeed = model.getStartRange() + id; currentSeed < model.getEndRange(); currentSeed += model.getThreadsToUse()) {
@@ -201,7 +256,7 @@ public class Searching_Thread extends Thread implements Runnable {
             }
 
             BiomeSources biomeSources = new BiomeSources(currentSeed);
-            BPos spawnPoint = getSpawnPoint(currentSeed, biomeSources.getOverworldBiomeSource());
+            BPos spawnPoint = getSpawnPoint(biomeSources.getOverworldBiomeSource());
 
             Feature_Searcher feature_searcher = new Feature_Searcher(model);
             Result<PassType, HashMap<Feature_Model, List<CPos>>> checkingFeatures = feature_searcher.featureSearch(spawnPoint, currentSeed, rand);
@@ -227,12 +282,7 @@ public class Searching_Thread extends Thread implements Runnable {
         }
     }
 
-    void setSeedSearch(Searcher_Model model) {
-        //This is required for feature searching
-        ChunkRand rand = new ChunkRand();
-
-        //TODO Parse file to get seeds realistically this should be done outside the threads
-        List<Long> seeds = FileHelper.getSeedsAsListFromFile(model.getSeedFile());
+    void setSeedSearch() {
 
         // For now this will loop within the range to make sure we stay within the range for this thread
         for (int count = 0 + id; count < seeds.size(); count += model.getThreadsToUse()) {
@@ -244,9 +294,8 @@ public class Searching_Thread extends Thread implements Runnable {
             long currentSeed = seeds.get(count);
 
             BiomeSources biomeSources = new BiomeSources(currentSeed);
-            BPos spawnPoint = getSpawnPoint(currentSeed, biomeSources.getOverworldBiomeSource());
+            BPos spawnPoint = getSpawnPoint(biomeSources.getOverworldBiomeSource());
 
-            Feature_Searcher feature_searcher = new Feature_Searcher(model);
             Result<PassType, HashMap<Feature_Model, List<CPos>>> checkingFeatures = feature_searcher.featureSearch(spawnPoint, currentSeed, rand);
             if (checkingFeatures.isFailure()) {
                 continue;
@@ -257,7 +306,6 @@ public class Searching_Thread extends Thread implements Runnable {
                 continue;
             }
 
-            Biome_Searcher biome_searcher = new Biome_Searcher(model);
             //Here we do a biome search, this can be done without structure searching
             if (!biome_searcher.biomeSearch(biomeSources, spawnPoint)) {
                 continue;
@@ -271,7 +319,7 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    public BPos getSpawnPoint(long worldSeed, OverworldBiomeSource overworldBiomeSource) {
+    public BPos getSpawnPoint(OverworldBiomeSource overworldBiomeSource) {
 
         BPos spawnPoint;
         switch (model.getSpawnType()) {

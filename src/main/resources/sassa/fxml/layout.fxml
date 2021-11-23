@@ -1,437 +1,672 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="600.0"
-            prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="old_files.fxmlController">
-    <center>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <tabs>
-                <Tab text="Info">
-                    <content>
-                        <GridPane>
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="134.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="317.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="382.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="421.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="334.0" minHeight="0.0" prefHeight="63.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="161.0"
-                                                vgrow="SOMETIMES"/>
-                                <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES"/>
-                            </rowConstraints>
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To SASSA"
-                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                    <font>
-                                        <Font name="System Bold" size="20.0"/>
-                                    </font>
-                                </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Stand Alone Seed Searcher App)"
-                                      GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="1. To get started please select a biome(s) from the biomes tab"
-                                      GridPane.rowIndex="2">
-                                    <GridPane.margin>
-                                        <Insets left="25.0"/>
-                                    </GridPane.margin>
-                                </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="2. Set the search size within the Data Tab" GridPane.rowIndex="3">
-                                    <GridPane.margin>
-                                        <Insets left="25.0"/>
-                                    </GridPane.margin>
-                                </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="3. Choose how many seeds to find before the program stops searching"
-                                      GridPane.rowIndex="4">
-                                    <GridPane.margin>
-                                        <Insets left="25.0"/>
-                                    </GridPane.margin>
-                                </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="4. Start the searcher when all the steps are complete and found seeds will be output in the console output to the left.!"
-                                      GridPane.rowIndex="5">
-                                    <GridPane.margin>
-                                        <Insets left="25.0"/>
-                                    </GridPane.margin>
-                                </Text>
-                                <ImageView fx:id="paypalDonate" fitHeight="68.0" fitWidth="121.0"
-                                           onMouseClicked="#donate" pickOnBounds="true" preserveRatio="true"
-                                           GridPane.halignment="CENTER" GridPane.rowIndex="6">
-                                    <image>
-                                        <Image url="@../button-PayPal-donate.png"/>
-                                    </image>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                </ImageView>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Like the tool?"
-                                      GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP">
-                                    <font>
-                                        <Font name="System Bold" size="14.0"/>
-                                    </font>
-                                </Text>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="If you would like more information on specific features hover over them for a better description"
-                                      GridPane.rowIndex="7">
-                                    <GridPane.margin>
-                                        <Insets left="25.0"/>
-                                    </GridPane.margin>
-                                </Text>
-                            </children>
-                        </GridPane>
-                    </content>
-                </Tab>
-                <Tab text="Data">
-                    <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0">
-                            <children>
-                                <Text layoutX="15.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Current Rejected Seed Count:" wrappingWidth="168.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text fx:id="cRejSeedCount" layoutX="185.0" layoutY="25.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="0">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text layoutX="15.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Total Rejected Seed Count:" wrappingWidth="168.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text fx:id="tRejSeedCount" layoutX="170.0" layoutY="45.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="0">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text layoutX="15.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Total Time Elapsed:" wrappingWidth="111.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text fx:id="timeElapsed" layoutX="130.0" layoutY="65.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="00:00:00">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <ComboBox fx:id="mcVersions" layoutX="18.0" layoutY="491.0" prefHeight="25.0"
-                                          prefWidth="91.0"/>
-                                <Text layoutX="14.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Minecraft Versions"/>
-                                <TextField fx:id="seedsToFind" layoutX="110.0" layoutY="129.0" prefHeight="25.0"
-                                           prefWidth="70.0" text="10"/>
-                                <TextField fx:id="searchRadius" layoutX="110.0" layoutY="161.0" prefHeight="25.0"
-                                           prefWidth="70.0" text="512">
-                                    <tooltip>
-                                        <Tooltip
-                                                text="Search radius for blocks. so 10x10 starting at 0,0 would be -10,-10 out to 10,10. So in each direction how many blocks"/>
-                                    </tooltip>
-                                </TextField>
-                                <Text layoutX="15.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Seeds to Find"/>
-                                <Text layoutX="15.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Search Radius"/>
-                                <CheckBox fx:id="bedrockMode" layoutX="13.0" layoutY="290.0" mnemonicParsing="false"
-                                          text="Bedrock Mode"/>
-                                <CheckBox fx:id="randomSeed" layoutX="13.0" layoutY="314.0" mnemonicParsing="false"
-                                          selected="true" text="Randomized Seeds">
-                                    <tooltip>
-                                        <Tooltip
-                                                text="If you are just searching keep this on. If you have a specific seed range you would like to search through incrementally by 1 each time then turn this off and put in your seeds"/>
-                                    </tooltip>
-                                </CheckBox>
-                                <CheckBox fx:id="devMode" disable="true" layoutX="570.0" layoutY="9.0"
-                                          mnemonicParsing="false" text="Dev Mode"/>
-                                <Pane fx:id="randomSeedPane" layoutX="210.0" layoutY="138.0" prefHeight="71.0"
-                                      prefWidth="411.0" visible="false">
-                                    <children>
-                                        <Text layoutX="34.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Minimum Seed" wrappingWidth="80.12109375"/>
-                                        <Text layoutX="208.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Maximum Seed" wrappingWidth="82.037109375"/>
-                                        <TextField fx:id="minSeed" layoutY="18.0" text="-128"/>
-                                        <TextField fx:id="maxSeed" layoutX="175.0" layoutY="18.0" text="128"/>
-                                        <Text layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Current Sequenced Seed being Checked: "
-                                              wrappingWidth="232.13671875">
-                                            <font>
-                                                <Font name="System Bold" size="12.0"/>
-                                            </font>
-                                        </Text>
-                                        <Text fx:id="sequencedSeed" layoutX="236.0" layoutY="62.0" strokeType="OUTSIDE"
-                                              strokeWidth="0.0" text="0" wrappingWidth="175.90234375">
-                                            <font>
-                                                <Font name="System Bold" size="12.0"/>
-                                            </font>
-                                        </Text>
-                                    </children>
-                                </Pane>
-                                <CheckBox fx:id="setSeed" layoutX="13.0" layoutY="339.0" mnemonicParsing="false"
-                                          text="Set Seeds">
-                                    <tooltip>
-                                        <Tooltip
-                                                text="If you wish to search through a specific set of seeds, turn this option on and choose the text file to read from"/>
-                                    </tooltip>
-                                </CheckBox>
-                                <Pane fx:id="setSeedPane" layoutX="100.0" layoutY="330.0" prefHeight="35.0"
-                                      prefWidth="277.0" visible="false">
-                                    <children>
-                                        <Label fx:id="seedFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-                                               layoutX="39.0" layoutY="9.0" prefHeight="17.0" prefWidth="99.0"
-                                               text="No file selected" textAlignment="RIGHT"/>
-                                        <Button fx:id="seedFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="-1.0"
-                                                layoutY="5.0" mnemonicParsing="false">
-                                            <graphic>
-                                                <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
-                                                           preserveRatio="true">
-                                                    <image>
-                                                        <Image url="@../folder.png"/>
-                                                    </image>
-                                                </ImageView>
-                                            </graphic>
-                                            <tooltip>
-                                                <Tooltip
-                                                        text="Choose a file to save too! (If no file is chosen the default is shown)"/>
-                                            </tooltip>
-                                        </Button>
-                                    </children>
-                                </Pane>
-                                <Text fx:id="bedrockWarning" layoutX="127.0" layoutY="295.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0"
-                                      text="(Warning: With how searching works BEDROCK mode is not 100% accurate)"
-                                      visible="false" wrappingWidth="216.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Pane fx:id="worldTypePane" layoutX="134.0" layoutY="464.0" prefHeight="54.0"
-                                      prefWidth="135.0">
-                                    <children>
-                                        <ComboBox fx:id="worldType" layoutX="11.0" layoutY="28.0" prefHeight="25.0"
-                                                  prefWidth="150.0"/>
-                                        <Text layoutX="55.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="World Type"/>
-                                    </children>
-                                </Pane>
-                                <Slider fx:id="amountOfCores" layoutX="337.0" layoutY="497.0" min="1.0" value="1.0"/>
-                                <Text layoutX="337.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Cores (Threads) to use:"/>
-                                <Text fx:id="coresAmount" layoutX="464.0" layoutY="483.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="1"/>
-                                <TextField fx:id="incrementer" layoutX="110.0" layoutY="193.0" prefHeight="25.0"
-                                           prefWidth="70.0" text="50">
-                                    <tooltip>
-                                        <Tooltip
-                                                text="How many blocks to skip while searching for biomes so check every X block"/>
-                                    </tooltip>
-                                </TextField>
-                                <Text layoutX="15.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Incrementer"/>
-                                <CheckBox fx:id="shadowMode" layoutX="13.0" layoutY="364.0" mnemonicParsing="false"
-                                          text="Shadow Seeds"/>
-                                <Button fx:id="resetUIBtn" layoutX="544.0" layoutY="492.0" mnemonicParsing="false"
-                                        text="Reset GUI"/>
-                                <Text layoutX="15.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Biome Precision"/>
-                                <TextField fx:id="biomePrecision" layoutX="110.0" layoutY="227.0" prefHeight="25.0"
-                                           prefWidth="70.0" text="16">
-                                    <tooltip>
-                                        <Tooltip
-                                                text="If you notice structures are all in the same location, lower this value."/>
-                                    </tooltip>
-                                </TextField>
-                                <Text layoutX="182.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="(0 - 16)"/>
-                                <CheckBox fx:id="spawnPoint" layoutX="13.0" layoutY="389.0" mnemonicParsing="false"
-                                          text="Spawn Point"/>
-                                <Pane fx:id="spawnPointPane" layoutX="107.0" layoutY="389.0" prefHeight="48.0"
-                                      prefWidth="314.0" visible="false">
-                                    <children>
-                                        <Text layoutX="22.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="X Coord" wrappingWidth="47.12109375"/>
-                                        <Text layoutX="134.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Z Coord" wrappingWidth="46.037109375"/>
-                                        <TextField layoutY="18.0" prefHeight="25.0" prefWidth="91.0" text="0"
-                                                   fx:id="xCoordSpawn"/>
-                                        <TextField fx:id="zCoordSpawn" layoutX="111.0" layoutY="17.0" prefHeight="25.0"
-                                                   prefWidth="86.0" text="0"/>
-                                        <Text layoutX="220.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Margin of Error" wrappingWidth="82.037109375"/>
-                                        <TextField fx:id="marginOfError" layoutX="218.0" layoutY="16.0"
-                                                   prefHeight="25.0" prefWidth="86.0" text="0">
-                                            <tooltip>
-                                                <Tooltip
-                                                        text="How many blocks away can a valid spawn still be? (Even at 0, there is a small margin of error)"/>
-                                            </tooltip>
-                                        </TextField>
-                                    </children>
-                                </Pane>
-                                <Text fx:id="timeElapsedSinceLast" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="00:00:00">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                                <Text layoutX="15.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Since Last Accepted World:" wrappingWidth="157.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="12.0"/>
-                                    </font>
-                                </Text>
-                            </children>
-                        </Pane>
-                    </content>
-                </Tab>
-                <Tab fx:id="biomesTab" text="Biomes">
-                    <content>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="488.0" prefWidth="656.0">
-                            <content>
-                                <GridPane fx:id="biomesGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity"
-                                          minWidth="-Infinity" vgap="10.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                    </rowConstraints>
-                                    <padding>
-                                        <Insets top="25.0"/>
-                                    </padding>
-                                </GridPane>
-                            </content>
-                        </ScrollPane>
-                    </content>
-                </Tab>
-                <Tab fx:id="biomeSetTab" text="Biome Sets">
-                    <content>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                            <content>
-                                <GridPane fx:id="biomeSetsGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                    </rowConstraints>
-                                </GridPane>
-                            </content>
-                        </ScrollPane>
-                    </content>
-                </Tab>
-                <Tab fx:id="structuresTab" text="Structures">
-                    <content>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                            <content>
-                                <GridPane fx:id="structuresGrid" alignment="CENTER" hgap="10.0" vgap="10.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                    </rowConstraints>
-                                </GridPane>
-                            </content>
-                        </ScrollPane>
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
-    </center>
-    <left>
-        <BorderPane prefHeight="528.0" prefWidth="344.0" BorderPane.alignment="CENTER">
-            <top>
-                <Pane prefHeight="29.0" prefWidth="344.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Text layoutX="130.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                              text="Console Output"/>
-                    </children>
-                </Pane>
-            </top>
-            <center>
-                <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="492.0" prefWidth="344.0"
-                            BorderPane.alignment="CENTER">
-                    <content>
-                        <TextArea fx:id="console" editable="false" prefHeight="528.0" prefWidth="341.0"/>
-                    </content>
-                </ScrollPane>
-            </center>
-        </BorderPane>
-    </left>
-    <bottom>
-        <BorderPane prefHeight="34.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-            <right>
-                <Text fx:id="notificationLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Offline"
-                      BorderPane.alignment="CENTER">
-                    <BorderPane.margin>
-                        <Insets right="20.0"/>
-                    </BorderPane.margin>
-                </Text>
-            </right>
-            <left>
-                <Pane prefHeight="24.0" prefWidth="343.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Button fx:id="saveConsole" layoutX="8.0" layoutY="5.0" mnemonicParsing="false"
-                                text="Save Output">
-                            <tooltip>
-                                <Tooltip text="Manually save the entire console to a file"/>
-                            </tooltip>
-                        </Button>
-                        <CheckBox fx:id="autoSaveConsole" layoutX="103.0" layoutY="9.0" mnemonicParsing="false"
-                                  text="Auto Save">
-                            <tooltip>
-                                <Tooltip text="This will automatically save any new text in the console"/>
-                            </tooltip>
-                        </CheckBox>
-                        <Button fx:id="outputFileBrowser" contentDisplay="GRAPHIC_ONLY" layoutX="309.0" layoutY="4.0"
-                                mnemonicParsing="false">
-                            <graphic>
-                                <ImageView fitHeight="18.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../folder.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Choose a file to save too! (If no file is chosen the default is shown)"/>
-                            </tooltip>
-                        </Button>
-                        <Label fx:id="logFileText" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="202.0"
-                               layoutY="9.0" prefHeight="17.0" prefWidth="99.0" text="sassa_output.txt"
-                               textAlignment="RIGHT"/>
-                    </children>
-                </Pane>
-            </left>
-            <center>
-                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Button id="startBtn" fx:id="startBtn" layoutX="120.0" layoutY="5.0" mnemonicParsing="false"
-                                prefWidth="41.0" text="Start">
-                            <tooltip>
-                                <Tooltip text="Start and Stop the seed searcher"/>
-                            </tooltip>
-                        </Button>
-                        <Button fx:id="clearBtn" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" text="Clear"/>
-                    </children>
-                </Pane>
-            </center>
-        </BorderPane>
-    </bottom>
-</BorderPane>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="615.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.fxml.Layout">
+   <children>
+      <BorderPane prefHeight="615.0" prefWidth="915.0">
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <center>
+                  <Accordion BorderPane.alignment="CENTER">
+                    <panes>
+                      <TitledPane animated="false" text="Searching Stats">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                          <HBox prefHeight="439.0" prefWidth="613.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <VBox prefHeight="439.0" prefWidth="345.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Total Time Elapsed" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                               <children>
+                                                                  <Label text="00:00" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Time Since Last Valid Seed" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                               <children>
+                                                                  <Label text="00:00" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Current Rejected Seed Count" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                               <children>
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Total Rejected Seed Count" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                               <children>
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Amount of Seeds Left To Find" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                               <children>
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <StackPane prefHeight="439.0" prefWidth="269.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                                                         <children>
+                                                            <Label text="Set Seed Options">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="20.0" top="10.0" />
+                                                               </VBox.margin>
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                               <children>
+                                                                  <VBox alignment="CENTER_RIGHT" prefHeight="45.0" HBox.hgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label prefHeight="17.0" text="Seed List File Path" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                           <padding>
+                                                                              <Insets left="10.0" />
+                                                                           </padding>
+                                                                        </Label>
+                                                                     </children>
+                                                                     <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                     </HBox.margin>
+                                                                  </VBox>
+                                                                  <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="45.0" prefWidth="150.0">
+                                                                     <HBox.margin>
+                                                                        <Insets left="5.0" />
+                                                                     </HBox.margin>
+                                                                     <children>
+                                                                        <Button mnemonicParsing="false">
+                                                                           <graphic>
+                                                                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
+                                                                           </graphic>
+                                                                        </Button>
+                                                                     </children>
+                                                                  </VBox>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                               <children>
+                                                                  <Label text="Loaded File:">
+                                                                     <padding>
+                                                                        <Insets right="5.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                                  <Label text="PATH">
+                                                                     <padding>
+                                                                        <Insets left="5.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                          </HBox>
+                                       </center>
+                                       <bottom>
+                                          <HBox alignment="CENTER" prefHeight="34.0" prefWidth="594.0" spacing="75.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Button defaultButton="true" mnemonicParsing="false" text="Start" />
+                                                <Button mnemonicParsing="false" text="Save Output" />
+                                                <Button mnemonicParsing="false" text="Clear Output" />
+                                                <Button mnemonicParsing="false" text="Reset UI" />
+                                             </children>
+                                          </HBox>
+                                       </bottom>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                      </TitledPane>
+                      <TitledPane animated="false" prefHeight="465.0" prefWidth="599.0" text="Searching Settings">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <HBox prefHeight="439.0" prefWidth="613.0">
+                                       <children>
+                                          <VBox prefHeight="439.0" prefWidth="345.0">
+                                             <children>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Amount of Seeds To Find" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="115.0" promptText="10" VBox.vgrow="NEVER" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Search Radius" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="115.0" promptText="512" VBox.vgrow="NEVER" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Incrementer" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="115.0" promptText="50" VBox.vgrow="NEVER" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Biome Precision" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="115.0" promptText="0-16" VBox.vgrow="NEVER" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Search Type" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Spawn Type" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="World Type" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Minecraft Version" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Threads To Use: " wrapText="true">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                                  <Label text="1">
+                                                                     <HBox.margin>
+                                                                        <Insets left="5.0" />
+                                                                     </HBox.margin>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <Slider prefWidth="115.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Auto-Save Seed Output" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <CheckBox mnemonicParsing="false" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <Label prefHeight="17.0" text="Auto-Save File Path Select" wrapText="true" VBox.vgrow="ALWAYS">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                            <Label text="/sassa_output.txt">
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="130.0">
+                                                         <children>
+                                                            <Button mnemonicParsing="false">
+                                                               <graphic>
+                                                                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@../folder-grey.png" />
+                                                                     </image>
+                                                                  </ImageView>
+                                                               </graphic>
+                                                            </Button>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <StackPane prefHeight="439.0" prefWidth="342.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                                                   <children>
+                                                      <Label text="Set Seed Options">
+                                                         <VBox.margin>
+                                                            <Insets bottom="20.0" top="10.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_RIGHT" prefHeight="45.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Seed List File Path" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                               </children>
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="45.0" prefWidth="150.0">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" />
+                                                               </HBox.margin>
+                                                               <children>
+                                                                  <Button mnemonicParsing="false">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../folder-grey.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                  </Button>
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <Label text="Loaded File:">
+                                                               <padding>
+                                                                  <Insets right="5.0" />
+                                                               </padding>
+                                                            </Label>
+                                                            <Label text="/seeds.txt">
+                                                               <padding>
+                                                                  <Insets left="5.0" />
+                                                               </padding>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                                                   <children>
+                                                      <Label text="Range Search Options">
+                                                         <VBox.margin>
+                                                            <Insets bottom="20.0" top="10.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_RIGHT" prefHeight="45.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="Start Range" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                               </children>
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="45.0" prefWidth="150.0">
+                                                               <children>
+                                                                  <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="93.0" VBox.vgrow="NEVER" />
+                                                               </children>
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" />
+                                                               </HBox.margin>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="297.0">
+                                                         <children>
+                                                            <VBox alignment="CENTER_RIGHT" prefHeight="45.0" HBox.hgrow="ALWAYS">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" text="End Range" wrapText="true" VBox.vgrow="ALWAYS">
+                                                                     <padding>
+                                                                        <Insets left="10.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                               </children>
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </VBox>
+                                                            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="45.0" prefWidth="150.0">
+                                                               <children>
+                                                                  <TextField alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="93.0" VBox.vgrow="NEVER" />
+                                                               </children>
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" />
+                                                               </HBox.margin>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </TitledPane>
+                      <TitledPane animated="false" text="Biome ">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </TitledPane>
+                        <TitledPane animated="false" text="Biome Sets ">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                        </TitledPane>
+                        <TitledPane animated="false" layoutX="10.0" layoutY="85.0" text="Structure ">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" layoutX="10.0" layoutY="575.0" text="Presets">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                    </panes>
+                  </Accordion>
+               </center>
+               <left>
+                  <ScrollPane prefHeight="590.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                     <content>
+                        <VBox prefHeight="588.0" prefWidth="285.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="16.0" prefWidth="285.0">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="209.0" text="9,223,372,036,854,775,807" wrapText="true" VBox.vgrow="ALWAYS">
+                                             <padding>
+                                                <Insets left="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="62.0">
+                                       <children>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="64.0" spacing="5.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" />
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </left>
+            </BorderPane>
+         </center>
+         <top>
+            <StackPane prefWidth="915.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <Label text="SASSA" />
+               </children>
+            </StackPane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

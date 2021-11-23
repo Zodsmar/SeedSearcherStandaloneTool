@@ -47,14 +47,14 @@ public class Searcher_Model implements Cloneable, Serializable {
     public Searcher_Model() {
         this.configName = "default";
         this.seedsToFind = 10;
-        this.searchRadius = 300;
-        this.incrementer = 50;
-        this.biomePrecision = 16;
+        this.searchRadius = 100;
+        this.incrementer = 25;
+        this.biomePrecision = 0;
         this.searchType = SearchType.RANDOM_SEARCH;
         this.selectedVersion = MCVersion.latest();
         this.worldType = WorldType.DEFAULT;
         this.threadsToUse = 5;
-        this.spawnType = SpawnType.ZERO_ZERO;
+        this.spawnType = SpawnType.APPROXIMATE;
         this.biomeList = new BiomeList_Model();
         this.biomeSetList = new BiomeSetList_Model();
         this.includedFeatures = new FeatureList_Model();

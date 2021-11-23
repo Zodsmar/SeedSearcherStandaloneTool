@@ -2,14 +2,19 @@ package sassa;
 
 import com.seedfinding.mcbiome.biome.Biomes;
 import sassa.enums.BiomeListType;
+import sassa.enums.SearchType;
 import sassa.models.BiomeSet_Model;
+import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
+import sassa.models.features.Feature_Registry;
 import sassa.searcher.Searching_Thread;
 import sassa.util.ConfigParser;
+import sassa.util.FileHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 // The New MAIN FILE. This will get renamed later
 public class Main {
@@ -41,11 +46,12 @@ public class Main {
 //        }
 
 
-        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FLOWER_FOREST, Biomes.ICE_PLAINS_SPIKES), BiomeListType.INCLUDED);
+        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST), BiomeListType.INCLUDED);
         //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST, Biomes.PLAINS, Biomes.JUNGLE, Biomes.DESERT), BiomeListType.EXCLUDED);
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.ZOMBIEVILLAGE, 2)));
+        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE), new Feature_Model(Feature_Registry.OWRUINEDPORTAL)));
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 4), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
-        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2)));
+        //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.ZOMBIEVILLAGE), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
         //configParser.WriteConfigFile(defaultModel);
         if (preliminaryChecks(defaultModel)) {
             //This call is to create the features for the current version you are searching and is strickly a runtime variable
@@ -76,12 +82,18 @@ public class Main {
     }
 
     static void createNewThreads(Searcher_Model model) {
+        List<Long> seeds;
+        if (defaultModel.getSearchType() == SearchType.SET_SEED_SEARCH) {
+            seeds = FileHelper.getSeedsAsListFromFile(model.getSeedFile());
+        } else {
+            seeds = new ArrayList<>();
+        }
 
         for (int i = 0; i < model.getThreadsToUse(); i++) {
 
             //Since it is multithreaded, we want to make sure that each thread starts at different seeds and goes up sequentially
 
-            Thread t = new Searching_Thread(model, i);
+            Thread t = new Searching_Thread(model, i, seeds);
             t.start();
             System.out.format("%d Thread Running \n", i);
             currentThreads.add(t);
