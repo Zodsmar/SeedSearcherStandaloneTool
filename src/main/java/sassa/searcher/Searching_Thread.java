@@ -72,8 +72,6 @@ public class Searching_Thread extends Thread implements Runnable {
                 rangeSearch();
                 break;
         }
-
-
     }
 
 

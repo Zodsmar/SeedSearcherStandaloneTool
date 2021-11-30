@@ -1,6 +1,11 @@
 package sassa;
 
 import com.seedfinding.mcbiome.biome.Biomes;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import sassa.enums.BiomeListType;
 import sassa.enums.SearchType;
 import sassa.models.BiomeSet_Model;
@@ -17,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 // The New MAIN FILE. This will get renamed later
-public class Main {
+public class Main extends Application {
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
     public static Searcher_Model defaultModel;
@@ -25,7 +30,6 @@ public class Main {
     //This is going to be the new starting file will rename to Main after the refactor is complete
     public static void main(String[] args) throws CloneNotSupportedException, IOException, InterruptedException {
         ConfigParser configParser = new ConfigParser();
-
 
         if (args.length > 0) {
             //TODO I need to make this path not hardcoded
@@ -35,39 +39,41 @@ public class Main {
 
             defaultModel = new Searcher_Model();
         }
+        //
 
-
-//        for (long i = startId, j = 0; j < defaultModel.getThreadsToUse(); i += range, j++) {
-//            if (j == defaultModel.getThreadsToUse() - 1) {
-//                System.out.println("Start: " + i + " End: " + (endId));
-//            } else {
-//                System.out.println("Start: " + i + " End: " + (i + range));
-//            }
-//        }
-
-
-        defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST), BiomeListType.INCLUDED);
+        //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST), BiomeListType.INCLUDED);
         //defaultModel.getBiomeList().addBiomes(Arrays.asList(Biomes.FOREST, Biomes.PLAINS, Biomes.JUNGLE, Biomes.DESERT), BiomeListType.EXCLUDED);
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.ZOMBIEVILLAGE, 2)));
-        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE), new Feature_Model(Feature_Registry.OWRUINEDPORTAL)));
+        defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 2), new Feature_Model(Feature_Registry.OWRUINEDPORTAL), new Feature_Model(Feature_Registry.PILLAGEROUTPOST), new Feature_Model(Feature_Registry.ZOMBIEVILLAGE)));
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 4), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.ZOMBIEVILLAGE), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
         //configParser.WriteConfigFile(defaultModel);
+
+        Application.launch(args);
+
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/sassa/fxml/layout.fxml"));
+        BorderPane window = loader.load();
+
+        Scene scene = new Scene(window);
+        // scene.getStylesheets().add("/sassa/ui.css");
+        // mainStage.setTitle("Sassa-" + VERSION);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    public static void beginThreads() {
         if (preliminaryChecks(defaultModel)) {
             //This call is to create the features for the current version you are searching and is strickly a runtime variable
             defaultModel.setFeatureList(defaultModel.getIncludedFeatures().getCreatedFeatureListFromVersion(defaultModel.getSelectedVersion()));
 
             createNewThreads(defaultModel);
         }
-
-
-        /////// TESTING SECTION //////
-
-        //Search radius must always be at least 1.
-
-        //TestGenerateConfigs("Wow", defaultModel, configParser);
-
-
     }
 
     static boolean preliminaryChecks(Searcher_Model model) {
@@ -146,5 +152,6 @@ public class Main {
 
         parser.WriteConfigFile(model);
     }
+
 
 }
