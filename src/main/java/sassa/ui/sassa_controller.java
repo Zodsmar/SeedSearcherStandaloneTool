@@ -1,12 +1,16 @@
 package sassa.ui;
 
+import com.seedfinding.mcbiome.biome.Biome;
+import com.seedfinding.mcbiome.biome.Biomes;
 import com.seedfinding.mccore.version.MCVersion;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import sassa.Main;
+import sassa.enums.BiomeListType;
 import sassa.enums.SearchType;
 import sassa.enums.SpawnType;
 import sassa.enums.WorldType;
@@ -15,8 +19,12 @@ import sassa.models.Searcher_Model;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 
 public class sassa_controller {
+
+    List<String> inex = Arrays.asList(" ", "INCLUDE", "EXCLUDE");
 
     @FXML
     ChoiceBox search_type, spawn_type, world_type, minecraft_version;
@@ -29,6 +37,9 @@ public class sassa_controller {
 
     @FXML
     Label thread_number;
+
+    @FXML
+    FlowPane biomes_grid;
 
     @FXML
 
@@ -50,6 +61,8 @@ public class sassa_controller {
         setupTextFields(seeds_to_find_input, Searcher_Model.class.getMethod("setSeedsToFind", int.class));
 
         setupSlider(thread_slider, thread_number, Searcher_Model.class.getMethod("setThreadsToUse", int.class));
+
+        setupGridPane(biomes_grid);
 
         rebuild();
     }
@@ -88,6 +101,55 @@ public class sassa_controller {
 
     //region SETUP UI
 
+    void setupGridPane(FlowPane flow) {
+        //List<String> allBiomesAsStrings = new ArrayList<>();
+        Object[] allBiomes = Biomes.REGISTRY.values().toArray();
+        //Biomes.REGISTRY.values().forEach(biome -> allBiomesAsStrings.add(biome.getName()));
+        for (int i = 0; i < Biomes.REGISTRY.size(); i++) {
+
+            Biome curBiome = (Biome) allBiomes[i];
+
+            VBox tempVBox = new VBox();
+            tempVBox.setAlignment(Pos.CENTER);
+            tempVBox.setPrefWidth(200);
+            tempVBox.setPrefHeight(75);
+            tempVBox.setSpacing(10);
+
+
+            Label tempText = new Label(((Biome) allBiomes[i]).getName());
+            ComboBox<String> temp = new ComboBox<>(FXCollections.observableArrayList(inex));
+            temp.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null) {
+                    if (newVal == "INCLUDE") {
+                        Main.defaultModel.getBiomeList().addBiome(curBiome, BiomeListType.INCLUDED);
+                    }
+                    if (newVal == "EXCLUDE") {
+                        Main.defaultModel.getBiomeList().addBiome(curBiome, BiomeListType.EXCLUDED);
+                    }
+                    if (newVal == " ") {
+                        Main.defaultModel.getBiomeList().removeBiome(curBiome);
+                    }
+                }
+            });
+
+            tempVBox.getChildren().add(tempText);
+            tempVBox.getChildren().add(temp);
+
+
+            flow.setVgap(5);
+            flow.getChildren().add(tempVBox);
+//                    if(textField == true) {
+//
+//                        TextField tempField = new TextField();
+//                        tempField.setMaxWidth(50);
+//                        tempField.setTooltip(new Tooltip("How many structures do you want to have? (Default if blank is 1 and its a minimum value)"));
+//                        tempGrid.getChildren().add(tempField);
+//                    }
+
+
+        }
+    }
+
     void setupSlider(Slider slider, Label label, Method method) {
         slider.setMin(1);
         slider.setMax(Runtime.getRuntime().availableProcessors());
@@ -115,7 +177,8 @@ public class sassa_controller {
         }
 
         choiceBox.setOnAction((event) -> {
-            Object selectedItem = choiceBox.getSelectionModel().getSelectedItem();
+            Object selectedItem = choiceBox.getValue();
+            System.out.println(type[0].getType());
             try {
                 method.invoke(Main.defaultModel, type[0].getType().cast(selectedItem));
             } catch (IllegalAccessException e) {

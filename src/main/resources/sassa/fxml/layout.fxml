@@ -5,8 +5,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane prefHeight="615.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.ui.sassa_controller">
+<BorderPane prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sassa.ui.sassa_controller">
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <center>
@@ -724,7 +724,18 @@
                         </TitledPane>
                         <TitledPane animated="false" text="Biome ">
                             <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0"
+                                                    prefWidth="200.0" AnchorPane.bottomAnchor="-10.0"
+                                                    AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-10.0"
+                                                    AnchorPane.topAnchor="-10.0">
+                                            <content>
+                                                <FlowPane fx:id="biomes_grid"/>
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </AnchorPane>
                             </content>
                         </TitledPane>
                         <TitledPane animated="false" text="Biome Sets ">

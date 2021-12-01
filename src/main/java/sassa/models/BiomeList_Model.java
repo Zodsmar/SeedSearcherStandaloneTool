@@ -23,7 +23,7 @@ public class BiomeList_Model implements Cloneable, Serializable {
         this.excludedBiomes = excludedBiomes;
     }
 
-    public void addBiome(Biome biome, BiomeListType type) {
+    public BiomeList_Model addBiome(Biome biome, BiomeListType type) {
         if (type == BiomeListType.INCLUDED) {
             includedBiomes.add(biome);
             excludedBiomes.remove(biome);
@@ -31,6 +31,7 @@ public class BiomeList_Model implements Cloneable, Serializable {
             includedBiomes.remove(biome);
             excludedBiomes.add(biome);
         }
+        return null;
     }
 
     public boolean isEmpty() {
@@ -80,4 +81,8 @@ public class BiomeList_Model implements Cloneable, Serializable {
     }
 
 
+    public void removeBiome(Biome curBiome) {
+        includedBiomes.remove(curBiome);
+        excludedBiomes.remove(curBiome);
+    }
 }

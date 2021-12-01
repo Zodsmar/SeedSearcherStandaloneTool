@@ -1,11 +1,6 @@
 package sassa;
 
 import com.seedfinding.mcbiome.biome.Biomes;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import sassa.enums.BiomeListType;
 import sassa.enums.SearchType;
 import sassa.models.BiomeSet_Model;
@@ -13,31 +8,43 @@ import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
 import sassa.models.features.Feature_Registry;
 import sassa.searcher.Searching_Thread;
+import sassa.ui.ui_application;
 import sassa.util.ConfigParser;
 import sassa.util.FileHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 // The New MAIN FILE. This will get renamed later
-public class Main extends Application {
+public class Main {
 
     private static ArrayList<Thread> currentThreads = new ArrayList<>();
     public static Searcher_Model defaultModel;
 
     //This is going to be the new starting file will rename to Main after the refactor is complete
-    public static void main(String[] args) throws CloneNotSupportedException, IOException, InterruptedException {
+    //args are model path, headless,
+    public static void main(String[] args) {
         ConfigParser configParser = new ConfigParser();
-
-        if (args.length > 0) {
-            //TODO I need to make this path not hardcoded
-            defaultModel = configParser.ReadConfigFile(args[0]);
-
-        } else {
-
+        if (args.length == 0) {
             defaultModel = new Searcher_Model();
+            ui_application ui = new ui_application();
+            ui.startGUI(args);
+        }
+        if (args.length > 0) {
+            if (args.length > 1) {
+                defaultModel = configParser.ReadConfigFile(args[0]);
+            } else {
+                defaultModel = new Searcher_Model();
+            }
+            //TODO I need to make this path not hardcoded
+            if (args[0].equals("headless")) {
+                beginThreads();
+            } else if (args[0].equals("gui")) {
+                ui_application ui = new ui_application();
+                ui.startGUI(args);
+            }
+
         }
         //
 
@@ -49,21 +56,6 @@ public class Main extends Application {
         //defaultModel.getIncludedFeatures().addFeatures(Arrays.asList(new Feature_Model(Feature_Registry.VILLAGE, 3), new Feature_Model(Feature_Registry.OWRUINEDPORTAL, 2), new Feature_Model(Feature_Registry.ZOMBIEVILLAGE), new Feature_Model(Feature_Registry.PILLAGEROUTPOST)));
         //configParser.WriteConfigFile(defaultModel);
 
-        Application.launch(args);
-
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/sassa/fxml/layout.fxml"));
-        BorderPane window = loader.load();
-
-        Scene scene = new Scene(window);
-        // scene.getStylesheets().add("/sassa/ui.css");
-        // mainStage.setTitle("Sassa-" + VERSION);
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
     }
 
