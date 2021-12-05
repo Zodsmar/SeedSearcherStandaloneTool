@@ -40,7 +40,7 @@ public class sassa_controller implements Initializable {
     ChoiceBox search_type, spawn_type, world_type, minecraft_version;
 
     @FXML
-    TextField biome_precision_input, search_radius_input, incrementer_input, seeds_to_find_input;
+    TextField biome_precision_input, search_radius_input, incrementer_input, seeds_to_find_input, range_start_seed_input, range_end_seed_input;
 
     @FXML
     Slider thread_slider;
@@ -92,6 +92,8 @@ public class sassa_controller implements Initializable {
             setupTextFields(search_radius_input, Searcher_Model.class.getMethod("setSearchRadius", int.class));
             setupTextFields(incrementer_input, Searcher_Model.class.getMethod("setIncrementer", int.class));
             setupTextFields(seeds_to_find_input, Searcher_Model.class.getMethod("setSeedsToFind", int.class));
+            setupTextFields(range_start_seed_input, Searcher_Model.class.getMethod("setStartRange", long.class));
+            setupTextFields(range_end_seed_input, Searcher_Model.class.getMethod("setEndRange", long.class));
 
             setupSlider(thread_slider, thread_number, Searcher_Model.class.getMethod("setThreadsToUse", int.class));
 
@@ -110,6 +112,8 @@ public class sassa_controller implements Initializable {
         updateTextFields(search_radius_input, Main.defaultModel.getSearchRadius());
         updateTextFields(incrementer_input, Main.defaultModel.getIncrementer());
         updateTextFields(seeds_to_find_input, Main.defaultModel.getSeedsToFind());
+        updateTextFields(range_start_seed_input, Main.defaultModel.getStartRange());
+        updateTextFields(range_end_seed_input, Main.defaultModel.getStartRange());
 
         updateChoiceBox(search_type, Main.defaultModel.getSearchType());
         updateChoiceBox(world_type, Main.defaultModel.getWorldType());
@@ -171,7 +175,7 @@ public class sassa_controller implements Initializable {
 
     //region UPDATE UI
 
-    void updateTextFields(TextField textField, int defaultValue) {
+    <E> void updateTextFields(TextField textField, E defaultValue) {
         textField.setText(String.valueOf(defaultValue));
     }
 
@@ -366,9 +370,14 @@ public class sassa_controller implements Initializable {
     }
 
     void setupTextFields(TextField textField, Method method) {
+        Parameter[] type = method.getParameters();
         textField.textProperty().addListener((obs, oldText, newText) -> {
             try {
-                method.invoke(Main.defaultModel, Integer.parseInt(newText));
+                if (type[0].getType() == int.class) {
+                    method.invoke(Main.defaultModel, Integer.parseInt(newText));
+                } else {
+                    method.invoke(Main.defaultModel, Long.parseLong(newText));
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
