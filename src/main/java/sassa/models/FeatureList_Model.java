@@ -52,6 +52,27 @@ public class FeatureList_Model {
     }
 
 
+    public void removeFeature(String name) {
+        for (int i = 0; i < featureList.size(); i++) {
+            if (featureList.get(i).getFeatureAsString() == name) {
+                featureList.remove(featureList.get(i));
+                return;
+
+            }
+        }
+
+    }
+
+    public Feature_Model getFeatureModelFromName(String name) {
+
+        for (int i = 0; i < featureList.size(); i++) {
+            if (featureList.get(i).getFeatureAsString() == name) {
+                return featureList.get(i);
+
+            }
+        }
+        return null;
+    }
 }
 
 

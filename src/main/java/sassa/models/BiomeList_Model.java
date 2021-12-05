@@ -85,4 +85,5 @@ public class BiomeList_Model implements Cloneable, Serializable {
         includedBiomes.remove(curBiome);
         excludedBiomes.remove(curBiome);
     }
+
 }

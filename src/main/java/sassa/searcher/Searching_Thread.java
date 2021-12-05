@@ -6,11 +6,13 @@ import com.seedfinding.mccore.util.pos.BPos;
 import com.seedfinding.mccore.util.pos.CPos;
 import com.seedfinding.mcfeature.misc.SpawnPoint;
 import com.seedfinding.mcterrain.terrain.OverworldTerrainGenerator;
+import javafx.application.Platform;
 import sassa.Main;
 import sassa.enums.PassType;
 import sassa.enums.SpawnType;
 import sassa.models.Feature_Model;
 import sassa.models.Searcher_Model;
+import sassa.ui.ui_application;
 import sassa.util.BiomeSources;
 import sassa.util.Result;
 
@@ -30,7 +32,7 @@ public class Searching_Thread extends Thread implements Runnable {
 
     List<Long> seeds;
 
-    static AtomicInteger currentSeedCount = new AtomicInteger(0);
+    public static AtomicInteger currentSeedCount = new AtomicInteger(0);
 
     int id;
 
@@ -91,7 +93,7 @@ public class Searching_Thread extends Thread implements Runnable {
         // For now this will loop within the range to make sure we stay within the range for this thread
         for (long structureSeedIncrementer = startFeatureSeed; structureSeedIncrementer < endFeatureSeed; structureSeedIncrementer++) {
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
 
@@ -115,7 +117,7 @@ public class Searching_Thread extends Thread implements Runnable {
                 long worldSeed = (upperBits << 48) | structureSeed;
 
 
-                if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+                if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                     return;
                 }
 
@@ -161,13 +163,13 @@ public class Searching_Thread extends Thread implements Runnable {
         //TODO pass in the ranges which the world seed can be in for now its duplicate
         for (long seedIncrementer = startSeed; seedIncrementer < endSeed; seedIncrementer++) {
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
 
             long worldSeed = threadLocalRandomizer.nextLong(startSeed, endSeed);
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
             BiomeSources biomeSources = new BiomeSources(worldSeed);
@@ -222,7 +224,7 @@ public class Searching_Thread extends Thread implements Runnable {
         //TODO pass in the ranges which the world seed can be in for now its duplicate
         for (long seedIncrementer = startSeed; seedIncrementer < endSeed; seedIncrementer++) {
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
 
@@ -249,7 +251,7 @@ public class Searching_Thread extends Thread implements Runnable {
         // For now this will loop within the range to make sure we stay within the range for this thread
         for (long currentSeed = model.getStartRange() + id; currentSeed < model.getEndRange(); currentSeed += model.getThreadsToUse()) {
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
 
@@ -285,7 +287,7 @@ public class Searching_Thread extends Thread implements Runnable {
         // For now this will loop within the range to make sure we stay within the range for this thread
         for (int count = 0 + id; count < seeds.size(); count += model.getThreadsToUse()) {
 
-            if (model.getSeedsToFind() - 1 < currentSeedCount.get()) {
+            if (model.getSeedsToFind() - 1 < currentSeedCount.get() || Thread.interrupted()) {
                 return;
             }
 
@@ -337,12 +339,32 @@ public class Searching_Thread extends Thread implements Runnable {
     }
 
 
-    void outputSeed(long seed) {
+    synchronized void outputSeed(long seed) {
         // This is only because if what you are searching will pass pretty much everytime it can go over the limit
         // Ideally I would like to avoid this
-        if (model.getSeedsToFind() - 1 >= currentSeedCount.get()) {
+        if (model.getSeedsToFind() - 1 >= currentSeedCount.get() && !Thread.interrupted()) {
             //TODO Have this talk to the GUI or update a variable somewhere to keep track of the seeds
+
+            //Spawn the seed
+            try {
+                ui_application.mainController.spawnSeed(String.valueOf(seed));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Show it in console
             System.out.format("%d: Found world seed %d\n ", currentSeedCount.incrementAndGet(), seed);
+
+            //Once we finish we need to reset the stop button
+            if (currentSeedCount.get() >= model.getSeedsToFind() - 1) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ui_application.mainController.stopButton();
+                    }
+                });
+            }
+
+
         }
     }
 
@@ -350,6 +372,7 @@ public class Searching_Thread extends Thread implements Runnable {
     @Override
     public void run() {
         try {
+            Searching_Thread.currentSeedCount.set(0);
             searching();
         } catch (IOException e) {
             System.out.println("IO Exception");

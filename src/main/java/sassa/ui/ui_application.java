@@ -12,11 +12,14 @@ public class ui_application extends Application {
         Application.launch(args);
     }
 
+    public static sassa_controller mainController;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/sassa/fxml/layout.fxml"));
         BorderPane window = loader.load();
+        mainController = loader.getController();
 
         Scene scene = new Scene(window);
         // scene.getStylesheets().add("/sassa/ui.css");

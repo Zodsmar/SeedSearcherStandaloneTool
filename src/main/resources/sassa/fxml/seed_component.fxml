@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<HBox alignment="CENTER" prefHeight="16.0" prefWidth="285.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="sassa.ui.seeddisplay_controller">
+    <children>
+        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="142.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label fx:id="seed_label" prefHeight="17.0" prefWidth="209.0" text="9,223,372,036,854,775,807"
+                       wrapText="true" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets left="10.0"/>
+                    </padding>
+                </Label>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="45.0" prefWidth="62.0">
+            <children>
+                <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="64.0" spacing="5.0">
+                    <children>
+                        <Button fx:id="copy_clipboard" onAction="#setCopy_clipboard" mnemonicParsing="false"
+                                prefHeight="25.0" prefWidth="25.0">
+                            <graphic>
+                                <ImageView fitHeight="15.0"
+                                           fitWidth="15.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../clipboard.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="show_thumbnail" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>

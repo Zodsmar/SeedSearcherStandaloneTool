@@ -105,6 +105,7 @@ public class Main {
                 t.interrupt();
             }
         }
+
         System.out.println("Stopped all threads");
         currentThreads = new ArrayList<>();
     }

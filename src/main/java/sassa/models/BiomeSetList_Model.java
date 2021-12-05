@@ -1,5 +1,7 @@
 package sassa.models;
 
+import com.seedfinding.mcbiome.biome.Biome;
+import com.seedfinding.mcbiome.biome.Biomes;
 import sassa.enums.BiomeListType;
 
 import java.io.Serializable;
@@ -43,6 +45,17 @@ public class BiomeSetList_Model implements Cloneable, Serializable {
         return false;
     }
 
+    public void addBiomeSetListFromCategory(Biome.Category category, BiomeListType type) {
+        List<Biome> biomes = new ArrayList<>();
+        Biomes.REGISTRY.forEach((integer, biome) -> {
+            if (biome.getCategory().equals(category)) {
+                biomes.add(biome);
+            }
+        });
+        BiomeSet_Model bModel = new BiomeSet_Model(category.name(), biomes);
+        addBiomeSetList(bModel, type);
+    }
+
     public void addBiomeSetList(BiomeSet_Model biomeSet, BiomeListType type) {
         if (type == BiomeListType.INCLUDED) {
             includedBiomeSet.add(biomeSet);
@@ -67,5 +80,20 @@ public class BiomeSetList_Model implements Cloneable, Serializable {
 
     public void setExcludedBiomeSet(List<BiomeSet_Model> excludedBiomeSet) {
         this.excludedBiomeSet = excludedBiomeSet;
+    }
+
+    public void removeBiomeSetListFromCategory(Biome.Category curCategory) {
+        for (int i = 0; i < excludedBiomeSet.size(); i++) {
+            System.out.println(excludedBiomeSet.get(i).getName());
+            System.out.println(curCategory.getName().toUpperCase());
+            if (excludedBiomeSet.get(i).getName().equals(curCategory.getName().toUpperCase())) {
+                excludedBiomeSet.remove(i);
+            }
+        }
+        for (int i = 0; i < includedBiomeSet.size(); i++) {
+            if (includedBiomeSet.get(i).getName().equals(curCategory.getName().toUpperCase())) {
+                includedBiomeSet.remove(i);
+            }
+        }
     }
 }
