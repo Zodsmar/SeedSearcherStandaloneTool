@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SearchingThread extends Thread implements Runnable{
+public class SearchingThread extends Thread implements Runnable {
 
     private long startSeedStructure, endSeedStructure;
     private ArrayList<StructureProvider> structuresIN;
@@ -63,16 +63,16 @@ public class SearchingThread extends Thread implements Runnable{
         boolean startNotRandom = false, endOfRandoms = false;
         long randomSeed = 0;
         ArrayList<String> seeds = new ArrayList<String>();
-        while ( Long.parseLong(sg.getSeedCount().getText()) > Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
+        while (Long.parseLong(sg.getSeedCount().getText()) > Variables.acceptedWorlds() && fxmlController.running == true && endOfRandoms == false) {
 
 
-            if(!sg.getRandomSeed().isSelected() && startNotRandom == false && !sg.getSetSeed().isSelected()){
+            if (!sg.getRandomSeed().isSelected() && startNotRandom == false && !sg.getSetSeed().isSelected()) {
                 randomSeed = Long.parseLong(sg.getMinSeed().getText());
                 startNotRandom = true;
                 Variables.updateCurrentSeed(randomSeed);
-            } else if (!sg.getRandomSeed().isSelected() && startNotRandom == true && !sg.getSetSeed().isSelected()){
+            } else if (!sg.getRandomSeed().isSelected() && startNotRandom == true && !sg.getSetSeed().isSelected()) {
                 randomSeed = Long.parseLong(sg.getMinSeed().getText());
-                if(randomSeed >= Long.parseLong(sg.getMaxSeed().getText())){
+                if (randomSeed >= Long.parseLong(sg.getMaxSeed().getText())) {
                     break;
                 }
 
@@ -89,12 +89,12 @@ public class SearchingThread extends Thread implements Runnable{
                 }
                 //randomSeed = Long.parseLong(seeds.get(0));
                 seeds.remove(0);
-                if(randomSeed == -1){
+                if (randomSeed == -1) {
                     break;
                 }
             } else {
                 //randomSeed = Long.parseLong(sg.getMinSeed().getText());
-                if(sg.getBedrockMode().isSelected()){
+                if (sg.getBedrockMode().isSelected()) {
                     randomSeed = new Random().nextInt();
                 } else {
                     randomSeed = new Random().nextLong();
@@ -103,9 +103,9 @@ public class SearchingThread extends Thread implements Runnable{
 
             int incrementer = Integer.parseInt(sg.getIncrementer().getText());
             int biomePrecision = Integer.parseInt(sg.getBiomePrecision().getText());
-            if(biomePrecision > 16) {
+            if (biomePrecision > 16) {
                 biomePrecision = 16;
-            } else if(biomePrecision < 0) {
+            } else if (biomePrecision < 0) {
                 biomePrecision = 0;
             }
             //Make sure to create new copies everytime so it doesnt give false positives
@@ -114,15 +114,15 @@ public class SearchingThread extends Thread implements Runnable{
             ArrayList<Biome> bi = new ArrayList<>(this.biomesIN);
             ArrayList<Biome> bo = new ArrayList<>(this.biomesOUT);
             ArrayList<Biome.Category> ci = new ArrayList<>(this.categoriesIN);
-            ArrayList<Biome.Category> co  = new ArrayList<>(this.categoriesOUT);
+            ArrayList<Biome.Category> co = new ArrayList<>(this.categoriesOUT);
 
-            if(si.size() != 0 && sg.getRandomSeed().isSelected()) {
+            if (si.size() != 0 && sg.getRandomSeed().isSelected()) {
                 Searcher.searchRandomly(searchRadius, startSeedStructure, endSeedStructure, si, so, bi, bo, ci, co, Dimension.OVERWORLD, incrementer, biomePrecision);
                 break;
             } else {
                 Variables.checkWorld(1);
-                if(Singleton.getInstance().getSpawnPoint().isSelected()){
-                    if(!Searcher.checkSpawnPoint(new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), randomSeed))){
+                if (Singleton.getInstance().getSpawnPoint().isSelected()) {
+                    if (!Searcher.checkSpawnPoint(new OverworldBiomeSource(Singleton.getInstance().getMinecraftVersion(), randomSeed))) {
                         continue;
                     }
                 }
@@ -156,7 +156,7 @@ public class SearchingThread extends Thread implements Runnable{
                 if (si.size() == 0 && so.size() == 0
                         && bi.size() == 0 && bo.size() == 0 //
                         && ci.size() == 0 && co.size() == 0 && fxmlController.running == true) {
-                    if(Singleton.getInstance().getShadowMode().isSelected()){
+                    if (Singleton.getInstance().getShadowMode().isSelected()) {
                         util.console(String.valueOf(randomSeed) + " (Shadow: " + WorldSeed.getShadowSeed(randomSeed) + ")");
                     } else {
                         util.console(String.valueOf(randomSeed));
@@ -171,7 +171,7 @@ public class SearchingThread extends Thread implements Runnable{
             Variables.minOneCheckWorld();
         }
         // Should stop
-        if(fxmlController.running == true){
+        if (fxmlController.running == true) {
             fxmlController.running = false;
             Platform.runLater(() -> {
                 Singleton.getInstance().getController().stop();

@@ -17,7 +17,7 @@ public class StructureProvider {
     Dimension dimension;
     int minValue;
 
-    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, Dimension dimension, int minValue){
+    public StructureProvider(StructureSupplier structureSupplier, MCVersion version, Dimension dimension, int minValue) {
         this.structureSupplier = structureSupplier;
         this.version = version;
         this.dimension = dimension;
@@ -36,7 +36,7 @@ public class StructureProvider {
         return this.dimension;
     }
 
-    public int getMinimumValue(){
+    public int getMinimumValue() {
         return this.minValue;
     }
 

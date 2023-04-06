@@ -27,7 +27,6 @@
         "Cold Taiga M",
         "Ice Plains",
         "Ice Mountains"
-
       ],
       "Water Biomes": [
         "Beach",
@@ -73,11 +72,9 @@
         "Mega Taiga Hills",
         "Mega Spruce Taiga",
         "Mega Spruce Taiga (Hills)"
-
       ],
       "Snowy Biomes": [
         "Ice Plains Spikes"
-
       ],
       "Water Biomes": [
         "Stone Beach",
@@ -179,7 +176,7 @@
         "Mushroom Island",
         "Mushroom Island Shore"
       ],
-      "Frozen Ocean Set" : [
+      "Frozen Ocean Set": [
         "Frozen Ocean",
         "Frozen Deep Ocean"
       ]
@@ -209,37 +206,33 @@
         "Ocean Monument"
       ]
     },
-
     "920": {
       "Surface Features": [
         "Igloo"
       ]
     },
-    "1100":{
+    "1100": {
       "Surface Features": [
         "Mansion"
       ]
     },
-
     "1300": {
       "Ocean Features": [
         "Ocean Ruins",
         "Shipwreck",
         "Buried Treasure"
-        ]
+      ]
     },
     "1400": {
-      "Surface Features":[
-      "Pillager Outpost"
+      "Surface Features": [
+        "Pillager Outpost"
       ]
     }
   },
   "defaultJSONStructure": {
     "Hot Biomes": [
-
     ],
     "Lush Biomes": [
-
     ],
     "Cold Biomes": [
     ],

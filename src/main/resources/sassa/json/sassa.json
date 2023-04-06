@@ -31,13 +31,10 @@
     },
     "exclude": {
       "biomes": [
-
       ],
       "biomeSets": [
-
       ],
       "structures": [
-
       ]
     }
   }

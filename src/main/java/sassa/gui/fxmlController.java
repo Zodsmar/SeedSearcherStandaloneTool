@@ -3,7 +3,9 @@ package sassa.gui;
 
 //import com.jfoenix.controls.JFXComboBox;
 //import com.jfoenix.controls.JFXTextField;
+
 import java.util.regex.*;
+
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -36,9 +38,8 @@ import java.util.*;
 public class fxmlController implements Initializable {
 
     private static final int DELAY = 0;
-    static Timer timer;
     public static boolean running;
-
+    static Timer timer;
     private static long startTime; // TODO use this in the future to tell user when they started
     private static long elapsedTime;
     private static long elapsedTimeSinceLastSuccess;
@@ -49,153 +50,195 @@ public class fxmlController implements Initializable {
     String[] worldTypes = {
             "DEFAULT/AMP", "LARGE BIOMES"
     };
-
-    @FXML
-    private Text cRejSeedCount;
-
-    @FXML
-    private Text tRejSeedCount;
-
-    @FXML
-    private Button startBtn;
-
-    @FXML
-    private Button clearBtn;
-
-    @FXML
-    private Text timeElapsed;
-
-    @FXML
-    private Text timeElapsedSinceLast;
-
-    @FXML
-    private ComboBox<String> mcVersions;
-
-
-    @FXML
-    private TextField seedsToFind;
-
-    @FXML
-    private TextField searchRadius;
-
-    @FXML
-    private CheckBox devMode;
-
-    @FXML
-    private CheckBox bedrockMode;
-
-    @FXML
-    private Text bedrockWarning;
-
-    @FXML
-    private CheckBox randomSeed;
-
-    @FXML
-    private Pane randomSeedPane;
-
-    @FXML
-    private CheckBox setSeed;
-
-    @FXML
-    private Pane setSeedPane;
-
-    @FXML
-    private Button seedFileBrowser;
-
-    @FXML
-    private Label seedFileText;
-
-    @FXML
-    private Pane worldTypePane;
-
-    @FXML
-    private TextField minSeed;
-
-    @FXML
-    private TextField maxSeed;
-
-    @FXML
-    private TextArea console;
-
-    @FXML
-    private Text notificationLabel;
-
-    @FXML
-    private Tab biomesTab;
-
-    @FXML
-    private Tab structuresTab;
-
-    @FXML
-    private Text sequencedSeed;
-
-    @FXML
-    private ImageView paypalDonate;
-
-    @FXML
-    private Button saveConsole;
-
-    @FXML
-    private CheckBox autoSaveConsole;
-
-    @FXML
-    private Button outputFileBrowser;
-
-    @FXML
-    private Label outputFileText;
-
-    @FXML
-    private ComboBox<String> worldType;
-
-    //Get the grid in Biomes tab to dynamically build it.
-    @FXML
-    private GridPane biomesGrid;
-
-    @FXML
-    private GridPane structuresGrid;
-
-    @FXML
-    private GridPane biomeSetsGrid;
-
-    @FXML
-    private Slider amountOfCores;
-
-    @FXML
-    private Text coresAmount;
-
-    @FXML
-    private TextField incrementer;
-
-    @FXML
-    private TextField biomePrecision;
-
-    @FXML
-    private CheckBox shadowMode;
-
-    @FXML
-    private Button resetUIBtn;
-
-    @FXML
-    private Pane spawnPointPane;
-
-    @FXML
-    private CheckBox spawnPoint;
-
-    @FXML
-    private TextField xCoordSpawn;
-
-    @FXML
-    private TextField zCoordSpawn;
-
-    @FXML
-    private TextField marginOfError;
-
     String[] include_exclude_txt = {"", "Include", "Exclude"};
     Singleton singleton = Singleton.getInstance();
     MCVersion defaultVersion = MCVersion.latest();
     Util util;
+    @FXML
+    private Text cRejSeedCount;
+    @FXML
+    private Text tRejSeedCount;
+    @FXML
+    private Button startBtn;
+    @FXML
+    private Button clearBtn;
+    @FXML
+    private Text timeElapsed;
+    @FXML
+    private Text timeElapsedSinceLast;
+    @FXML
+    private ComboBox<String> mcVersions;
+    @FXML
+    private TextField seedsToFind;
+    @FXML
+    private TextField searchRadius;
+    @FXML
+    private CheckBox devMode;
+    @FXML
+    private CheckBox bedrockMode;
+    @FXML
+    private Text bedrockWarning;
+    @FXML
+    private CheckBox randomSeed;
+    @FXML
+    private Pane randomSeedPane;
+    @FXML
+    private CheckBox setSeed;
+    @FXML
+    private Pane setSeedPane;
+    @FXML
+    private Button seedFileBrowser;
+    @FXML
+    private Label seedFileText;
+    @FXML
+    private Pane worldTypePane;
+    @FXML
+    private TextField minSeed;
+    @FXML
+    private TextField maxSeed;
+    @FXML
+    private TextArea console;
+    @FXML
+    private Text notificationLabel;
+    @FXML
+    private Tab biomesTab;
+    @FXML
+    private Tab structuresTab;
+    @FXML
+    private Text sequencedSeed;
+    @FXML
+    private ImageView paypalDonate;
+    @FXML
+    private Button saveConsole;
+    @FXML
+    private CheckBox autoSaveConsole;
+    @FXML
+    private Button outputFileBrowser;
+    @FXML
+    private Label outputFileText;
+    @FXML
+    private ComboBox<String> worldType;
+    //Get the grid in Biomes tab to dynamically build it.
+    @FXML
+    private GridPane biomesGrid;
+    @FXML
+    private GridPane structuresGrid;
+    @FXML
+    private GridPane biomeSetsGrid;
+    @FXML
+    private Slider amountOfCores;
+    @FXML
+    private Text coresAmount;
+    @FXML
+    private TextField incrementer;
+    @FXML
+    private TextField biomePrecision;
+    @FXML
+    private CheckBox shadowMode;
+    @FXML
+    private Button resetUIBtn;
+    @FXML
+    private Pane spawnPointPane;
+    @FXML
+    private CheckBox spawnPoint;
+    EventHandler<ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
+        @Override
+        public void handle(javafx.event.ActionEvent e) {
+            if (e.getSource() == devMode) {
+//                Main.DEV_MODE = !Main.DEV_MODE;
 
+            } else if (e.getSource() == spawnPoint) {
+                if (spawnPoint.isSelected()) {
+                    spawnPointPane.setVisible(true);
+                } else {
+                    spawnPointPane.setVisible(false);
+                }
+            } else if (e.getSource() == randomSeed) {
+                if (randomSeed.isSelected()) {
+                    randomSeedPane.setVisible(false);
+                    setSeed.setSelected(false);
+                    setSeedPane.setVisible(false);
+                    amountOfCores.setDisable(false);
+                    spawnPoint.setDisable(false);
+                    biomePrecision.setDisable(false);
+                } else {
+                    randomSeedPane.setVisible(true);
+                    amountOfCores.setValue(1);
+                    amountOfCores.setDisable(true);
+                    spawnPoint.setSelected(false);
+                    spawnPoint.setDisable(true);
+                    spawnPointPane.setVisible(false);
+                    biomePrecision.setDisable(true);
+                }
+                //RANDOM_SEEDS = !RANDOM_SEEDS;
+            } else if (e.getSource() == setSeed) {
+                if (setSeed.isSelected()) {
+                    setSeedPane.setVisible(true);
+                    randomSeed.setSelected(false);
+                    randomSeedPane.setVisible(false);
+                    amountOfCores.setValue(1);
+                    amountOfCores.setDisable(true);
+                    spawnPoint.setSelected(false);
+                    spawnPoint.setDisable(true);
+                    spawnPointPane.setVisible(false);
+                } else {
+                    setSeedPane.setVisible(false);
+                    amountOfCores.setDisable(false);
+                }
+            } else if (e.getSource() == bedrockMode) {
+                if (bedrockMode.isSelected()) {
+                    //BEDROCK = true;
+                    bedrockWarning.setVisible(true);
+                    structuresTab.setDisable(true);
+                    singleton.getWorldType().setValue("DEFAULT/AMP");
+                    worldTypePane.setDisable(true);
+                } else {
+                    // BEDROCK = false;
+                    bedrockWarning.setVisible(false);
+                    structuresTab.setDisable(false);
+                    worldTypePane.setDisable(false);
+                }
+            } else if (e.getSource() == startBtn) {
+                try {
+                    toggleRunning();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
 
+            } else if (e.getSource() == clearBtn) {
+                try {
+                    reset();
+                } catch (InterruptedException | IOException e1) {
+                    e1.printStackTrace();
+                }
+            } else if (e.getSource() == mcVersions) {
+                String selected = mcVersions.getSelectionModel().getSelectedItem();
+                MCVersion version = MCVersion.fromString(selected);
+                Singleton.getInstance().setMinecraftVersion(version);
+                System.out.println("Version: " + selected + ":" + mcVersions.getSelectionModel().getSelectedIndex());
+                rebuildUI(version);
+
+            } else if (e.getSource() == outputFileBrowser) {
+                util.chooseDirectory(outputFileText, "output");
+            } else if (e.getSource() == seedFileBrowser) {
+                util.chooseDirectory(seedFileText, "seed");
+            } else if (e.getSource() == saveConsole) {
+
+                util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
+            } else if (e.getSource() == resetUIBtn) {
+                rebuildUI(singleton.getMinecraftVersion());
+            }
+        }
+
+    };
+    @FXML
+    private TextField xCoordSpawn;
+    @FXML
+    private TextField zCoordSpawn;
+    @FXML
+    private TextField marginOfError;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -249,8 +292,8 @@ public class fxmlController implements Initializable {
 
 
         ArrayList<String> versions = new ArrayList<>();
-        for(MCVersion v : MCVersion.values()){
-            if(v.release > 12){
+        for (MCVersion v : MCVersion.values()) {
+            if (v.release > 12) {
                 versions.add(v.name);
             }
         }
@@ -265,99 +308,6 @@ public class fxmlController implements Initializable {
 
         rebuildUI(defaultVersion);
     }
-
-    EventHandler<ActionEvent> buttonHandler = new EventHandler<javafx.event.ActionEvent>() {
-        @Override
-        public void handle(javafx.event.ActionEvent e) {
-            if (e.getSource() == devMode) {
-//                Main.DEV_MODE = !Main.DEV_MODE;
-
-            } else if (e.getSource() == spawnPoint) {
-                if(spawnPoint.isSelected()){
-                    spawnPointPane.setVisible(true);
-                } else {
-                    spawnPointPane.setVisible(false);
-                }
-            } else if (e.getSource() == randomSeed) {
-                if(randomSeed.isSelected()){
-                    randomSeedPane.setVisible(false);
-                    setSeed.setSelected(false);
-                    setSeedPane.setVisible(false);
-                    amountOfCores.setDisable(false);
-                    spawnPoint.setDisable(false);
-                    biomePrecision.setDisable(false);
-                } else {
-                    randomSeedPane.setVisible(true);
-                    amountOfCores.setValue(1);
-                    amountOfCores.setDisable(true);
-                    spawnPoint.setSelected(false);
-                    spawnPoint.setDisable(true);
-                    spawnPointPane.setVisible(false);
-                    biomePrecision.setDisable(true);
-                }
-                //RANDOM_SEEDS = !RANDOM_SEEDS;
-            } else if (e.getSource() == setSeed) {
-                if(setSeed.isSelected()){
-                    setSeedPane.setVisible(true);
-                    randomSeed.setSelected(false);
-                    randomSeedPane.setVisible(false);
-                    amountOfCores.setValue(1);
-                    amountOfCores.setDisable(true);
-                    spawnPoint.setSelected(false);
-                    spawnPoint.setDisable(true);
-                    spawnPointPane.setVisible(false);
-                } else {
-                    setSeedPane.setVisible(false);
-                    amountOfCores.setDisable(false);
-                }
-            } else if (e.getSource() == bedrockMode){
-                if(bedrockMode.isSelected()){
-                    //BEDROCK = true;
-                    bedrockWarning.setVisible(true);
-                    structuresTab.setDisable(true);
-                    singleton.getWorldType().setValue("DEFAULT/AMP");
-                    worldTypePane.setDisable(true);
-                } else {
-                   // BEDROCK = false;
-                    bedrockWarning.setVisible(false);
-                    structuresTab.setDisable(false);
-                    worldTypePane.setDisable(false);
-                }
-            } else if (e.getSource() == startBtn) {
-                try {
-                    toggleRunning();
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-
-            } else if (e.getSource() == clearBtn) {
-                try {
-                    reset();
-                } catch (InterruptedException | IOException e1) {
-                    e1.printStackTrace();
-                }
-            } else if (e.getSource() == mcVersions) {
-                String selected = mcVersions.getSelectionModel().getSelectedItem();
-                MCVersion version = MCVersion.fromString(selected);
-                Singleton.getInstance().setMinecraftVersion(version);
-                System.out.println("Version: "+selected+":"+mcVersions.getSelectionModel().getSelectedIndex());
-                rebuildUI(version);
-
-            } else if(e.getSource() == outputFileBrowser) {
-                util.chooseDirectory(outputFileText, "output");
-            } else if(e.getSource() == seedFileBrowser) {
-                util.chooseDirectory(seedFileText, "seed");
-            } else if(e.getSource() == saveConsole){
-
-                util.appendToFile(Singleton.getInstance().getOutputFile(), console.getText());
-            } else if (e.getSource() == resetUIBtn) {
-                rebuildUI(singleton.getMinecraftVersion());
-            }
-        }
-
-    };
 
     public void startSeedSearcher() {
         updateDisplay();
@@ -379,10 +329,10 @@ public class fxmlController implements Initializable {
             toggleRunning();
             //print out the world seed (Plus possibly more information)
         } else {
-            for(int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
-                long startingStructureSeed = (long) Math.floor(Math.pow(2, 48)/singleton.getAmountOfCores().getValue() * i);
-                long endStructureSeed = Math.min((long) Math.floor(Math.pow(2, 48)/singleton.getAmountOfCores().getValue() * (i+1)), 1L << 48);
-                Thread t = new SearchingThread(startingStructureSeed, endStructureSeed, Integer.parseInt(searchRadius.getText()),structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
+            for (int i = 0; i < singleton.getAmountOfCores().getValue(); i++) {
+                long startingStructureSeed = (long) Math.floor(Math.pow(2, 48) / singleton.getAmountOfCores().getValue() * i);
+                long endStructureSeed = Math.min((long) Math.floor(Math.pow(2, 48) / singleton.getAmountOfCores().getValue() * (i + 1)), 1L << 48);
+                Thread t = new SearchingThread(startingStructureSeed, endStructureSeed, Integer.parseInt(searchRadius.getText()), structuresIN, structuresOUT, biomesIN, biomesOUT, categoriesIN, categoriesOUT);
                 t.start();
                 currentThreads.add(t);
             }
@@ -397,7 +347,7 @@ public class fxmlController implements Initializable {
             public void run() {
                 updateDisplay();
             }
-        },DELAY,1);
+        }, DELAY, 1);
     }
 
     private void updateDisplay() {
@@ -410,7 +360,7 @@ public class fxmlController implements Initializable {
 
                 notificationLabel.setText("Running");
                 System.out.println(prevWorldAccepted != Variables.acceptedWorlds());
-                if(prevWorldAccepted != Variables.acceptedWorlds()) {
+                if (prevWorldAccepted != Variables.acceptedWorlds()) {
                     elapsedTimeSinceLastSuccess = System.currentTimeMillis();
                     prevWorldAccepted = Variables.acceptedWorlds();
                 }
@@ -430,7 +380,7 @@ public class fxmlController implements Initializable {
 
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return running;
     }
 
@@ -449,10 +399,10 @@ public class fxmlController implements Initializable {
         createNewThreads();
     }
 
-    public void stop(){
+    public void stop() {
         running = false;
-        for(Thread t : currentThreads) {
-            if(t != null){
+        for (Thread t : currentThreads) {
+            if (t != null) {
                 t.interrupt();
             }
         }
@@ -465,7 +415,7 @@ public class fxmlController implements Initializable {
         startBtn.setText("Start");
         notificationLabel.setText("Stopped");
         sequencedSeed.setText("0");
-        if(timer != null)
+        if (timer != null)
             timer.cancel();
 
 
@@ -488,49 +438,49 @@ public class fxmlController implements Initializable {
         updateDisplay();
     }
 
-    private ArrayList<String> generateBiomesUI(MCVersion version){
+    private ArrayList<String> generateBiomesUI(MCVersion version) {
 
         ArrayList<String> validBiomes = new ArrayList<>();
 
         Iterator regIt = Biomes.REGISTRY.entrySet().iterator();
-        while(regIt.hasNext()){
-            Map.Entry mapElement = (Map.Entry)regIt.next();
+        while (regIt.hasNext()) {
+            Map.Entry mapElement = (Map.Entry) regIt.next();
             Biome b = (Biome) mapElement.getValue();
-            if(b.getVersion().release <= version.release){
+            if (b.getVersion().release <= version.release) {
                 validBiomes.add(b.getName());
             }
         }
         return validBiomes;
     }
 
-    private ArrayList<String> generateCategoryUI(){
+    private ArrayList<String> generateCategoryUI() {
 
         ArrayList<String> validCategory = new ArrayList<>();
 
-       for(Biome.Category c : Biome.Category.values()){
-           validCategory.add(c.getName());
-       }
+        for (Biome.Category c : Biome.Category.values()) {
+            validCategory.add(c.getName());
+        }
         return validCategory;
     }
 
-    private ArrayList<String> generateStructuresUI(MCVersion version){
+    private ArrayList<String> generateStructuresUI(MCVersion version) {
 
         ArrayList<String> validStructures = new ArrayList<>();
 
         Iterator<Map.Entry<String, StructureProvider>> it = Structures.STRUCTURE.entrySet().iterator();
 
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Map.Entry<String, StructureProvider> e = it.next();
             String name = e.getKey();
             StructureProvider struct = e.getValue();
-            if(struct.getVersion().release <= version.release) {
+            if (struct.getVersion().release <= version.release) {
                 validStructures.add(name);
             }
         }
         return validStructures;
     }
 
-    private void buildGridPane(GridPane grid, ArrayList<String> searchList, boolean textField){
+    private void buildGridPane(GridPane grid, ArrayList<String> searchList, boolean textField) {
 
         int k = 0;
         for (int i = 0; i < (searchList.size() / 3) + 1; i++) {
@@ -548,7 +498,7 @@ public class fxmlController implements Initializable {
                             .observableArrayList(include_exclude_txt));
                     tempGrid.getChildren().add(tempText);
                     tempGrid.getChildren().add(temp);
-                    if(textField == true) {
+                    if (textField == true) {
 
                         TextField tempField = new TextField();
                         tempField.setMaxWidth(50);
@@ -565,22 +515,22 @@ public class fxmlController implements Initializable {
         }
     }
 
-    private void clearGridPane(GridPane pane){
+    private void clearGridPane(GridPane pane) {
         pane.getChildren().clear();
         pane.getColumnConstraints().clear();
         pane.getRowConstraints().clear();
     }
 
-    private void rebuildUI(MCVersion version){
+    private void rebuildUI(MCVersion version) {
         clearGridPane(biomesGrid);
         clearGridPane(structuresGrid);
         clearGridPane(biomeSetsGrid);
         buildGridPane(biomesGrid, generateBiomesUI(version), false);
-        buildGridPane(structuresGrid, generateStructuresUI(version),true);
-        buildGridPane(biomeSetsGrid, generateCategoryUI(),false);
+        buildGridPane(structuresGrid, generateStructuresUI(version), true);
+        buildGridPane(biomeSetsGrid, generateCategoryUI(), false);
     }
 
-    public void donate(){
+    public void donate() {
         util.openWebPage("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9E3YQAKQWC34&currency_code=CAD&source=url");
     }
 }
