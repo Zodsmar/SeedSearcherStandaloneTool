@@ -5,18 +5,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import sassa.gui.fxmlController;
 import kaptainwutax.mcutils.version.MCVersion;
-    
+
 import java.io.File;
 
 //Might rename this to Global Config in the next version (That's basically what it is)
 
 public class Singleton {
     private static Singleton instance = new Singleton();
-
-    public static Singleton getInstance(){
-        return instance;
-    }
-
     private GridPane biomesPane, structurePane, biomeSetsPane;
     private TextArea console;
     private MCVersion minecraftVersion;
@@ -28,83 +23,87 @@ public class Singleton {
     private ComboBox worldType;
     private Slider amountOfCores;
 
-
-
-    public void setController(fxmlController controller){
-        this.controller = controller;
+    public static Singleton getInstance() {
+        return instance;
     }
-    public fxmlController getController(){
+
+    public fxmlController getController() {
         return controller;
     }
 
-    public GridPane getBiomesGridPane(){
+    public void setController(fxmlController controller) {
+        this.controller = controller;
+    }
+
+    public GridPane getBiomesGridPane() {
         return biomesPane;
     }
 
-    public void setBiomesGridPane(GridPane pane){
+    public void setBiomesGridPane(GridPane pane) {
         this.biomesPane = pane;
     }
 
-    public GridPane getBiomeSetsGridPane(){
+    public GridPane getBiomeSetsGridPane() {
         return biomeSetsPane;
     }
 
-    public void setBiomeSetsGridPane(GridPane pane){
+    public void setBiomeSetsGridPane(GridPane pane) {
         this.biomeSetsPane = pane;
     }
 
-    public GridPane getStructureGridPane(){
+    public GridPane getStructureGridPane() {
         return structurePane;
     }
 
-    public void setStructureGridPane(GridPane pane){
+    public void setStructureGridPane(GridPane pane) {
         this.structurePane = pane;
     }
 
-    public TextArea getConsole(){
+    public TextArea getConsole() {
         return console;
     }
 
-    public void setConsole(TextArea console){
+    public void setConsole(TextArea console) {
         this.console = console;
     }
-    public MCVersion getMinecraftVersion(){
+
+    public MCVersion getMinecraftVersion() {
         return minecraftVersion;
     }
 
-    public void setMinecraftVersion(MCVersion minecraftVersion){
+    public void setMinecraftVersion(MCVersion minecraftVersion) {
         this.minecraftVersion = minecraftVersion;
     }
 
-    public TextField getSeedCount(){
+    public TextField getSeedCount() {
         return seedCount;
     }
 
-    public void setSeedCount(TextField seedCount){
+    public void setSeedCount(TextField seedCount) {
         this.seedCount = seedCount;
     }
 
-    public Text getCRejSeed(){
+    public Text getCRejSeed() {
         return cRejSeed;
     }
 
-    public void setCRejSeed(Text cRejSeed){
+    public void setCRejSeed(Text cRejSeed) {
         this.cRejSeed = cRejSeed;
     }
 
-    public Text getTRejSeed(){
+    public Text getTRejSeed() {
         return tRejSeed;
     }
 
-    public void setTRejSeed(Text tRejSeed){
+    public void setTRejSeed(Text tRejSeed) {
         this.tRejSeed = tRejSeed;
     }
 
-    public Text getSequenceSeed(){
+    public Text getSequenceSeed() {
         return sequencedSeed;
     }
 
-    public void setSequenceSeed(Text sequencedSeed){
+    public void setSequenceSeed(Text sequencedSeed) {
         this.sequencedSeed = sequencedSeed;
     }
 
@@ -132,7 +131,7 @@ public class Singleton {
         this.worldType = worldType;
     }
 
-    public Slider getAmountOfCores(){
+    public Slider getAmountOfCores() {
         return amountOfCores;
     }
 
@@ -140,115 +139,115 @@ public class Singleton {
         this.amountOfCores = amountOfCores;
     }
 
-    public TextField getIncrementer()  {
+    public TextField getIncrementer() {
         return incrementer;
     }
 
-    public void setIncrementer(TextField incrementer){
+    public void setIncrementer(TextField incrementer) {
         this.incrementer = incrementer;
     }
 
-    public TextField getBiomePrecision()  {
+    public TextField getBiomePrecision() {
         return biomePrecision;
     }
 
-    public void setBiomePrecision(TextField biomePrecision){
+    public void setBiomePrecision(TextField biomePrecision) {
         this.biomePrecision = biomePrecision;
     }
 
-    public CheckBox getShadowMode(){
+    public CheckBox getShadowMode() {
         return shadowMode;
     }
 
-    public void setShadowMode(CheckBox shadowMode){
+    public void setShadowMode(CheckBox shadowMode) {
         this.shadowMode = shadowMode;
     }
 
-    public CheckBox getBedrockMode(){
+    public CheckBox getBedrockMode() {
         return bedrockMode;
     }
 
-    public void setBedrockMode(CheckBox bedrockMode){
+    public void setBedrockMode(CheckBox bedrockMode) {
         this.bedrockMode = bedrockMode;
     }
 
-    public Text getCoresAmount(){
+    public Text getCoresAmount() {
         return coresAmount;
     }
 
-    public void setCoresAmount(Text coresAmount){
+    public void setCoresAmount(Text coresAmount) {
         this.coresAmount = coresAmount;
     }
 
-    public TextField getMinSeed()  {
+    public TextField getMinSeed() {
         return minSeed;
     }
 
-    public void setMinSeed(TextField minSeed){
+    public void setMinSeed(TextField minSeed) {
         this.minSeed = minSeed;
     }
 
-    public TextField getMaxSeed()  {
+    public TextField getMaxSeed() {
         return maxSeed;
     }
 
-    public void setMaxSeed(TextField maxSeed){
+    public void setMaxSeed(TextField maxSeed) {
         this.maxSeed = maxSeed;
     }
 
-    public void setRandomSeed(CheckBox randomSeed){
-        this.randomSeed = randomSeed;
-    }
-
-    public CheckBox getRandomSeed(){
+    public CheckBox getRandomSeed() {
         return randomSeed;
     }
 
-    public void setSetSeed(CheckBox setSeed){
-        this.setSeed = setSeed;
+    public void setRandomSeed(CheckBox randomSeed) {
+        this.randomSeed = randomSeed;
     }
 
-    public CheckBox getSetSeed(){
+    public CheckBox getSetSeed() {
         return setSeed;
     }
 
-    public void setSeedFile(File seedFile) {
-        this.seedFile = seedFile;
+    public void setSetSeed(CheckBox setSeed) {
+        this.setSeed = setSeed;
     }
 
     public File getSeedFile() {
         return seedFile;
     }
 
-    public void setSpawnPoint(CheckBox spawnPoint){
-        this.spawnPoint = spawnPoint;
+    public void setSeedFile(File seedFile) {
+        this.seedFile = seedFile;
     }
 
-    public CheckBox getSpawnPoint(){
+    public CheckBox getSpawnPoint() {
         return spawnPoint;
     }
 
-    public TextField getXCoordSpawn()  {
+    public void setSpawnPoint(CheckBox spawnPoint) {
+        this.spawnPoint = spawnPoint;
+    }
+
+    public TextField getXCoordSpawn() {
         return xCoordSpawn;
     }
 
-    public void setXCoordSpawn(TextField xCoordSpawn){
+    public void setXCoordSpawn(TextField xCoordSpawn) {
         this.xCoordSpawn = xCoordSpawn;
     }
 
-    public TextField getZCoordSpawn()  {
+    public TextField getZCoordSpawn() {
         return zCoordSpawn;
     }
 
-    public void setZCoordSpawn(TextField zCoordSpawn){
+    public void setZCoordSpawn(TextField zCoordSpawn) {
         this.zCoordSpawn = zCoordSpawn;
     }
 
-    public TextField getMarginOfError()  {
+    public TextField getMarginOfError() {
         return marginOfError;
     }
 
-    public void setMarginOfError(TextField marginOfError){
+    public void setMarginOfError(TextField marginOfError) {
         this.marginOfError = marginOfError;
     }
 }

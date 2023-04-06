@@ -13,19 +13,19 @@ public class Variables {
     private static AtomicLong worldsSinceAccepted = new AtomicLong(0);
     private static Singleton singleton = Singleton.getInstance();
 
-    public static void reset(){
+    public static void reset() {
         checkedWorlds.set(0);
         acceptedWorlds = 0;
         worldsSinceAccepted.set(0);
     }
 
-    public static AtomicLong checkWorld(long value){
+    public static AtomicLong checkWorld(long value) {
         worldsSinceAccepted.addAndGet(value);
         checkedWorlds.addAndGet(value);
         return checkedWorlds;
     }
 
-    public static long acceptWorld(){
+    public static long acceptWorld() {
         worldsSinceAccepted.set(0);
         ++acceptedWorlds;
         return acceptedWorlds;
@@ -35,7 +35,7 @@ public class Variables {
         checkedWorlds.addAndGet(-1);
     }
 
-    public static void updateCurrentSeed(long seed){
+    public static void updateCurrentSeed(long seed) {
         // Update gui text
         Platform.runLater(() -> {
             Text elem = singleton.getSequenceSeed();
@@ -43,15 +43,15 @@ public class Variables {
         });
     }
 
-    public static AtomicLong checkedWorlds(){
+    public static AtomicLong checkedWorlds() {
         return checkedWorlds;
     }
 
-    public static long acceptedWorlds(){
+    public static long acceptedWorlds() {
         return acceptedWorlds;
     }
 
-    public static AtomicLong worldsSinceAccepted(){
+    public static AtomicLong worldsSinceAccepted() {
         return worldsSinceAccepted;
     }
 }

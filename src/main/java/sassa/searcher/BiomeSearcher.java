@@ -24,18 +24,18 @@ public class BiomeSearcher {
 
         int xSize = 0;
         int zSize = 0;
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
         }
-        for(int x = -searchSize + xSize; x < searchSize + xSize; x += incrementer) {
-            for(int z = -searchSize + zSize; z < searchSize + zSize; z += incrementer) {
+        for (int x = -searchSize + xSize; x < searchSize + xSize; x += incrementer) {
+            for (int z = -searchSize + zSize; z < searchSize + zSize; z += incrementer) {
 
                 biomesToFindCopy.remove(source.getBiome(x, 0, z));
                 biomesToFindCopy.remove(source1.getBiome(x, 0, z));
                 biomesToFindCopy.remove(source2.getBiome(x, 0, z));
 
-                if(biomesToFindCopy.isEmpty()) {
+                if (biomesToFindCopy.isEmpty()) {
                     //System.out.format("Found world seed %d (Shadow %d)\n", worldSeed, WorldSeed.getShadowSeed(worldSeed));
                     return biomesToFindCopy;
                 }
@@ -54,14 +54,14 @@ public class BiomeSearcher {
         BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
         int xSize = 0;
         int zSize = 0;
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
         }
 
-        for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
-            for(int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
-                if(biomesToFindCopy.contains(source.getBiome(i, 0, j)) || biomesToFindCopy.contains(source1.getBiome(i, 0, j)) || biomesToFindCopy.contains(source2.getBiome(i, 0, j))){
+        for (int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
+            for (int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
+                if (biomesToFindCopy.contains(source.getBiome(i, 0, j)) || biomesToFindCopy.contains(source1.getBiome(i, 0, j)) || biomesToFindCopy.contains(source2.getBiome(i, 0, j))) {
                     return biomesToFindCopy;
                 }
                 //biomesToFindCopy.remove(source1.getBiome(i, 0, j));
@@ -81,19 +81,19 @@ public class BiomeSearcher {
         BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
         int xSize = 0;
         int zSize = 0;
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
         }
 
-        for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
-            for(int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
+        for (int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
+            for (int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
                 biomesToFindCopy.remove(source.getBiome(i, 0, j).getCategory());
                 biomesToFindCopy.remove(source1.getBiome(i, 0, j).getCategory());
                 biomesToFindCopy.remove(source2.getBiome(i, 0, j).getCategory());
 
-                if(biomesToFindCopy.isEmpty()) {
-                    System.out.println("Found: "+ source.getBiome(i, 0, j).getCategory() + " At: " + i +"  "+ j);
+                if (biomesToFindCopy.isEmpty()) {
+                    System.out.println("Found: " + source.getBiome(i, 0, j).getCategory() + " At: " + i + "  " + j);
                     return biomesToFindCopy;
                 }
             }
@@ -110,14 +110,14 @@ public class BiomeSearcher {
         BiomeSource source2 = Searcher.getBiomeSource(Dimension.END, worldSeed);
         int xSize = 0;
         int zSize = 0;
-        if(Singleton.getInstance().getSpawnPoint().isSelected()) {
+        if (Singleton.getInstance().getSpawnPoint().isSelected()) {
             xSize = Integer.parseInt(Singleton.getInstance().getXCoordSpawn().getText());
             zSize = Integer.parseInt(Singleton.getInstance().getZCoordSpawn().getText());
         }
 
-        for(int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
-            for(int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
-                if(biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory()) || biomesToFindCopy.contains(source1.getBiome(i, 0, j).getCategory())|| biomesToFindCopy.contains(source2.getBiome(i, 0, j).getCategory())){
+        for (int i = -searchSize + xSize; i < searchSize + xSize; i += incrementer) {
+            for (int j = -searchSize + zSize; j < searchSize + zSize; j += incrementer) {
+                if (biomesToFindCopy.contains(source.getBiome(i, 0, j).getCategory()) || biomesToFindCopy.contains(source1.getBiome(i, 0, j).getCategory()) || biomesToFindCopy.contains(source2.getBiome(i, 0, j).getCategory())) {
                     return biomesToFindCopy;
                 }
             }
