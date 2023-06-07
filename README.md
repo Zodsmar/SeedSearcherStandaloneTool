@@ -124,7 +124,7 @@ nnadeau - Updated Gradle Build
 
 #### Contact
 
-Discord: Zodsmar#0877
+Discord: zodsmar (Previous: Zodsmar#0877)
 
 Email: zodsmar@gmail.com
 
