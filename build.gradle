@@ -26,7 +26,7 @@ dependencies {
                 transitive = false;
                 //changing = true;
             }
-    implementation('com.github.KaptainWutax:SeedUtils:-SNAPSHOT')
+    implementation('com.github.KaptainWutax:SeedUtils:master-SNAPSHOT')
             {
                 transitive = false;
                 //changing = true;
@@ -59,7 +59,7 @@ dependencies {
 
 
 group = 'sassa'
-version = 'v0.6.3'
+version = 'v0.6.3-xaxzie'
 sourceCompatibility = '1.8'
 String stringVersion = version
 
