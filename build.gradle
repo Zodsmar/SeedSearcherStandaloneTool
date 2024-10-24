@@ -16,7 +16,7 @@ applicationDefaultJvmArgs = ["--illegal-access=permit"]
 dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
-    implementation('com.github.KaptainWutax:BiomeUtils:-SNAPSHOT')
+    implementation('com.github.KaptainWutax:BiomeUtils:master-SNAPSHOT')
             {
                 transitive = false;
                 //changing = true;
@@ -37,7 +37,7 @@ dependencies {
                 //changing = true;
             }
 
-    implementation('com.github.KaptainWutax:MCUtils:-SNAPSHOT')
+    implementation('com.github.KaptainWutax:MCUtils:master-SNAPSHOT')
             {
                 transitive = false;
                 //changing = true;
