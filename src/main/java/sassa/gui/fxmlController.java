@@ -250,7 +250,7 @@ public class fxmlController implements Initializable {
 
         ArrayList<String> versions = new ArrayList<>();
         for(MCVersion v : MCVersion.values()){
-            if(v.release > 12){
+            if(v.release >= 1){
                 versions.add(v.name);
             }
         }
