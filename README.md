@@ -1,3 +1,6 @@
+# ** Note: End Of Life ** 
+> SASSA is officially archived and no longer maintained. See [Issue #146](https://github.com/Zodsmar/SeedSearcherStandaloneTool/issues/146) for details.
+
 # SASSA
 
 > Stands for: StandAlone Seed Searcher Application
@@ -10,7 +13,7 @@ also hover over UI elements to get more information.
 
 > - *Bedrock Mode*
 > - **Nether and End Dimension Searching (Structures and Biomes)**
-> - Search based on minecraft version (1.16.X - 1.7.10)
+> - Search based on minecraft version (1.17.X - 1.7.10)
 > - Search in specific radius from spawn
 > - Search based on how many structures minimum must exist
 > - World Type (Default, Amplified, Large Biomes)
